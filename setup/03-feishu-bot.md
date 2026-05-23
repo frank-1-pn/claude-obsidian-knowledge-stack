@@ -3,17 +3,10 @@
 This stack's mobile capture surface. **Optional** — skip if you only ever work
 at your desktop.
 
-The mechanism is implemented in a sibling repo:
-
-> **`<your-github-user>/feishu-claude-code-bridge`** — the companion repo
-> that implements the daemon + monitor + /compact macro + per-session bot
-> routing. Each operator builds their own from the architecture in this
-> stack's `ARCHITECTURE.md` and the bridge repo's `ARCHITECTURE.md` (which
-> in turn extends from `feishu-bot-runtime` patterns + the seven fixes
-> documented in `daemon/PLAN.md`).
-
-This file is the bridge between this stack and that one. Read this first,
-then follow that repo's `README.md` start-to-finish.
+The bridge is a companion you'll build yourself (about a day of work, less if
+you ship the keyboard-macro `/compact!` flow later). The full spec is in
+"Bridge spec" below; if you'd rather skip building it, you can still use the
+rest of this stack from your desktop.
 
 ## What you'll end up with
 
@@ -32,74 +25,218 @@ then follow that repo's `README.md` start-to-finish.
 
 ## What you'll need before starting
 
-- A Feishu developer account (free) and one self-built bot per "channel" you
-  want. Three feels useful: a primary inbox, a per-project bot, a project-2
-  bot. You can start with one.
+- A Feishu developer account (free) and at least one self-built bot. If you
+  want per-project routing (e.g. one bot per project), build as many as you
+  want; the routing system in this spec scales to N.
 - `lark-cli` installed globally: `npm install -g @larksuite/cli`
-- `lark-cli auth login --as bot` to grant the bot the message read/send/recall
-  permissions.
+- `lark-cli auth login --as bot` to grant the bot the message read / send /
+  recall permissions.
 
 ## Scope mapping vs this stack
 
-| Capability in `feishu-claude-code-bridge` | Where it shows up in *this* stack |
+| Capability you'll build | Where it shows up in *this* stack |
 | --- | --- |
-| daemon + monitor (v4) | Drives Pattern 2 (Feishu-driven ingest) in `ARCHITECTURE.md` |
+| daemon + monitor (offset-tracked tail) | Drives Pattern 2 (Feishu-driven ingest) in `ARCHITECTURE.md` |
 | `notify-once.ps1 -AutoBot` | Routes `PostCompact` etc. to the right bot per session |
 | `/compact!` macro | Lets you trigger context compaction from phone safely |
-| `bot-registry.json` | Maps cwd / project to bot — useful if you have N projects |
+| `bot-registry.json` | Maps cwd / project to bot — useful for N projects |
 | `binding-<pid>.json` | Per-session bot identity; written by `write-binding.ps1` |
+
+---
+
+# Bridge spec (build-it-yourself)
+
+What the bridge *must do* and the file layout it must expose so the rest of
+this stack's hooks (referenced from `config/settings-json.template.json`)
+can find it. Build any way you like; the names below are what the templates
+in this repo assume.
+
+## Six scripts (one-liner each)
+
+Drop these under `~/.lark-cli/daemon/`:
+
+| Script | Inputs | Job |
+| --- | --- | --- |
+| `start-bot.ps1` | `-Bot <name> [-Profile <profile>]` | Spawn detached `lark-cli event +subscribe --force ...` whose stdout goes to `%TEMP%\lark-<bot>-events.ndjson`, stderr to `%TEMP%\lark-<bot>-daemon.err.log`, PID to `%TEMP%\lark-<bot>.pid`. Idempotent (skip if pid file points to a live subscribe with matching `--profile`). Always sets `LARK_CLI_NO_PROXY=1` so bot secrets never transit a local HTTP proxy |
+| `ensure-bot.ps1` | `-Bot <name> [-Profile <profile>]` | Health-check + heal. Rotate ndjson if >50MB (kill + rename + restart, also reset the offset file). Rotate err log if >10MB (same path). Prune `binding-*.json` whose PID is dead. Prune `lark-notify-once/*.last` >7 days old. Call `start-bot.ps1` if daemon unhealthy. Safe to run at every SessionStart, /compact, stream-ended |
+| `monitor-bot.sh` | `<bot>` positional | `tail -c +OFFSET -F` the ndjson with offset bookkeeping per consumed line. Awk filter `^{"chat_id"` lets only real messages through. Add a `[COMPACT_TRIGGER]` marker line when message body is exactly `/compact!` and `sender_id` equals the operator's open_id |
+| `write-binding.ps1` | `-Bot <name> [-ChatId ...] [-Profile ...] [-Alias ...] [-MonitorTaskId ...]` | Walk parent process chain to find `claude.exe`, look up the bot in `bot-registry.json` (`bots` map by short name), write `binding-<claude_pid>.json` with `claude_pid / bot / bot_alias / chat_id / profile / bound_at / monitor_task_id / source` |
+| `notify-once.ps1` | `-AutoBot \| -ChatId ... [-Profile ...] -Text ... [-Tag <key>] [-MinIntervalSec 30]` | Bot-aware Feishu notifier with dedup. Resolution order for `-AutoBot`: (1) walk parent chain to `claude.exe` then read `binding-<pid>.json`; (2) match `$env:CLAUDE_PROJECT_DIR` against `bot-registry.json` `projects[].match_dir_contains`; (3) fall back to `registry.default`. Skip silently if same `chat_id + tag` was notified within the dedup window |
+| `find-claude.ps1`, `screenshot-window.ps1`, `send-keys.ps1` | various | For the `/compact!` macro — find the foreground claude.exe-rooted window, screenshot it, SendKeys into it with foreground-guard. Refuse to fire if foreground hwnd doesn't match the passed hwnd |
+
+## File layout under `~/.lark-cli/daemon/`
+
+```
+start-bot.ps1
+ensure-bot.ps1
+monitor-bot.sh
+write-binding.ps1
+notify-once.ps1
+find-claude.ps1
+screenshot-window.ps1
+send-keys.ps1
+bot-registry.json                   # routing config; see schema below
+binding-<claude_pid>.json           # generated per session by write-binding
+```
+
+Runtime files under `%TEMP%`:
+
+```
+lark-<bot>-events.ndjson            # daemon stdout
+lark-<bot>-daemon.err.log           # daemon stderr (SDK noise lives here)
+lark-<bot>.pid                      # current daemon PID
+lark-<bot>-monitor.offset           # monitor's resume position
+lark-notify-once/<chat>.<tag>.last  # dedup state for notify-once
+```
+
+## `bot-registry.json` schema
+
+```json
+{
+  "_doc": "Bot registry. 'bots' = per-bot config for daemon scripts. 'default' + 'projects' = AutoBot fallback for notify-once.",
+  "bots": {
+    "<short-name-1>": {
+      "chat_id": "oc_<your-p2p-chat-id>",
+      "profile": "",
+      "alias": "<human-readable name>"
+    },
+    "<short-name-2>": {
+      "chat_id": "oc_<...>",
+      "profile": "<lark-cli profile name>",
+      "alias": "<...>"
+    }
+  },
+  "default": {
+    "chat_id": "oc_<your-p2p-chat-id>",
+    "profile": "",
+    "alias": "<human-readable name>"
+  },
+  "projects": [
+    {
+      "match_dir_contains": "<substring of CLAUDE_PROJECT_DIR>",
+      "chat_id": "oc_<...>",
+      "profile": "<...>",
+      "alias": "<...>"
+    }
+  ]
+}
+```
+
+## NDJSON event format
+
+Each line written by `lark-cli event +subscribe --compact --as bot` is a
+single-line JSON object that starts with `{"chat_id":"oc_..."`. The fields
+you care about:
+
+```json
+{
+  "chat_id": "oc_xxx",
+  "chat_type": "p2p",
+  "content": "<user message>",
+  "create_time": "1779511380879",
+  "id": "om_xxx",
+  "message_id": "om_xxx",
+  "message_type": "text",
+  "sender_id": "ou_xxx",
+  "timestamp": "1779511381313",
+  "type": "im.message.receive_v1"
+}
+```
+
+`monitor-bot.sh` should let only these `{"chat_id"...}`-prefixed lines
+through; everything else from `lark-cli` is connection / SDK noise.
+
+## Hook wiring
+
+`~/.claude/settings.json` `PostCompact` hook calls `notify-once.ps1
+-AutoBot ... -Tag postcompact -MinIntervalSec 30` (template in
+`config/settings-json.template.json`). The rest of the bridge runs out of
+band as a daemon + per-session Monitor.
+
+## Hard rules (load-bearing)
+
+1. **The daemon survives /compact and session restart.** Implement as
+   `Start-Process -WindowStyle Hidden -RedirectStandardOutput ...
+   -RedirectStandardError ...`. Do NOT spawn under the Monitor task's
+   process group.
+2. **Restarting the daemon truncates the ndjson** (Start-Process redirect
+   is write-truncate). `start-bot.ps1` must therefore reset the offset
+   file when it (re)starts. Otherwise live Monitors point past EOF and
+   miss events until next restart.
+3. **`send-keys.ps1` must refuse non-foreground targets.** If
+   `GetForegroundWindow()` ≠ the passed hwnd, exit with
+   `{error: "not_foreground"}` and do not send. This is the load-bearing
+   safety for `/compact!`.
+4. **External-side-effect hooks must be rate-limited.** Use
+   `notify-once.ps1` (or equivalent) for any hook that sends Feishu
+   messages. A naive SessionEnd hook caused a 286-message bombardment in
+   2026-05 because Claude Code mis-fires SessionEnd repeatedly when
+   PostCompact's JSON output validation fails.
+5. **PostCompact hook JSON output schema:** Claude Code's hook validator
+   only allows `hookSpecificOutput.additionalContext` for `UserPromptSubmit
+   / PostToolUse / PostToolBatch`. Do NOT emit that shape from PostCompact
+   — it fails validation and triggers cascade misbehaviors. Either emit
+   `{"continue":true,"suppressOutput":true}` or no JSON at all.
+6. **Bot secrets live in OS keychain via `lark-cli`'s config**, never in
+   committed files. If you have a sync-to-git workflow for the bridge
+   scripts, put real values in a host-local `~/.lark-cli/sync-secrets.local.json`
+   and have your sync script substitute them before commit.
+
+## Liveness rules (operator-facing)
+
+`messages-send ok=true` and "daemon process alive" both lie about whether
+*inbound* messages reach Claude Code. The only positive signals:
+
+1. **An inbound `task-notification` just arrived** whose `task-id`
+   matches the Monitor task this session started → link is alive.
+2. **A `Monitor "..." stream ended` notification appeared** for this
+   session's Monitor task → link is dead. Restart Monitor immediately;
+   the offset file means you don't lose events from while it was down.
+
+Necessary-but-not-sufficient: a `node.exe ... event +subscribe` process
+matching this bot's `--profile` exists. Orphan scenario: process alive,
+Monitor dead → events vanish silently.
+
+Default behavior on any `/compact` or new session: assume orphan, run
+`ensure-bot.ps1` + restart Monitor + rewrite `binding-<pid>.json`.
+
+---
 
 ## Wiring back into this stack
 
-After you follow the bridge repo's setup:
-
-1. The bridge's `claude-config/CLAUDE.md` overlaps with this stack's
-   `config/global-claude-md.template.md`. Pick one as source of truth and
-   merge — the templates here are designed to be the canonical "global"
-   CLAUDE.md and reference Feishu sections from the bridge by hyperlink.
-2. The `PostCompact` hook from the bridge belongs in your
-   `~/.claude/settings.json`. The template here
-   (`config/settings-json.template.json`) already references
-   `notify-once.ps1`.
-3. Set up `~/.lark-cli/sync-secrets.local.json` per the bridge's README so
-   the sync script can sanitize before commits.
-4. Decide your routing convention:
+1. The bridge's notion of "global CLAUDE.md" overlaps with this stack's
+   `config/global-claude-md.template.md`. Merge — the template here is
+   designed to be the canonical "global" CLAUDE.md with a startup self-check
+   that calls `ensure-bot.ps1` + `monitor-bot.sh` + `write-binding.ps1`.
+2. The PostCompact hook from the template in
+   `config/settings-json.template.json` already points at
+   `notify-once.ps1 -AutoBot` — no change needed.
+3. Decide your routing convention:
    - Per-project bots → register each in `~/.lark-cli/config.json`, add an
      entry under `bots` in `bot-registry.json`, and add a `projects[]` entry
-     if a specific working directory should auto-resolve to that bot.
-   - One catch-all bot → just keep the default.
-
-## Things this stack assumes you'll never do
-
-- Have a hook in `~/.claude/settings.json` that calls out to Feishu without
-  rate-limiting. The bridge's `sessionend-loop.md` documents how a naive
-  `SessionEnd` hook caused a 286-message bombardment in 2026-05. Use
-  `notify-once.ps1` for any external-side-effect hook.
-- Have multiple Monitor tasks for the same bot in different sessions. The
-  daemon tolerates it (NDJSON is append-only); but you'll get duplicate
-  task-notifications. One session per bot.
-- Disable the foreground-window guard in `send-keys.ps1`. The `-Force` switch
-  exists for testing only.
+     if a specific working directory should auto-resolve to that bot
+   - One catch-all bot → just keep the default
 
 ## Mobile-side setup
 
 On your phone:
 
 1. Install **Feishu (Lark)** app, sign in, find your bot in Contacts.
-2. Open a 1-1 chat with the bot (P2P). The `chat_id` for that conversation is
-   what your bot-registry needs.
+2. Open a 1-1 chat with the bot (P2P). The `chat_id` for that conversation
+   goes in your `bot-registry.json`.
 3. Test by sending "hi" — your desktop Claude Code session should see a
    `task-notification` within a couple of seconds.
 
-If it doesn't, follow the bridge repo's `docs/lessons/monitor-pipe.md`
-liveness-checking decision tree.
+If it doesn't, walk the liveness rules above to diagnose.
 
-## You're done with the bridge when…
+## Done when
 
 - A message from your phone arrives in Claude Code as a `task-notification`
-- A `messages-send` from Claude returns `ok=true` and you see the message on
-  your phone
-- `/compact!` from phone screenshots → confirm → types → confirm → Enter, all
-  via Feishu
+- A `messages-send` from Claude returns `ok=true` and you see the message
+  on your phone
+- `/compact!` from phone screenshots → confirm → types → confirm → Enter,
+  all via Feishu
 
 Now you have a mobile inbox into the vault.
+
+Move on to `setup/05-wechat-mcp.md`.

@@ -1,5 +1,5 @@
 {
-  "_doc": "Template for ~/.claude/settings.json. Merge the 'hooks' block into your existing settings (keep enabledPlugins, theme, etc.). Replace <USER_HOME_POSIX> with /c/Users/<your-name> on Windows or $HOME on Mac/Linux. The notify-once.ps1 and claude-mem-autopatch.ps1 references assume you set up scripts/ under ~/.claude/ and ~/.lark-cli/daemon/.",
+  "_doc": "Template for ~/.claude/settings.json. Merge the 'hooks' block into your existing settings (keep your theme, etc.). Path placeholders: <USER_HOME_POSIX> = MSYS-style (e.g. /c/Users/you on Windows; $HOME on mac/linux); <USER_HOME> = Windows-style (e.g. C:\\Users\\you). Keys starting with '_' below are documentation-only and MUST be renamed before saving: '_enabled_plugins_example' → 'enabledPlugins', '_extra_marketplaces_example' → 'extraKnownMarketplaces', '_other_settings_example' should be deleted and the inner fields hoisted to the top level.",
 
   "hooks": {
     "SessionStart": [
@@ -23,7 +23,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell.exe -ExecutionPolicy Bypass -File '<USER_HOME>\\.lark-cli\\daemon\\notify-once.ps1' -AutoBot -Text '🔄 session 压缩完成（context reset），Feishu 长连接保持中' -Tag 'postcompact' -MinIntervalSec 30 >/dev/null 2>&1; exit 0",
+            "command": "powershell.exe -ExecutionPolicy Bypass -File '<USER_HOME_POSIX>/.lark-cli/daemon/notify-once.ps1' -AutoBot -Text '🔄 session 压缩完成（context reset），Feishu 长连接保持中' -Tag 'postcompact' -MinIntervalSec 30 >/dev/null 2>&1; exit 0",
             "timeout": 15
           }
         ]

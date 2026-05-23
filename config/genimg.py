@@ -102,7 +102,11 @@ def main():
     out = sys.argv[1]
     prompt = sys.argv[2]
     size = sys.argv[3] if len(sys.argv) > 3 else "1024x1024"
-    model = sys.argv[4] if len(sys.argv) > 4 else "gpt-image-2"
+    # Default model name depends on your proxy's aliasing. OpenAI canonical
+    # as of 2025 is "gpt-image-1"; some aggregators alias to "gpt-image-2"
+    # or other names. Set the default below to whatever your provider
+    # actually accepts on /v1/images/generations.
+    model = sys.argv[4] if len(sys.argv) > 4 else "gpt-image-1"
 
     generate(out, prompt, size, model)
     print(out)

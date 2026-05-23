@@ -25,12 +25,15 @@ First boot:
 
 ```powershell
 npx -y claude-mem start
-# or, if you have a helper script:
-powershell -ExecutionPolicy Bypass -File ~/.claude/scripts/claude-mem-start.ps1
 ```
 
 This starts the worker. It self-registers a SessionStart hook so future
 sessions pick it up.
+
+For idempotent / scheduled-task autostart, this repo ships
+`config/claude-mem-start.ps1` (and a sibling `config/claude-mem-autopatch.ps1`
+for patch re-application). Drop both into `~/.claude/scripts/` if you want
+the worker up at logon without manual intervention.
 
 ## Configure for sane cost + speed
 
@@ -78,35 +81,17 @@ If you go behind a non-OpenRouter aggregator that requires URL rewriting
 `worker-service.cjs`. **Plugin auto-updates from the Claude Code marketplace
 will overwrite your patch.**
 
-We solved this with an idempotent autopatch script at
-`~/.claude/scripts/claude-mem-autopatch.ps1` that:
+This repo ships `config/claude-mem-autopatch.ps1` — an idempotent script that:
 
 1. Scans every cached copy of `worker-service.cjs` (under
    `~/.claude/plugins/cache/...` AND `~/AppData/Local/npm-cache/_npx/...`)
-2. Checks for a needle (e.g., the old URL or a specific code pattern)
-3. Replaces only if found; logs to `~/.claude-mem/logs/autopatch.log`
+2. Checks for a needle (the old URL or a specific code pattern)
+3. Replaces only if found, backs up the pre-patch file, logs to
+   `~/.claude-mem/logs/autopatch.log`
 
-Wire it into a `SessionStart` hook so it runs on every fresh session:
-
-```json
-{
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell.exe -ExecutionPolicy Bypass -File '/c/Users/you/.claude/scripts/claude-mem-autopatch.ps1' >/dev/null 2>&1 || true",
-            "timeout": 20
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-The template at `config/settings-json.template.json` includes this wiring.
+Drop it at `~/.claude/scripts/claude-mem-autopatch.ps1`. The template at
+`config/settings-json.template.json` already wires it into the
+`SessionStart` hook chain — no extra config needed.
 
 ## Windows ghost socket
 
@@ -166,3 +151,7 @@ locally) or uninstall the plugin entirely.
 
 That's the loop. Build a couple of notes in this rhythm, then start adding
 your own conventions on top.
+
+Optional remaining setup steps (each independent): `03-feishu-bot.md` (mobile
+capture), `05-wechat-mcp.md` (WeChat article ingestion), `06-image-generation.md`
+(diagrams).

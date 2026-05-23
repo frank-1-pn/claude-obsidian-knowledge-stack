@@ -123,5 +123,6 @@ is in `config/vault-claude-md.template.md`. Drop it in, then read it
 top-to-bottom — every rule has a "Why" that prevents a particular failure
 mode.
 
-Move on to `05-wechat-mcp.md` if you read WeChat content, or `07-memory-plugins.md`
-to wire up cross-session memory.
+Move on to `07-memory-plugins.md` next (per the README bootstrap order);
+WeChat MCP (`05`), Feishu bridge (`03`), and image generation (`06`) are
+each independent and can wait until you need them.

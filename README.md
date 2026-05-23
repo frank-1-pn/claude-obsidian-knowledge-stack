@@ -129,6 +129,21 @@ The reasoning:
 If you don't agree, you can adopt the original entity/concept split — but the
 ten rules in `vault/note-generation-rules.md` assume Note-as-atom.
 
+## Placeholder legend
+
+Templates throughout this repo use several placeholder styles. Pick one per
+field and substitute consistently before saving the file in your own setup:
+
+| Placeholder | Means | Example after substitution |
+| --- | --- | --- |
+| `<USER_HOME>` | Windows-style user home | `C:\Users\you` |
+| `<USER_HOME_POSIX>` | MSYS / Git Bash style of the same path | `/c/Users/you` |
+| `<APP_ID_*>`, `<CHAT_ID_*>`, `<USER_OPEN_ID>` | Feishu bot identifiers (from your `~/.lark-cli/config.json`) | `cli_xxxxxxxx`, `oc_xxxxxxxx`, `ou_xxxxxxxx` |
+| `<your-github-user>` | Your GitHub handle | (your handle) |
+| `<your-provider>` | Your OpenAI-compatible API provider host | e.g. `api.openai.com` |
+| `<bot1>`, `<bot2>`, ... | Short name you give a bot in `bot-registry.json` | up to you |
+| `<vault-name>` | Folder name for your Obsidian vault | `knowledge-vault` |
+
 ## License
 
 MIT. The mechanism is for anyone to copy. The notes are yours.

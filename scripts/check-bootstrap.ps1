@@ -53,6 +53,8 @@ Check "  wiki/hot.md exists" { Test-Path (Join-Path $VaultPath 'wiki\hot.md') } 
 Check "  wiki/index.md exists" { Test-Path (Join-Path $VaultPath 'wiki\index.md') } "Copy from vault/skeletons/index.template.md"
 Check "  wiki/log.md exists" { Test-Path (Join-Path $VaultPath 'wiki\log.md') } "Copy from vault/skeletons/log.template.md"
 Check "  wiki/meta/notes-graph.md exists" { Test-Path (Join-Path $VaultPath 'wiki\meta\notes-graph.md') } "Copy from vault/skeletons/notes-graph.template.md"
+Check "  wiki/overview.md exists" { Test-Path (Join-Path $VaultPath 'wiki\overview.md') } "Copy from vault/skeletons/overview.template.md"
+Check "  wiki/sources/_index.md exists" { Test-Path (Join-Path $VaultPath 'wiki\sources\_index.md') } "Copy from vault/skeletons/sources-index.template.md (or skip if you only maintain wiki/index.md)"
 Check "  vault CLAUDE.md exists" { Test-Path (Join-Path $VaultPath 'CLAUDE.md') } "Copy from config/vault-claude-md.template.md and fill placeholders"
 
 Write-Host ""

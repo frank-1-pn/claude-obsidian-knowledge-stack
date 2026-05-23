@@ -178,19 +178,23 @@ one impossible-to-read wide one.
 
 ## Images
 
-Per rules 7 and 9, images that the note references are localized:
-
-```markdown
-![描述说明](../../_attachments/<note-slug>/<descriptive-name>.png)
-```
-
-Or the wikilink form (preferred for cleanliness):
+Per rules 7 and 9, images that the note references are localized. The
+default embed form is the wikilink — it survives folder moves and matches
+how Obsidian shows other internal references:
 
 ```markdown
 ![[<note-slug>/<descriptive-name>.png]]
 ```
 
-Both render. Wikilink survives folder moves better.
+The relative-path form works too and is occasionally useful when the note
+will be exported as plain Markdown to a non-Obsidian viewer:
+
+```markdown
+![描述说明](../../_attachments/<note-slug>/<descriptive-name>.png)
+```
+
+Pick wikilink unless you have a specific export reason. Mixing both
+in the same vault is fine, but be consistent within a single note.
 
 ## File names
 

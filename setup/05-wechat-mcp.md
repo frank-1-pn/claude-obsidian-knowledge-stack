@@ -108,7 +108,7 @@ Claude:
 - **Don't hardcode the old output path** in any of your scripts. Always
   resolve at runtime by looking for the latest `log<YYYYMMDD>.txt`.
 - **Don't try to fully localize every image** in articles with 30+ images.
-  Per vault rule §8, only images actually referenced in the synthesized note
+  Per vault rule §7, only images actually referenced in the synthesized note
   need local copies. The rest stay as remote URLs (visible in the archived
   HTML, not in the Markdown).
 

@@ -54,6 +54,9 @@ or the plugin marketplace URLs in `config/enabled-plugins.md`:
 | `context7` (MCP) | Library doc lookup when working in code |
 | `playwright` (MCP) | Browser automation; the vault occasionally needs it for source capture |
 
+The exact marketplace slugs and an extended list (with a few "think twice
+before enabling" entries) are in `config/enabled-plugins.md`.
+
 Skip these unless you have a specific use:
 
 - Anything that wants to write outside your vault (some agents)
@@ -131,6 +134,8 @@ Tighten or loosen as you wish.
 
 ## Move on
 
-Once Claude Code answers, jump to `04-obsidian.md` to set up the vault, then
-`07-memory-plugins.md` for `claude-mem`. The Feishu bridge (`03-feishu-bot.md`)
-is independent — do it whenever you actually want mobile access.
+Once Claude Code answers, jump to `04-obsidian.md` to set up the vault.
+
+The recommended order from here (matches `README.md`):
+`02 → 04 (Obsidian + vault) → 07 (memory) → 03 (Feishu, optional) →
+05 (WeChat MCP, optional) → 06 (image gen, optional)`.
