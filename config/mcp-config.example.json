@@ -1,0 +1,33 @@
+{
+  "_doc": "Merge this 'mcpServers' block into ~/.claude.json. Most users only need wechatDownload. The others are optional add-ons described in setup/02-claude-code.md (plugins) or your own preferences.",
+
+  "mcpServers": {
+    "wechatDownload": {
+      "_purpose": "WeChat article ingestion. Requires the wechatDownload desktop app to be running. See setup/05-wechat-mcp.md.",
+      "type": "http",
+      "url": "http://127.0.0.1:4545/mcp"
+    },
+
+    "_optional_examples_below": "Uncomment and adapt for your own setup",
+
+    "_context7_example": {
+      "_purpose": "Library doc lookup. Provided by the context7 plugin — usually configured automatically when you install the plugin via Claude Code's plugin marketplace. Manual config only if you self-host.",
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp"
+    },
+
+    "_playwright_example": {
+      "_purpose": "Browser automation. Provided by the playwright plugin.",
+      "type": "stdio",
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    },
+
+    "_filesystem_example": {
+      "_purpose": "Generic filesystem access (rarely needed since Claude Code has Read/Edit/Write built-in).",
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "<path-to-allow>"]
+    }
+  }
+}
