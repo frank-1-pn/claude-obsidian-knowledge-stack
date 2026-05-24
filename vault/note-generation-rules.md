@@ -114,6 +114,49 @@ Special cases:
 
 ---
 
+## 6.2. List / roundup notes must include project names in the filename
+
+**What.** Notes whose source is a "list of N projects / tools / repos /
+articles" — typically GitHub weekly roundups, "top N this week", "must-read
+N", curated collections — **do not inherit the original article's clickbait
+title**. The filename has a fixed shape:
+
+```
+<series-or-type> 本周 <count> 项目 YYYY-MM-DD <project-1> <project-2> <project-3>[ <project-4>].md
+```
+
+Examples (vault-existing good naming):
+
+```
+GitHub 本周 9 项目 2026-05-24 scientific-agent-skills codegraph oh-my-pi 12-factor-agents.md
+GitHub 本周 YYDS 8 项目 2026-05-17 financial-services Ruflo 51K agentmemory UI-TARS easy-vibe.md
+GitHub 本周开源新秀 10 项目 2026-05-12 ds4 Mirage TokenSpeed.md
+GitHub 本周最火 7 项目 2026-05-10 9router jcode agentmemory.md
+```
+
+Pick 3-5 of the most representative / highest-Star / fastest-rising projects
+from the N for the filename; the rest live in the body sections.
+
+**Why.** Three failure modes the original-title approach causes:
+
+1. **Search non-discoverability**: scanning Obsidian or your phone, you
+   can't tell whether the repo you want is in the article without opening
+   the note.
+2. **History review**: a year later, scanning filenames in
+   `06-GitHub.../` should tell you what each week contained — clickbait
+   titles all blur together.
+3. **Series collision**: 4 GitHub weekly posts in May with identical
+   "本周 X 火火" titles are indistinguishable.
+
+**How to apply.** Write the body first, then rename: lift the 3-5 most
+representative project names from the section headers into the filename.
+The frontmatter `title` field may stay longer (and include a positioning
+clause); the filename strictly follows the template.
+
+**Exception.** Single-project deep-dive notes (e.g.
+`Maigret 输入用户名查遍 3000 站点 OSINT 工具 24K Star.md`) already lead
+with the project name and don't need the multi-project pattern.
+
 ## 6.5. Every change to the vault gets a log entry
 
 **What.** Any of these triggers a log append:

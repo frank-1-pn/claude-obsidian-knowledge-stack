@@ -88,6 +88,25 @@ Position: right after frontmatter, before first section.
 100-200 chars. Synthesis notes name which sources merged + why. WeChat
 reposts include original author's stance + Claude's added insights.
 
+### 6.2 List / roundup 笔记文件名必须含项目名
+
+合集型来源（GitHub 周报、N 个工具盘点、本周必读 N 篇 等）**不要照搬原文标题**。
+文件名格式：
+
+```
+<系列名> 本周 <数量> 项目 YYYY-MM-DD <项目名 1> <项目名 2> <项目名 3>[ <项目名 4>].md
+```
+
+例：`GitHub 本周 9 项目 2026-05-24 scientific-agent-skills codegraph oh-my-pi 12-factor-agents.md`
+
+挑 3-5 个最有代表性 / 最大 Star / 涨势最猛的项目名拼进去；其余在正文 §
+里详解。**写完正文回头改文件名**（先写完才知道哪些项目最值得露出）。
+
+**Why**：scan 文件名时不点开就能判断"我要的 repo 在不在"；扫历史避免"4
+篇同名周报分不清"。
+
+**例外**：单项目深度笔记（已经是项目名打头）无需此规则。
+
 ### 6.5. Every change → log entry IMMEDIATELY
 
 Triggers: new note, architectural change, vault bugfix, new rule.
