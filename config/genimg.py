@@ -4,8 +4,14 @@ Generate image via OpenAI-compatible API (relay or official) and save to PNG.
 
 Usage:
     python genimg.py <output-path.png> "<prompt>" [size] [model]
+    python genimg.py <output-path.png> --prompt-file <prompt.txt> [size] [model]
     size:  1024x1024 (default) | 1024x1536 | 1536x1024 | auto
     model: gpt-image-2 (default, via vectorengine relay)
+
+On success, also writes a sidecar <output>.prompt.json next to the image with
+{prompt, model, size, base_url, ts} so the image can be regenerated later. The
+sidecar NEVER contains the API key. Use --prompt-file to pass long Chinese
+prompts from a file and avoid PowerShell quoting issues.
 
 API key resolution (first that exists, never echoed):
     env GENIMG_KEY_FILE  >  %USERPROFILE%\\.secrets\\vectorengine_key.txt  >  legacy Desktop\\openai_api.txt
@@ -79,14 +85,30 @@ def urlopen_retry(req, timeout, attempts=3):
 
 
 def main():
-    if len(sys.argv) < 3:
+    args = list(sys.argv[1:])
+
+    prompt_file = None
+    if "--prompt-file" in args:
+        i = args.index("--prompt-file")
+        if i + 1 >= len(args):
+            print("--prompt-file requires a path argument", file=sys.stderr)
+            sys.exit(1)
+        prompt_file = args[i + 1]
+        del args[i:i + 2]
+
+    if not args or (prompt_file is None and len(args) < 2):
         print(__doc__, file=sys.stderr)
         sys.exit(1)
 
-    out = Path(sys.argv[1])
-    prompt = sys.argv[2]
-    size = sys.argv[3] if len(sys.argv) > 3 else "1024x1024"
-    model = sys.argv[4] if len(sys.argv) > 4 else "gpt-image-2"
+    out = Path(args[0])
+    if prompt_file is not None:
+        prompt = Path(prompt_file).read_text(encoding="utf-8").strip()
+        rest = args[1:]
+    else:
+        prompt = args[1]
+        rest = args[2:]
+    size = rest[0] if len(rest) > 0 else "1024x1024"
+    model = rest[1] if len(rest) > 1 else "gpt-image-2"
 
     key_file = resolve_key_file()
     if not key_file:
@@ -147,6 +169,30 @@ def main():
 
     size_bytes = out.stat().st_size
     print(f"[genimg] saved {out} ({size_bytes} bytes)", file=sys.stderr)
+
+    # Sidecar: record prompt + params next to the image so it can be regenerated
+    # later (`genimg.py out.png --prompt-file <(jq -r .prompt out.prompt.json)`).
+    # NEVER contains the API key.
+    sidecar = out.with_suffix(".prompt.json")
+    try:
+        sidecar.write_text(
+            json.dumps(
+                {
+                    "prompt": prompt,
+                    "model": model,
+                    "size": size,
+                    "base_url": BASE_URL,
+                    "ts": time.strftime("%Y-%m-%dT%H:%M:%S"),
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
+        print(f"[genimg] wrote sidecar {sidecar.name}", file=sys.stderr)
+    except OSError as e:
+        print(f"[genimg] WARN: could not write sidecar: {e}", file=sys.stderr)
+
     print(str(out))
 
 
