@@ -29,6 +29,12 @@ private note contents. Templates use placeholders like `<APP_ID>`,
   hard rules that all in-image text be Chinese for cross-device readability.
 - **Long-lived memory** across Claude Code sessions via the `claude-mem`
   plugin (observations / summaries persisted to a local SQLite).
+- **Multi-platform source fetching** via the `agent-reach` skill — Bilibili &
+  YouTube subtitles, RSS, podcasts (local GPU transcription), V2EX, web/code
+  search, and login-gated socials — each archived into `.raw/` ready to ingest.
+- **Automated AI daily briefing** — a cloud cron (GitHub Actions) that fetches
+  AI news, summarizes with an LLM, and pushes a categorized HTML report to your
+  Feishu chat every morning. The one proactive, scheduled piece of the stack.
 
 ## What this stack does NOT do
 
@@ -49,14 +55,21 @@ See `ARCHITECTURE.md` for the full picture. The short version:
         │  WebSocket event subscribe
         ▼
 [Claude Code on desktop]
+        │       │       │       │
+        │       │       │       └── claude-mem  ──► local SQLite (cross-session memory)
         │       │       │
-        │       │       └── claude-mem  ──► local SQLite (cross-session memory)
+        │       │       └── wechatDownload MCP  ──► public WeChat articles → .raw/wechat/
         │       │
-        │       └── wechatDownload MCP  ──► public WeChat articles → .raw/wechat/
+        │       └── agent-reach skill ──► Bilibili/YouTube/RSS/podcasts/V2EX/… → .raw/{transcripts,social,rss}/
         │
         └── Obsidian vault (this repo's vault/ describes the layout)
                 │
                 └── Obsidian Sync (your paid account) ──► your phone's Obsidian app
+
+[GitHub Actions cron]  ──► AI daily briefing: fetch news → LLM summarize
+        │                  → render HTML → push to your Feishu chat (08:00 daily)
+        ▼
+   reports/ archive (in your private briefing repo)
 ```
 
 ## Repo layout
@@ -70,6 +83,8 @@ setup/                  step-by-step install + config (run in order)
   05-wechat-mcp.md       wechatDownload desktop + MCP wire-up
   06-image-generation.md gpt-image-2 via API proxy + helper script
   07-memory-plugins.md   claude-mem install + key knobs
+  08-daily-briefing.md   cloud cron AI news digest → Feishu (GitHub Actions)
+  09-agent-reach.md      multi-platform fetch (Bilibili/RSS/podcasts/social)
 
 vault/
   structure.md           folder layout you should end up with
@@ -83,6 +98,8 @@ config/
   settings-json.template.json        ~/.claude/settings.json hooks fragment
   mcp-config.example.json            ~/.claude.json mcpServers block
   enabled-plugins.md                 which Claude Code plugins to enable + URLs
+  daily-briefing-config.example.json sanitized Horizon-style config for setup/08
+  agent-reach-local-state.template.md  per-machine channel/cookie state for setup/09
 
 scripts/
   check-bootstrap.ps1    sanity-check whether each piece is in place
@@ -106,9 +123,13 @@ scripts/
    wechatDownload + register the MCP in `~/.claude.json`
 7. `setup/06-image-generation.md` — (optional, if you want diagrams) drop in
    the helper script with your own API key
-8. Ingest your first source: open a Claude Code session in the vault folder
-   and say "ingest this URL: <some article>". The note-generation rules will
-   produce a properly-shaped page in `wiki/sources/`.
+8. `setup/09-agent-reach.md` — (optional) install the agent-reach skill for
+   Bilibili / YouTube / RSS / podcast / social fetching beyond WeChat
+9. `setup/08-daily-briefing.md` — (optional) fork the briefing engine, set the
+   four CI secrets, enable the daily cron → Feishu push
+10. Ingest your first source: open a Claude Code session in the vault folder
+    and say "ingest this URL: <some article>". The note-generation rules will
+    produce a properly-shaped page in `wiki/sources/`.
 
 ## Why "Note-as-atom"
 

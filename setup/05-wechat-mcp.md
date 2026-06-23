@@ -118,5 +118,10 @@ Claude:
   `wiki/sources/`, an archive pair in `.raw/wechat/`, locally-resolved
   images in `_attachments/<slug>/`, and a log entry in `wiki/log.md`.
 
+> Beyond WeChat: `09-agent-reach.md` adds fetching for Bilibili, YouTube, RSS,
+> podcasts, V2EX and the socials. Its WeChat-official-account channel reuses
+> this exact wechatDownload MCP (`http://127.0.0.1:4545`) — so finishing this
+> page also wires up WeChat inside agent-reach.
+
 Move on to `06-image-generation.md` to add diagram generation, or
 `07-memory-plugins.md` to wire cross-session memory.

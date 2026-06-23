@@ -1,0 +1,62 @@
+{
+  "_comment": "Sanitized example for setup/08-daily-briefing.md. This is the Horizon-style config your fork's CI copies to its runtime path each run. No secrets here — the LLM key and Feishu credentials are GitHub Actions secrets read from env (see api_key_env). Tune sources/threshold to taste.",
+
+  "llm": {
+    "provider": "deepseek",
+    "model": "deepseek-chat",
+    "api_key_env": "DEEPSEEK_API_KEY",
+    "base_url": "https://api.deepseek.com"
+  },
+
+  "languages": ["zh"],
+
+  "filtering": {
+    "ai_score_threshold": 6.0,
+    "_comment": "0-10. Higher = fewer, higher-signal items. ~6 is a readable daily digest; drop to ~4 on slow days."
+  },
+
+  "window_hours": 24,
+
+  "sources": {
+    "hackernews": true,
+    "ossinsight": true,
+    "github_releases": [
+      "vllm-project/vllm",
+      "huggingface/transformers",
+      "ggerganov/llama.cpp",
+      "ollama/ollama"
+    ],
+    "reddit": ["MachineLearning", "LocalLLaMA"],
+    "rss": [
+      "https://openai.com/blog/rss.xml",
+      "https://huggingface.co/blog/feed.xml",
+      "https://deepmind.google/blog/rss.xml",
+      "https://blogs.microsoft.com/ai/feed/",
+      "https://techcrunch.com/category/artificial-intelligence/feed/",
+      "https://venturebeat.com/category/ai/feed/",
+      "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
+      "https://www.technologyreview.com/feed/",
+      "https://importai.substack.com/feed",
+      "https://simonwillison.net/atom/everything/",
+      "https://blogs.nvidia.com/feed/",
+      "https://www.nextplatform.com/feed/",
+      "https://www.datacenterdynamics.com/en/rss/",
+      "https://blocksandfiles.com/feed/",
+      "https://semiengineering.com/feed/"
+    ]
+  },
+
+  "categories": {
+    "_comment": "How render_html.py groups items. Put GitHub (trending/releases) near the top; an 'ai-supply-chain' bucket is useful if you track hardware (HBM/DRAM, optical/CPO, power/cooling, foundry/packaging).",
+    "order": ["github", "ai-supply-chain", "models", "products", "research", "industry", "hardware", "other"]
+  },
+
+  "push": {
+    "channel": "feishu",
+    "app_id_env": "FEISHU_APP_ID",
+    "app_secret_env": "FEISHU_APP_SECRET",
+    "chat_id_env": "FEISHU_CHAT_ID",
+    "mode": "html_file",
+    "_comment": "html_file = upload one self-contained HTML report + a short TOP-5 text intro. Avoid per-card mode (spams the chat)."
+  }
+}

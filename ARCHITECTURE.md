@@ -1,8 +1,8 @@
 # Architecture
 
-How the five components fit. Read after `README.md`, before any `setup/` page.
+How the seven components fit. Read after `README.md`, before any `setup/` page.
 
-## The five components
+## The seven components
 
 | Component | Role | Where it lives | Persistent? |
 | --- | --- | --- | --- |
@@ -11,6 +11,8 @@ How the five components fit. Read after `README.md`, before any `setup/` page.
 | Obsidian Sync | Cross-device file replication | Obsidian's paid service | Yes (encrypted cloud + local cache) |
 | Feishu (Lark) bot | Mobile capture surface | A long-running `lark-cli` daemon on desktop | Yes (daemon + WebSocket) |
 | MCP servers | Domain plugins (WeChat, image gen, etc.) | Process or HTTP endpoints | Spawned on demand by Claude Code |
+| agent-reach skill | Multi-platform fetch router (Bilibili/YouTube/RSS/podcast/social) | `~/.claude/skills/agent-reach/` + `~/.agent-reach/local-state.md` | Yes (skill + per-machine state) |
+| Daily-briefing cron | Proactive AI-news digest → Feishu | GitHub Actions in your private fork + reports archive | Yes (cloud cron, runs without desktop) |
 
 ## Where each component reads / writes
 
@@ -80,6 +82,30 @@ operator asks "what do I know about X?" (desktop or via Feishu)
                    └→ optionally proposes filing a new synthesis note
 ```
 
+### Pattern 4b — multi-platform fetch (agent-reach)
+
+```
+operator: "read this bilibili video / podcast / RSS item and file it"
+    └→ Claude reads ~/.agent-reach/local-state.md (which channels are live here)
+         └→ picks channel: yt-dlp / bili-cli / jina / transcribe.py / wechatDownload MCP
+              └→ (gated channels need a cookie; Bilibili overseas needs --cookies-from-browser)
+                   └→ archive to .raw/{transcripts,social,rss,wechat,webfetch}/
+                        └→ continue Pattern 1 from step 4 (write note, log, notes-graph)
+```
+
+### Pattern 4c — scheduled AI daily briefing (push, not pull)
+
+```
+[GitHub Actions cron 08:00]  (cloud — fires even when desktop is off)
+    └→ dedup: today's report already on origin/main? → skip all paid steps
+         └→ fetch multi-source AI news → LLM (DeepSeek) summarize → zh markdown
+              └→ render_html.py → one self-contained categorized HTML
+                   └→ push_file_feishu.py → upload HTML + TOP-5 text to your Feishu chat
+                        └→ commit report to reports/ archive
+   (optional) local Task Scheduler dispatches the run on time when the machine is on;
+   the cloud cron is the when-it's-off fallback. Dedup makes both firing safe.
+```
+
 ### Pattern 4 — image generation for a note
 
 ```
@@ -103,6 +129,8 @@ Claude finishes writing a complex section
 | `~/.claude/CLAUDE.md` rules | Forever (you edit) | Yes | Yes |
 | Feishu bridge daemon | Until you kill it | Yes | Yes |
 | Per-session bot binding file | Single claude.exe PID | Yes (PID stable) | No |
+| `~/.agent-reach/local-state.md` | Forever (survives skill reinstall) | Yes | Yes |
+| Daily-briefing reports archive | Forever (committed to your fork) | n/a (runs in cloud) | n/a |
 
 The vault and `claude-mem` are the two long-memory layers. The vault holds
 explicit, hand-curated knowledge; `claude-mem` holds implicit, per-tool-use
@@ -123,6 +151,14 @@ this?".
   your conversations leave your machine to that provider. If that's
   unacceptable, run `claude-mem` with `CLAUDE_MEM_PROVIDER=offline` or
   uninstall.
+- **Daily-briefing secrets** (LLM key + Feishu app id/secret/chat id) live only
+  as **GitHub Actions secrets** in your private briefing fork — never in code,
+  never in this repo. `FEISHU_APP_SECRET` must be the console *plaintext*, not
+  the encrypted object from `~/.lark-cli/config.json`. The briefing repo is
+  private; this public repo only documents the pattern with placeholders.
+- **agent-reach cookies / keys** stay in your browser profile or a local path,
+  never in the skill folder or this repo. `~/.agent-reach/local-state.md`
+  records *which* channels are wired up, not the credentials themselves.
 
 ## Failure modes you will hit (and where they're documented)
 
@@ -134,6 +170,8 @@ this?".
 | WeChat article comes back blank or images missing | `setup/05-wechat-mcp.md` — referer wall, output-dir verification |
 | Generated images contain English when prompt asked for Chinese | `setup/06-image-generation.md` — prompt template + retry rule |
 | Cross-session memory empty after upgrade | `setup/07-memory-plugins.md` — `claude-mem` autopatch |
+| Daily briefing didn't push / empty / spammy | `setup/08-daily-briefing.md` — secrets (plaintext app secret), threshold, HTML-file pusher |
+| Bilibili returns 412 / transcription wants a cloud key | `setup/09-agent-reach.md` — cookies-from-browser, local transcribe.py |
 
 ## Why this stack instead of (alternatives)
 
