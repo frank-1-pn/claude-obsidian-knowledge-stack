@@ -1,0 +1,28 @@
+{
+  "_doc": "Bot registry TEMPLATE. Copy to ~/.lark-cli/daemon/bot-registry.json and fill in real values. (1) 'bots' = per-bot config used by daemon scripts + write-binding.ps1, keyed by a short name you pass as -Bot. (2) 'default' = AutoBot fallback for notify-once.ps1 when no binding file and no project matches. (3) 'projects' = AutoBot routing by CLAUDE_PROJECT_DIR substring. Get chat_id from a p2p chat with the bot; 'profile' is a lark-cli --profile name (empty string = default lark-cli config).",
+  "bots": {
+    "bot1": {
+      "chat_id": "oc_REPLACE_WITH_YOUR_CHAT_ID",
+      "profile": "",
+      "alias": "Bot1 (default)"
+    },
+    "work": {
+      "chat_id": "oc_REPLACE_WITH_CHAT_ID_FOR_BOT2",
+      "profile": "work-profile",
+      "alias": "Work bot"
+    }
+  },
+  "default": {
+    "chat_id": "oc_REPLACE_WITH_YOUR_CHAT_ID",
+    "profile": "",
+    "alias": "Bot1 (default)"
+  },
+  "projects": [
+    {
+      "match_dir_contains": "my-project-folder-name",
+      "chat_id": "oc_REPLACE_WITH_CHAT_ID_FOR_BOT2",
+      "profile": "work-profile",
+      "alias": "Work bot"
+    }
+  ]
+}

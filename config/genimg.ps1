@@ -16,7 +16,7 @@ Usage:
 Override output dir with -OutDir, or the vault root with $env:VAULT_DIR.
 
 Example:
-    genimg.ps1 my-diagram C:/Users/ke/AppData/Local/Temp/prompt.txt 1536x1024
+    genimg.ps1 my-diagram $env:TEMP/prompt.txt 1536x1024
 #>
 param(
     [Parameter(Mandatory = $true)][string]$Slug,
@@ -33,13 +33,13 @@ if (-not (Test-Path -LiteralPath $PromptFile)) {
 }
 
 if (-not $OutDir) {
-    $vault = if ($env:VAULT_DIR) { $env:VAULT_DIR } else { "C:/Users/ke/Documents/knowledge-vault" }
+    $vault = if ($env:VAULT_DIR) { $env:VAULT_DIR } else { "$env:USERPROFILE/Documents/knowledge-vault" }
     $OutDir = Join-Path $vault "_attachments/generated"
 }
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 
 $out = Join-Path $OutDir ("{0}.png" -f $Slug)
-$py = "C:/Users/ke/.claude/scripts/genimg.py"
+$py = "$env:USERPROFILE/.claude/scripts/genimg.py"
 
 Write-Host "[genimg.ps1] slug=$Slug size=$Size -> $out"
 # genimg.py prints the final path on stdout; --prompt-file avoids PS quoting hell.

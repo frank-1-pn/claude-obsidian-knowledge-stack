@@ -3,10 +3,11 @@
 This stack's mobile capture surface. **Optional** — skip if you only ever work
 at your desktop.
 
-The bridge is a companion you'll build yourself (about a day of work, less if
-you ship the keyboard-macro `/compact!` flow later). The full spec is in
-"Bridge spec" below; if you'd rather skip building it, you can still use the
-rest of this stack from your desktop.
+**The runnable scripts are shipped in [`../scripts/feishu-bridge/`](../scripts/feishu-bridge/)**
+— copy them to `~/.lark-cli/daemon/`, fill the placeholders, done (that folder's
+`README.md` has a ~10-minute setup). The spec below explains what each script
+does and the contracts the rest of this stack relies on — read it to understand
+or modify the bridge, not because you must build it from scratch.
 
 ## What you'll end up with
 
@@ -44,7 +45,7 @@ rest of this stack from your desktop.
 
 ---
 
-# Bridge spec (build-it-yourself)
+# Bridge spec (what the shipped scripts do)
 
 What the bridge *must do* and the file layout it must expose so the rest of
 this stack's hooks (referenced from `config/settings-json.template.json`)

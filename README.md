@@ -79,7 +79,7 @@ See `ARCHITECTURE.md` for the full picture. The short version:
 setup/                  step-by-step install + config (run in order)
   01-prereqs.md          Windows tools, Node, Python, Git
   02-claude-code.md      install Claude Code + first run + plugins
-  03-feishu-bot.md       link out to feishu-claude-code-bridge
+  03-feishu-bot.md       Feishu bridge: spec + runnable scripts (scripts/feishu-bridge/)
   04-obsidian.md         install Obsidian + create vault + sync + plugins
   05-wechat-mcp.md       WeChat ingestion (hosted MCP any-OS / Windows local)
   06-image-generation.md gpt-image-2 via API proxy + helper script
@@ -118,8 +118,8 @@ scripts/
    verify cross-device propagation
 4. `setup/07-memory-plugins.md` — install `claude-mem` so your second session
    onwards has context from prior work
-5. `setup/03-feishu-bot.md` — (optional, if you want mobile capture) follow
-   the linked `feishu-claude-code-bridge` repo
+5. `setup/03-feishu-bot.md` — (optional, if you want mobile capture) copy the
+   runnable bridge scripts from `scripts/feishu-bridge/` and fill placeholders
 6. `setup/05-wechat-mcp.md` — (optional, if you read WeChat) register a
    cross-platform hosted MCP (any OS) or the Windows-only wechatDownload app
 7. `setup/06-image-generation.md` — (optional, if you want diagrams) drop in
