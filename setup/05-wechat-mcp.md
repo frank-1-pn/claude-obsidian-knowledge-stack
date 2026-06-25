@@ -1,33 +1,96 @@
-# 05 — WeChat article ingestion via wechatDownload MCP
+# 05 — WeChat article ingestion (cross-platform)
 
-WeChat (微信) articles live on `mp.weixin.qq.com` and ship with a referer
-wall: the article HTML loads in a browser, but images and the full HTML
-won't deliver to a vanilla `curl` or `WebFetch`. The community tool
-`wechatDownload` solves this by running a desktop app that holds a valid
-session and serves a local MCP endpoint.
+WeChat (微信) articles live on `mp.weixin.qq.com` behind a referer + anti-bot
+wall: the page renders in a real browser, but a vanilla `curl` / `WebFetch`
+gets a stub ("环境异常 / 完成验证后即可继续访问") with no content, and
+`r.jina.ai` hits the same CAPTCHA. You need a fetcher that defeats that wall.
 
-## What you'll install
+**There are several ways to do it — pick by your OS and how much you want to
+self-host.** The original local tool (`wechatDownload`) is **Windows-only**;
+the methods below cover macOS / Linux too.
 
-- **wechatDownload** desktop app (Windows tray app)
-- (Already installed if you followed `01-prereqs.md`:) Node + npm
-- (Already configured if you followed `02-claude-code.md`:) Claude Code, which
-  reads `~/.claude.json` for MCP server registrations
+## Pick your method
 
-## Install the desktop app
+| Method | OS | Install | API key | Privacy | Best for |
+| --- | --- | --- | --- | --- | --- |
+| **A. Hosted MCP** (`changfengbox.top`) | ✅ any | none | none | article URL sent to a 3rd-party community server | fastest start, macOS/Linux, "just works" |
+| **B. wechatDownload local MCP** | 🪟 Windows only | desktop app + WeChat PC client | none | fully local | Windows users who want everything offline |
+| **C. Exa crawling** | ✅ any | none (cloud API) | Exa key | URL sent to Exa | macOS/Linux, already using Exa |
+| **D. Camoufox script** | ✅ any | Python + Camoufox | none | fully local | self-hosted, strongest anti-bot, no 3rd party |
 
-1. Download from the project repo: <https://github.com/qiye45/wechatDownload>
-2. Run installer. On first launch the app sits in the system tray.
-3. **Configure the download output directory** in the app's settings UI to
-   wherever you want articles to land. We use `%USERPROFILE%\Desktop\下载\`,
-   but any folder works. **Remember this path** — you'll need it below.
-4. Authenticate. The first time you try to download an article, the app will
-   open the WeChat in-app browser to capture session cookies. Follow the
-   in-app instructions once; subsequent downloads are silent.
+> On **macOS / Linux**, skip the old "download wechatDownload" step entirely —
+> it's a Windows desktop app and won't run natively. Use **A** (zero install)
+> or **D** (local + private). **B** stays documented for Windows users.
 
-The app exposes a local MCP server on `http://127.0.0.1:4545/mcp` as long as
-it's running. Quit the app = MCP unavailable.
+Whichever method delivers the article body, the **vault note-generation flow
+at the bottom of this page is identical** — only the fetch differs.
 
-## Verify MCP is alive
+---
+
+## Option A — Hosted MCP (recommended; any OS, zero install)
+
+A community-hosted MCP renders the article server-side and hands back a
+download link. No desktop app, no WeChat client, no key — works the same on
+macOS, Linux, and Windows.
+
+- **Endpoint:** `https://changfengbox.top/api/mcp` (streamable HTTP MCP)
+- **Tools:** `wechat` (one article) and `wechat_collection` (an
+  `appmsgalbum` 合集)
+
+### Register in Claude Code
+
+```bash
+claude mcp add --transport http wechat-hosted https://changfengbox.top/api/mcp
+```
+
+Restart Claude Code; `mcp__wechat-hosted__*` tools surface on demand.
+
+### Or skip MCP entirely — one `curl` (macOS has curl built in)
+
+```bash
+URL="https://mp.weixin.qq.com/s/XXXXXXXX"
+curl -s https://changfengbox.top/api/mcp -X POST \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d "{\"jsonrpc\":\"2.0\",\"method\":\"tools/call\",\"id\":1,\"params\":{\"name\":\"wechat\",\"arguments\":{\"url\":\"$URL\",\"config\":{\"MD\":true}}}}"
+```
+
+The response contains a download URL like
+`https://changfengbox.top/static/temp/download/wechat/<title>.md`. `curl` that
+URL to get the Markdown, then follow the vault flow below. `config` accepts
+`HTML` / `MD` / `PDF` / `WORD` / `TXT` / `MHTML` / `文件开头添加日期` (any
+subset, `true`).
+
+### Caveats (read before relying on it)
+
+- It's a **third-party community service**: the article URL goes to their
+  server, and it can rate-limit, change, or disappear. WeChat public articles
+  are public content, so the privacy exposure is low — but don't pipe anything
+  sensitive through it.
+- For a fully self-hosted setup, use **B** (Windows) or **D** (any OS).
+- Ranking/列表-style articles whose body is **images** still come back as
+  image links — you'll OCR/读图 them downstream, same as any method.
+
+---
+
+## Option B — wechatDownload local MCP (Windows only, fully local)
+
+The original method: a Windows desktop app that holds a live WeChat session
+and serves a local MCP on `http://127.0.0.1:4545/mcp`. **Requires Windows +
+the WeChat PC client** — it will not run on macOS/Linux.
+
+### Install
+
+1. Download from <https://github.com/qiye45/wechatDownload> and run the
+   installer; the app sits in the system tray.
+2. **Set the download output directory** in the app's settings UI. **Remember
+   this path** — note generation reads from it.
+3. The first download opens the WeChat in-app browser to capture session
+   cookies / 密钥. Do it once; later downloads are silent.
+
+The MCP is only up while the app is running. Quit the app = MCP unavailable.
+
+### Verify + register
 
 ```bash
 curl -s http://127.0.0.1:4545/mcp -X POST \
@@ -37,91 +100,111 @@ curl -s http://127.0.0.1:4545/mcp -X POST \
   --max-time 5
 ```
 
-You should see a 200 response with an `Mcp-Session-Id` header. If you get
-"Connection refused", the app isn't running.
+A 200 with an `Mcp-Session-Id` header = alive; "connection refused" = app not
+running. Register it:
 
-## Register the MCP in Claude Code
-
-Add to `~/.claude.json` under `mcpServers`:
-
-```json
-{
-  "mcpServers": {
-    "wechatDownload": {
-      "type": "http",
-      "url": "http://127.0.0.1:4545/mcp"
-    }
-  }
-}
+```bash
+claude mcp add --transport http wechatDownload http://127.0.0.1:4545/mcp
+# or hand-edit ~/.claude.json (see config/mcp-config.example.json)
 ```
 
-This is the only MCP config you strictly need for this stack. The full
-template in `config/mcp-config.example.json` shows other useful MCPs you can
-add.
-
-Restart Claude Code. New sessions will surface `mcp__wechatDownload__*` tools
-on demand via the deferred-tool loader.
-
-## The four MCP tools
+### Its tools
 
 | Tool | Args | Purpose |
 | --- | --- | --- |
 | `single_article_download` | `url: string` | Download one article (most common) |
-| `get_public_account_id` | (none) | Resolve a public account by name (manual flow uses this) |
-| `batch_download_articles` | (none) | Download all articles for whatever account the desktop app currently has selected |
-| `export_article_data` | (none) | Export already-downloaded article metadata to CSV/JSON |
+| `get_public_account_id` | (none) | Resolve a public account by name |
+| `batch_download_articles` | (none) | Download all articles for the account currently selected in the app |
+| `export_article_data` | (none) | Export downloaded article metadata to CSV/JSON |
 
-## Use from Claude
+Downloaded files land in `<output dir>/<account>/<title>.{html,md,docx,pdf}`
+plus an `图片/` folder.
 
-In a session, after the MCP is registered:
+---
+
+## Option C — Exa crawling (any OS, API key)
+
+If you already use Exa, its crawler defeats the WeChat wall via the cloud:
+
+```bash
+mcporter call 'exa.crawling_exa(urls: ["https://mp.weixin.qq.com/s/XXXX"], maxCharacters: 16000)'
+```
+
+Needs an Exa API key configured in your MCP client. Cross-platform; the URL is
+sent to Exa.
+
+## Option D — Camoufox script (any OS, self-hosted, strongest anti-bot)
+
+A stealth-Firefox (Camoufox) Python scraper runs entirely on your machine — no
+third party, best against hardened anti-bot pages:
+
+```bash
+# one-time: pip install camoufox + browsers; then
+python3 wechat-article-for-ai/main.py "https://mp.weixin.qq.com/s/XXXX"
+```
+
+Heavier to set up (Python + a headless browser), but fully local and works on
+macOS/Linux/Windows. This is the channel `agent-reach` uses for WeChat (see
+`09-agent-reach.md`).
+
+---
+
+## After fetch: vault note-generation flow (same for every method)
+
+Once any method has given you the article Markdown (and, ideally, an archived
+copy):
 
 ```
-You: "ingest this WeChat article: https://mp.weixin.qq.com/s/xxxxx"
-Claude:
-  1. (Confirms wechatDownload MCP is alive via initialize probe)
-  2. Calls mcp__wechatDownload__single_article_download(url)
-  3. Waits 30s-2m for download to land in <download dir>/<account>/<title>.{html,md,docx,pdf,mhtml}
-  4. Reads the .md (or .html if .md missing)
-  5. Follows vault note-generation rules:
-     - Copies referenced images from <download dir>/<account>/图片/ to vault/_attachments/<slug>/
-     - Replaces mmbiz.qpic.cn external links with [[<slug>/<image.jpg>]]
-     - Writes the source note to vault/wiki/sources/<domain>/<title>.md
-     - Archives the .html + .md pair to vault/.raw/wechat/YYYY-MM-DD_<slug>_<wxid>.{html,md}
-     - Adds a log entry to vault/wiki/log.md
+1. Archive raw first: save the .md (and .html if you have it) to
+   vault/.raw/wechat/YYYY-MM-DD_<slug>_<wxid>.{md,html}   (vault rule §8)
+2. Read the .md.
+3. Localize images actually referenced in your note: copy them to
+   vault/_attachments/<slug>/ and rewrite mmbiz.qpic.cn links to
+   ![[<slug>/<image>.jpg]]                                  (vault rule §7)
+4. Write the source note to vault/wiki/sources/<domain>/<title>.md
+   (abstract callout §6, no same-quote YAML nesting §7.5, Chinese diagrams §9).
+5. Update vault/wiki/{index.md, sources/_index.md, meta/notes-graph.md} and
+   append a vault/wiki/log.md entry                          (vault rule §6.5)
 ```
+
+See `vault/note-generation-rules.md` for the full rule set.
+
+---
 
 ## Failure modes that bit us
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| `single_article_download` returns success but no files appear | App's output directory was reconfigured since last note | Re-check the app's settings UI; verify by `Get-ChildItem -Recurse -Filter "log<YYYYMMDD>.txt"` to find today's log location — that folder is the real output root |
-| Article downloads but Markdown is < 500 chars | Hit the anti-scraping wall | Wait a few minutes and retry; if persistent, the app may need cookie refresh |
-| Images in Obsidian preview as broken | Images weren't localized to `_attachments/` | Per vault rule §7, every referenced image must be copied locally; check Claude actually did this and not just kept the `mmbiz.qpic.cn` URL |
-| MCP says "connection refused" | App not running | Start the desktop app from the tray |
-| Cookie expired | Manual capture flow needed | Call `get_public_account_id`; it returns a clipboard verification link. Open in WeChat's in-app browser to refresh; then retry |
+| `curl`/`WebFetch` returns "环境异常 / 完成验证" stub | Hit the referer/CAPTCHA wall | Don't scrape raw — use one of A–D |
+| Hosted MCP returns nothing / times out | Community server down or rate-limited | Retry later, or switch to D (Camoufox) / B (Windows) |
+| Local MCP "connection refused" (Option B) | Desktop app not running | Start it from the tray; it's Windows-only |
+| Article Markdown < 500 chars | Anti-scraping wall or cookie expired | Wait + retry; Option B may need a cookie refresh |
+| List/ranking article body is empty text | The 榜单/list is rendered as **images** | Expected — download the images and 读图/OCR them downstream |
+| Images broken in Obsidian preview | Images weren't localized to `_attachments/` | Per vault §7, copy referenced images locally; don't keep `mmbiz.qpic.cn` URLs |
 
 ## Don't do these
 
-- **Don't fall back to raw `curl` on `mp.weixin.qq.com`** when MCP is
-  unavailable. You'll get a stub HTML without content, then waste an hour
-  diagnosing. Just ask the user to start the app.
-- **Don't hardcode the old output path** in any of your scripts. Always
-  resolve at runtime by looking for the latest `log<YYYYMMDD>.txt`.
-- **Don't try to fully localize every image** in articles with 30+ images.
-  Per vault rule §7, only images actually referenced in the synthesized note
-  need local copies. The rest stay as remote URLs (visible in the archived
-  HTML, not in the Markdown).
+- **Don't tell macOS/Linux users to install wechatDownload.** It's a Windows
+  desktop app — point them to Option A or D instead.
+- **Don't fall back to raw `curl` on `mp.weixin.qq.com`** — you'll get a
+  content-less stub and waste an hour. Use A–D.
+- **Don't hardcode Option B's output path** in scripts — resolve at runtime
+  from the latest `log<YYYYMMDD>.txt`.
+- **Don't fully localize every image** in 30-image articles — per vault §7,
+  only images referenced in the synthesized note need local copies.
+- **Don't pipe sensitive content through the hosted MCP** — it's a 3rd-party
+  server; use B or D for anything private.
 
 ## Done when
 
-- A test article ingest produces a properly-formed source note in
-  `wiki/sources/`, an archive pair in `.raw/wechat/`, locally-resolved
-  images in `_attachments/<slug>/`, and a log entry in `wiki/log.md`.
+- A test article ingest (via whichever method fits your OS) produces a
+  well-formed source note in `wiki/sources/`, an archive pair in
+  `.raw/wechat/`, locally-resolved images in `_attachments/<slug>/`, and a log
+  entry in `wiki/log.md`.
 
-> Beyond WeChat: `09-agent-reach.md` adds fetching for Bilibili, YouTube, RSS,
-> podcasts, V2EX and the socials. Its WeChat-official-account channel reuses
-> this exact wechatDownload MCP (`http://127.0.0.1:4545`) — so finishing this
-> page also wires up WeChat inside agent-reach.
+> Beyond WeChat: `09-agent-reach.md` adds Bilibili, YouTube, RSS, podcasts,
+> V2EX and the socials. Its WeChat channel uses **Option D (Camoufox)** so it
+> works cross-platform without the Windows app.
 
 Move on to `06-image-generation.md` to add diagram generation, or
 `07-memory-plugins.md` to wire cross-session memory.

@@ -57,7 +57,7 @@ channels work immediately; the rest need a one-time credential.
 | YouTube (`yt-dlp`) | ✅ | subtitles + metadata |
 | V2EX | ✅ | community threads |
 | RSS / Atom | ✅ | feed fetch |
-| WeChat official accounts | ✅ via local MCP | uses the **same wechatDownload MCP** as `05-wechat-mcp.md` (`http://127.0.0.1:4545`) |
+| WeChat official accounts | ✅ cross-platform | see `05-wechat-mcp.md` — hosted MCP (any OS) / Camoufox (any OS) / Windows-only wechatDownload. agent-reach's own channel uses Camoufox, so it works on macOS/Linux without the Windows app |
 | Bilibili | ⚠️ region-dependent | domestic IP usually direct; **overseas IP trips 412 risk control** — pass `--cookies-from-browser chrome` (or a cookie file). Search/trending via `bili-cli` needs `bili login` (QR), `pipx install bilibili-cli` |
 | Podcasts (Xiaoyuzhou etc.) | ✅ local transcription | see below — uses local GPU whisper, not a cloud API |
 | Twitter / X | ❌ needs cookie | enable after dropping in a logged-in cookie |

@@ -1,9 +1,15 @@
 {
-  "_doc": "Merge this 'mcpServers' block into ~/.claude.json. Most users only need wechatDownload. The others are optional add-ons described in setup/02-claude-code.md (plugins) or your own preferences.",
+  "_doc": "Merge this 'mcpServers' block into ~/.claude.json. For WeChat ingestion pick ONE: 'wechat-hosted' (any OS, zero install, 3rd-party server) or 'wechatDownload' (Windows-only local app). See setup/05-wechat-mcp.md. The others are optional add-ons described in setup/02-claude-code.md (plugins) or your own preferences.",
 
   "mcpServers": {
+    "wechat-hosted": {
+      "_purpose": "WeChat article ingestion - cross-platform (macOS/Linux/Windows), zero install. Community-hosted MCP; the article URL is sent to a 3rd-party server. See setup/05-wechat-mcp.md (Option A).",
+      "type": "http",
+      "url": "https://changfengbox.top/api/mcp"
+    },
+
     "wechatDownload": {
-      "_purpose": "WeChat article ingestion. Requires the wechatDownload desktop app to be running. See setup/05-wechat-mcp.md.",
+      "_purpose": "WeChat article ingestion - Windows-only, fully local. Requires the wechatDownload desktop app running. See setup/05-wechat-mcp.md (Option B).",
       "type": "http",
       "url": "http://127.0.0.1:4545/mcp"
     },

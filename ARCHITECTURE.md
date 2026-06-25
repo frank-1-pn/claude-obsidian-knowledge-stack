@@ -49,7 +49,7 @@ operator opens Claude Code in vault folder
     └→ "ingest <url-or-file>"
          └→ Claude (per note-generation-rules.md):
             1. mkdir -p .raw/<type>/
-            2. fetch raw (curl / WebFetch / wechatDownload MCP)
+            2. fetch raw (curl / WebFetch / WeChat MCP — hosted or local)
             3. write .raw/<type>/<YYYY-MM-DD_slug>.<ext>
             4. read raw, extract structure
             5. write wiki/sources/<domain>/<title>.md
@@ -87,7 +87,7 @@ operator asks "what do I know about X?" (desktop or via Feishu)
 ```
 operator: "read this bilibili video / podcast / RSS item and file it"
     └→ Claude reads ~/.agent-reach/local-state.md (which channels are live here)
-         └→ picks channel: yt-dlp / bili-cli / jina / transcribe.py / wechatDownload MCP
+         └→ picks channel: yt-dlp / bili-cli / jina / transcribe.py / WeChat MCP (hosted/local)
               └→ (gated channels need a cookie; Bilibili overseas needs --cookies-from-browser)
                    └→ archive to .raw/{transcripts,social,rss,wechat,webfetch}/
                         └→ continue Pattern 1 from step 4 (write note, log, notes-graph)

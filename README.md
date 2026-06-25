@@ -23,8 +23,9 @@ private note contents. Templates use placeholders like `<APP_ID>`,
 - **Mobile-first inbox via Feishu** — your phone is the capture interface.
   Send a WeChat article link, ask a question, request a note — it lands in the
   desktop Claude Code session within seconds.
-- **WeChat article ingestion** via the `wechatDownload` MCP server (bypasses
-  the referer wall, fetches full HTML + images).
+- **WeChat article ingestion** — cross-platform: a community-hosted MCP (any
+  OS, zero install) or the Windows-only `wechatDownload` local app; both
+  bypass the referer wall. See `setup/05-wechat-mcp.md`.
 - **Image generation for diagrams** via `gpt-image-2` through a proxy, with
   hard rules that all in-image text be Chinese for cross-device readability.
 - **Long-lived memory** across Claude Code sessions via the `claude-mem`
@@ -58,7 +59,7 @@ See `ARCHITECTURE.md` for the full picture. The short version:
         │       │       │       │
         │       │       │       └── claude-mem  ──► local SQLite (cross-session memory)
         │       │       │
-        │       │       └── wechatDownload MCP  ──► public WeChat articles → .raw/wechat/
+        │       │       └── WeChat MCP (hosted/local) ──► public WeChat articles → .raw/wechat/
         │       │
         │       └── agent-reach skill ──► Bilibili/YouTube/RSS/podcasts/V2EX/… → .raw/{transcripts,social,rss}/
         │
@@ -80,7 +81,7 @@ setup/                  step-by-step install + config (run in order)
   02-claude-code.md      install Claude Code + first run + plugins
   03-feishu-bot.md       link out to feishu-claude-code-bridge
   04-obsidian.md         install Obsidian + create vault + sync + plugins
-  05-wechat-mcp.md       wechatDownload desktop + MCP wire-up
+  05-wechat-mcp.md       WeChat ingestion (hosted MCP any-OS / Windows local)
   06-image-generation.md gpt-image-2 via API proxy + helper script
   07-memory-plugins.md   claude-mem install + key knobs
   08-daily-briefing.md   cloud cron AI news digest → Feishu (GitHub Actions)
@@ -119,8 +120,8 @@ scripts/
    onwards has context from prior work
 5. `setup/03-feishu-bot.md` — (optional, if you want mobile capture) follow
    the linked `feishu-claude-code-bridge` repo
-6. `setup/05-wechat-mcp.md` — (optional, if you read WeChat) install
-   wechatDownload + register the MCP in `~/.claude.json`
+6. `setup/05-wechat-mcp.md` — (optional, if you read WeChat) register a
+   cross-platform hosted MCP (any OS) or the Windows-only wechatDownload app
 7. `setup/06-image-generation.md` — (optional, if you want diagrams) drop in
    the helper script with your own API key
 8. `setup/09-agent-reach.md` — (optional) install the agent-reach skill for
