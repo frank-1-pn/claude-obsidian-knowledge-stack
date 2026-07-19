@@ -3,7 +3,8 @@
 `05-wechat-mcp.md` covers WeChat articles. This page adds **everything else**:
 one skill that gives Claude a routing table over ~17 platforms — web/code
 search, Bilibili & YouTube subtitles, podcasts (with local transcription), RSS,
-V2EX, and the login-gated socials (Twitter/Reddit/Xiaohongshu). Each fetched
+V2EX, and the socials (Twitter needs a user-supplied token; Reddit is
+logged in via `rdt login`; Xiaohongshu is cookie-gated). Each fetched
 source lands in `.raw/` per the vault's archive-first rule, ready to ingest.
 
 Upstream: **Agent-Reach** (<https://github.com/Panniantong/Agent-Reach>).
@@ -40,6 +41,8 @@ under `~/.claude/skills/agent-reach/`. New Claude Code sessions auto-discover it
 
 External CLIs some channels lean on (install as needed):
 - `yt-dlp` — YouTube/Bilibili subtitles + audio (`pipx install yt-dlp`)
+- `bilibili-api-python` — Bilibili guest-API audio/download-URL resolution,
+  the actual fix for the 412 gotcha below (`pip install bilibili-api-python`)
 - `ffmpeg` — audio extraction for transcription
   (`winget install ffmpeg` on Windows — **not** macOS `brew`)
 - `gh` — GitHub search/read (from `01-prereqs.md`, already authenticated)
@@ -54,15 +57,15 @@ channels work immediately; the rest need a one-time credential.
 | Exa web search | ✅ | general web search |
 | Jina reader (`r.jina.ai/<url>`) | ✅ | any URL → clean markdown |
 | GitHub (`gh`) | ✅ (after `gh auth login`) | repos / issues / PRs |
-| YouTube (`yt-dlp`) | ✅ | subtitles + metadata |
+| YouTube (`yt-dlp`) | ⚠️ needs cookie + EJS solver | not zero-config — needs a cookie snapshot + `--remote-components ejs:github`; see "YouTube" section below |
 | V2EX | ✅ | community threads |
-| RSS / Atom | ✅ | feed fetch |
-| WeChat official accounts | ✅ cross-platform | see `05-wechat-mcp.md` — hosted MCP (any OS) / Camoufox (any OS) / Windows-only wechatDownload. agent-reach's own channel uses Camoufox, so it works on macOS/Linux without the Windows app |
-| Bilibili | ⚠️ region-dependent | domestic IP usually direct; **overseas IP trips 412 risk control** — pass `--cookies-from-browser chrome` (or a cookie file). Search/trending via `bili-cli` needs `bili login` (QR), `pipx install bilibili-cli` |
+| RSS / Atom | ✅ automated | daily scheduled task (`KnowledgeVault-RSSFetch` → `fetch_rss.py`), ~10 sources, incremental, zero-LLM, lands in `.raw/rss/` — see below |
+| WeChat official accounts | ✅ cross-platform | see `05-wechat-mcp.md` — hosted MCP (any OS) / Camoufox (any OS) / Windows-only wechatDownload. agent-reach's own channel is the Windows-only wechatDownload local MCP, falling back to Camoufox on macOS/Linux |
+| Bilibili | ✅ guest API, no login | `yt-dlp` 412s the playurl endpoint unconditionally (stale signing) — the fix is `bilibili-api-python`'s guest API, not cookies/login; see "Bilibili" section below. `bili-cli` demoted to metadata/search only |
 | Podcasts (Xiaoyuzhou etc.) | ✅ local transcription | see below — uses local GPU whisper, not a cloud API |
-| Twitter / X | ❌ needs cookie | enable after dropping in a logged-in cookie |
-| Reddit | ❌ needs cookie | same |
-| Xiaohongshu (RED) | ❌ needs cookie | same |
+| Twitter / X | ❌ needs user-supplied token | user provides `auth_token` + `ct0` (from a logged-in browser session) → `setx TWITTER_AUTH_TOKEN <value>` / `setx TWITTER_CT0 <value>` |
+| Reddit | ✅ logged in | `rdt login` extracts cookies from a logged-in Chrome profile (close Chrome first); re-run if the cookie expires |
+| Xiaohongshu (RED) | ❌ needs cookie | same as before — cookie-gated |
 
 ## Zero-config quick commands
 
@@ -76,25 +79,66 @@ curl -s "https://r.jina.ai/https://example.com/article"
 # GitHub repo search
 gh search repos "your query" --sort stars --limit 10
 
-# YouTube / Bilibili subtitles
-yt-dlp --write-sub --skip-download -o "/tmp/%(id)s" "<video-url>"
+# Bilibili guest-API audio URL (see "Bilibili" section below — not yt-dlp)
+python config/bili_audio_url.py <BVID>
 ```
 
-## Bilibili: the 412 gotcha
+## Bilibili: the 412 gotcha (and the actual fix)
 
-From an overseas IP, Bilibili returns HTTP 412 (risk control) to anonymous
-requests. Two fixes:
+`yt-dlp`'s Bilibili extractor returns HTTP 412 on the playurl endpoint —
+**unconditionally**, even from a domestic IP with a full Chrome cookie
+export. This is not IP-based risk control and not a login problem; it's
+stale `gaia`/`w_webid` request signing inside yt-dlp's Bilibili extractor.
+`--cookies-from-browser chrome` does **not** fix it.
+
+The path that actually works is the guest API — no login required:
 
 ```bash
-# A) reuse your browser's logged-in session for subtitle/video pulls
-yt-dlp --cookies-from-browser chrome --write-sub --skip-download "<bilibili-url>"
+pip install bilibili-api-python
 
-# B) for search / trending, log into bili-cli once (QR scan)
-pipx install bilibili-cli && bili login
+# 1) resolve the best-bandwidth dash audio URL as a guest
+python config/bili_audio_url.py <BVID>
+
+# 2) download it (the CDN requires this exact Referer or it 403s)
+curl -H "Referer: https://www.bilibili.com" -o audio.m4a "<baseUrl-from-step-1>"
+
+# 3) transcribe locally
+python ~/.claude/scripts/transcribe.py audio.m4a
 ```
 
-Record which one you wired up in `~/.agent-reach/local-state.md` so Claude
-doesn't retry the anonymous path.
+Under the hood, `config/bili_audio_url.py` calls
+`bilibili_api.video.Video(bvid=...).get_download_url(0)`, which returns a
+`dash.audio[]` list even for an anonymous guest; pick the highest-bandwidth
+entry's `baseUrl`.
+
+`bili-cli` (`pipx install bilibili-cli && bili login`) still has a role —
+metadata and search (`bili video`, `bili search`) — but it's demoted for
+downloads: it needs a login QR and doesn't touch the playurl 412 at all. If
+a video has subtitles (check `bili video`'s `subtitle.available`), use those
+instead of transcribing audio.
+
+## YouTube: needs a cookie snapshot + EJS solver (not zero-config)
+
+Plain `yt-dlp` against YouTube is not reliably zero-config anymore. Export a
+cookie snapshot once, and pass a remote EJS (signature-solving) component on
+every call:
+
+```bash
+# one-time: export a cookie snapshot from a logged-in browser
+yt-dlp --cookies-from-browser chrome --cookies ~/.agent-reach/yt-cookies.txt "<any-video-url>"
+
+# every call after: reuse the snapshot + the EJS solver
+yt-dlp --cookies ~/.agent-reach/yt-cookies.txt --remote-components ejs:github \
+  --write-sub --skip-download -o "/tmp/%(id)s" "<video-url>"
+```
+
+- `--remote-components ejs:github` fetches the EJS signature solver that
+  current YouTube player challenges require; omit it and calls fail
+  intermittently.
+- Re-export the snapshot if it expires (symptom: renewed 403s).
+- If the video has no captions, fall back to audio: `yt-dlp -x` then
+  `python ~/.claude/scripts/transcribe.py <audio_file>` — the same local
+  transcription path podcasts use (below).
 
 ## Podcasts / audio: transcribe locally, not via a cloud API
 
@@ -102,13 +146,17 @@ agent-reach's default podcast path uses a cloud transcription API (needs a key).
 On a machine with a GPU, prefer a local whisper pipeline — offline, no key, fast:
 
 ```bash
-# download the audio with yt-dlp, then:
+# 1) extract audio only (no video) with yt-dlp
+yt-dlp -x --audio-format m4a -o "/tmp/%(id)s.%(ext)s" "<podcast-or-video-url>"
+
+# 2) transcribe locally
 python <USER_HOME_POSIX>/.claude/scripts/transcribe.py <audio_or_video_path> [--lang zh]
 ```
 
 A `faster-whisper` GPU script (~10× realtime on a mid-range card) is the
 substitute we use; note it in the state file so Claude reaches for it instead of
-the cloud default.
+the cloud default. This is the same audio→`transcribe.py` route used for
+Bilibili and no-subtitle YouTube videos above.
 
 ## Where fetched sources land (archive-first)
 
@@ -128,20 +176,22 @@ Every fetch is archived under the vault's `.raw/` before any note is written
 ```
 You: "read this bilibili video and file it: <url>"
 Claude:
-  1. Reads ~/.agent-reach/local-state.md (sees Bilibili needs cookies on this box)
-  2. yt-dlp --cookies-from-browser chrome --write-sub ... → subtitle file
-  3. (if no subtitles) yt-dlp audio → transcribe.py → text
-  4. Archives transcript to .raw/transcripts/YYYY-MM-DD_bilibili_<slug>.md
-  5. Writes the source note per note-generation-rules.md, updates notes-graph + log
+  1. Reads ~/.agent-reach/local-state.md (confirms the guest-API path is what works here)
+  2. bili-cli checks metadata / subtitle availability
+  3. If subtitled: pull the subtitle directly
+  4. If not: bili_audio_url.py → dash audio baseUrl → curl (with Referer) → transcribe.py → text
+  5. Archives transcript to .raw/transcripts/YYYY-MM-DD_bilibili_<slug>.md
+  6. Writes the source note per note-generation-rules.md, updates notes-graph + log
 ```
 
 ## Failure modes that bit us
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| Bilibili returns 412 | Overseas IP, anonymous request | `--cookies-from-browser chrome`, or `bili login` for bili-cli |
+| Bilibili returns 412 via yt-dlp | Stale `gaia`/`w_webid` signing in yt-dlp's extractor — happens even domestic + full cookies, it's not IP risk control | Don't fight it with cookies — use the `bilibili-api-python` guest API (`bili_audio_url.py`) instead of yt-dlp for Bilibili |
+| YouTube subtitle pull fails intermittently | Missing EJS solver or expired/missing cookie snapshot | Pass `--cookies <snapshot>` + `--remote-components ejs:github`; re-export the snapshot if expired |
 | Transcription wants a cloud key | Using the default Groq-style path | Point Claude at the local `transcribe.py` (record it in the state file) |
-| Twitter/Reddit/RED return nothing | No cookie configured | Drop in a logged-in cookie; flip the channel to ✅ in the state file |
+| Twitter/RED return nothing | No cookie/token configured | Twitter needs a user-supplied `auth_token`+`ct0`; RED needs a cookie — flip the channel to ✅ in the state file once set |
 | Reinstalling agent-reach "forgot" my setup | Expected — package is stateless | Your state lives in `~/.agent-reach/local-state.md`, which is preserved |
 | `ffmpeg`/`yt-dlp` not found | External CLI missing | Install per the list above (Windows `winget`, not `brew`) |
 
@@ -155,8 +205,8 @@ Claude:
 
 ## Done when
 
-- A test fetch on a zero-config channel (e.g. a YouTube subtitle or an RSS item)
-  archives into the right `.raw/` subfolder, and your machine-local state file
-  accurately reflects which gated channels you've enabled.
+- A test fetch on a zero-config channel (e.g. an RSS item or a Jina page
+  fetch) archives into the right `.raw/` subfolder, and your machine-local
+  state file accurately reflects which gated channels you've enabled.
 
 Back to `README.md`, or revisit `05-wechat-mcp.md` for the WeChat specifics.

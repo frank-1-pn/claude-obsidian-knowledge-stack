@@ -59,6 +59,8 @@ bot without crosstalk.
 | `lark-send.ps1` | PowerShell | Send a (multi-line) text message reliably. Calls the `lark-cli` Node entry directly because the `.cmd` wrapper truncates multi-line args at the first newline on Windows. Reads the body from a UTF-8 file. |
 | `find-claude.ps1` / `screenshot-window.ps1` / `send-keys.ps1` | PowerShell | The `/compact!` keyboard-macro trio: find the foreground claude.exe window, screenshot it, and `SendKeys` into it — with a foreground guard that refuses to type into the wrong window. |
 | `bot-registry.template.json` | config | Routing config. Copy to `bot-registry.json`, fill real `chat_id`s. `bots` = per-bot config; `default` + `projects` = AutoBot fallback for `notify-once.ps1`. |
+| `feishu-watchdog.ps1` | PowerShell | Silent, out-of-session liveness check. Meant for a Windows **scheduled task** (every ~30 min), not a Monitor watch — catches a dead daemon during hours nobody has a Claude Code session open. Alerts to Feishu only on death; completely silent when healthy. |
+| `feishu-bot-runtime.md` | doc / skill source | The operating manual for *after* the bridge is up: send/receive norms, the full liveness ranking (and what does **not** count as liveness — see below), the orphan-subscribe failure mode, the reconnect flow, the failure-symbol table, and the risk-operation confirmation flow. Port this into a Claude Code skill (or your global CLAUDE.md) rather than reading it top-to-bottom every session. |
 
 Generated at runtime (not shipped): `binding-<pid>.json` per session, and in
 `%TEMP%`: `lark-<bot>-events.ndjson`, `...-daemon.err.log`, `...pid`,
@@ -120,6 +122,13 @@ In `~/.claude/settings.json`, add a `PostCompact` hook that calls
 (see `../../config/settings-json.template.json`). This pings the right bot when
 a session compacts.
 
+### 6. Register the external Watchdog (optional, recommended for unattended bots)
+The Monitor-based liveness checks above only fire while someone has an active
+Claude Code session. To catch a dead daemon even when nobody's chatting,
+register `feishu-watchdog.ps1` as a Windows scheduled task (every ~30 min);
+see the header comment in that script for the exact `schtasks` command per
+bot. It alerts to Feishu only on death — never a periodic heartbeat.
+
 ---
 
 ## Hard rules (load-bearing — don't "fix" these away)
@@ -142,7 +151,10 @@ a session compacts.
    that messages *reach* Claude is an inbound `task-notification` whose task-id
    matches this session's Monitor — or the absence of a `Monitor "..." stream
    ended` notice. After `/compact`, assume the old Monitor is dead and
-   re-attach.
+   re-attach. **`TaskList` / `TaskGet` do not track Monitor watches either** —
+   `TaskGet <monitor-task-id>` returns `"Task not found"` even while the
+   Monitor is perfectly healthy, so never use them as a liveness check. Full
+   ranked signal list and the reconnect flow: `feishu-bot-runtime.md`.
 
 ---
 

@@ -9,6 +9,10 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Python build artifacts
+__pycache__/
+*.pyc
+
 # Local-only secret maps (mirror the sister repo's convention)
 sync-secrets.local.json
 sync-secrets*.json

@@ -17,6 +17,9 @@ marketplace. The ones below are the minimum useful set for this stack.
 | `frontend-design` | `claude-plugins-official` | Distinctive frontend code generation — only if you build UIs |
 | `code-review` | `claude-plugins-official` | `/code-review` — useful before merging PRs in code projects |
 | `code-simplifier` | `claude-plugins-official` | Refactor for clarity; opinionated, use case-by-case |
+| `dev-browser` | `dev-browser-marketplace` (`github:<author>/dev-browser`) | Browser automation with persistent page state — navigate, fill forms, screenshot, scrape |
+| `github` | `claude-plugins-official` | GitHub integration; also auto-registers a project-scoped `github-server` MCP (issues/PRs) — see `config/mcp-config.example.json` |
+| `claude-hud` | `claude-hud` (`github:<author>/claude-hud`) | Statusline plugin — richer status bar (model, cost, git branch, etc.) than the default |
 
 ## Marketplaces to add
 
@@ -27,6 +30,18 @@ marketplace. The ones below are the minimum useful set for this stack.
       "source": {
         "source": "github",
         "repo": "<author>/claude-obsidian"
+      }
+    },
+    "dev-browser-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "<author>/dev-browser"
+      }
+    },
+    "claude-hud": {
+      "source": {
+        "source": "github",
+        "repo": "<author>/claude-hud"
       }
     }
   }
@@ -64,8 +79,10 @@ auto-update**.
 Two examples in this stack:
 
 1. **`claude-mem`** — URL rewrites (e.g., OpenRouter → DeepSeek) get
-   overwritten. Solution: `~/.claude/scripts/claude-mem-autopatch.ps1` re-
-   applies the patch idempotently on every SessionStart.
+   overwritten. Solution: `~/.claude/scripts/claude-mem-autopatch.ps1`
+   re-applies the patch idempotently. Note this one is **not** on the
+   `SessionStart` hook chain — run it by hand after a plugin update, or via
+   a scheduled task (see `setup/07-memory-plugins.md`).
 2. **`claude_agent_sdk`** (Python; not a CC plugin but installs via pip) —
    subprocess Popen without `CREATE_NO_WINDOW` makes subagents flash console
    windows on Windows. Solution: `claude-agent-sdk-autopatch.ps1` patches

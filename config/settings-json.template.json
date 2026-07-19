@@ -1,15 +1,10 @@
 {
-  "_doc": "Template for ~/.claude/settings.json. Merge the 'hooks' block into your existing settings (keep your theme, etc.). Path placeholders: <USER_HOME_POSIX> = MSYS-style (e.g. /c/Users/you on Windows; $HOME on mac/linux); <USER_HOME> = Windows-style (e.g. C:\\Users\\you). Keys starting with '_' below are documentation-only and MUST be renamed before saving: '_enabled_plugins_example' → 'enabledPlugins', '_extra_marketplaces_example' → 'extraKnownMarketplaces', '_other_settings_example' should be deleted and the inner fields hoisted to the top level.",
+  "_doc": "Template for ~/.claude/settings.json. Merge the 'hooks' block into your existing settings (keep your theme, etc.). Path placeholders: <USER_HOME_POSIX> = MSYS-style (e.g. /c/Users/you on Windows; $HOME on mac/linux); <USER_HOME> = Windows-style (e.g. C:\\Users\\you). Keys starting with '_' below are documentation-only and MUST be renamed before saving: '_enabled_plugins_example' → 'enabledPlugins', '_extra_marketplaces_example' → 'extraKnownMarketplaces', '_other_settings_example' should be deleted and the inner fields hoisted to the top level. NOTE: only claude-agent-sdk-autopatch.ps1 runs on SessionStart below — claude-mem-autopatch.ps1 is intentionally NOT wired in here; run it manually after a claude-mem plugin update or via a scheduled task (see setup/07-memory-plugins.md).",
 
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
-          {
-            "type": "command",
-            "command": "powershell.exe -ExecutionPolicy Bypass -File '<USER_HOME_POSIX>/.claude/scripts/claude-mem-autopatch.ps1' >/dev/null 2>&1 || true",
-            "timeout": 20
-          },
           {
             "type": "command",
             "command": "powershell.exe -ExecutionPolicy Bypass -File '<USER_HOME_POSIX>/.claude/scripts/claude-agent-sdk-autopatch.ps1' >/dev/null 2>&1 || true",
@@ -44,7 +39,10 @@
     "code-simplifier@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true
+    "superpowers@claude-plugins-official": true,
+    "dev-browser@dev-browser-marketplace": true,
+    "github@claude-plugins-official": true,
+    "claude-hud@claude-hud": true
   },
 
   "_extra_marketplaces_example": {
@@ -52,6 +50,18 @@
       "source": {
         "source": "github",
         "repo": "<author>/claude-obsidian"
+      }
+    },
+    "dev-browser-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "<author>/dev-browser"
+      }
+    },
+    "claude-hud": {
+      "source": {
+        "source": "github",
+        "repo": "<author>/claude-hud"
       }
     }
   },

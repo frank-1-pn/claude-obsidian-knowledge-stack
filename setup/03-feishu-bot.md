@@ -52,18 +52,25 @@ this stack's hooks (referenced from `config/settings-json.template.json`)
 can find it. Build any way you like; the names below are what the templates
 in this repo assume.
 
-## Six scripts (one-liner each)
+## Eight scripts (one-liner each)
 
 Drop these under `~/.lark-cli/daemon/`:
 
 | Script | Inputs | Job |
 | --- | --- | --- |
-| `start-bot.ps1` | `-Bot <name> [-Profile <profile>]` | Spawn detached `lark-cli event +subscribe --force ...` whose stdout goes to `%TEMP%\lark-<bot>-events.ndjson`, stderr to `%TEMP%\lark-<bot>-daemon.err.log`, PID to `%TEMP%\lark-<bot>.pid`. Idempotent (skip if pid file points to a live subscribe with matching `--profile`). Always sets `LARK_CLI_NO_PROXY=1` so bot secrets never transit a local HTTP proxy |
+| `start-bot.ps1` | `-Bot <name> [-Profile <profile>]` | Spawn detached `lark-cli event +subscribe --force ...` whose stdout goes to `%TEMP%\lark-<bot>-events.ndjson`, stderr to `%TEMP%\lark-<bot>-daemon.err.log`, PID to `%TEMP%\lark-<bot>.pid`. Idempotent (skip if pid file points to a live subscribe with matching `--profile`). Always sets `LARK_CLI_NO_PROXY=1` so bot secrets never transit a local HTTP proxy. On an unhealthy/orphaned daemon: kill the orphan matching this bot's `--profile`, `Start-Sleep -Seconds 3` (lets the Feishu service side release the old WebSocket connection), then reconnect with `--force` |
 | `ensure-bot.ps1` | `-Bot <name> [-Profile <profile>]` | Health-check + heal. Rotate ndjson if >50MB (kill + rename + restart, also reset the offset file). Rotate err log if >10MB (same path). Prune `binding-*.json` whose PID is dead. Prune `lark-notify-once/*.last` >7 days old. Call `start-bot.ps1` if daemon unhealthy. Safe to run at every SessionStart, /compact, stream-ended |
 | `monitor-bot.sh` | `<bot>` positional | `tail -c +OFFSET -F` the ndjson with offset bookkeeping per consumed line. Awk filter `^{"chat_id"` lets only real messages through. Add a `[COMPACT_TRIGGER]` marker line when message body is exactly `/compact!` and `sender_id` equals the operator's open_id |
 | `write-binding.ps1` | `-Bot <name> [-ChatId ...] [-Profile ...] [-Alias ...] [-MonitorTaskId ...]` | Walk parent process chain to find `claude.exe`, look up the bot in `bot-registry.json` (`bots` map by short name), write `binding-<claude_pid>.json` with `claude_pid / bot / bot_alias / chat_id / profile / bound_at / monitor_task_id / source` |
 | `notify-once.ps1` | `-AutoBot \| -ChatId ... [-Profile ...] -Text ... [-Tag <key>] [-MinIntervalSec 30]` | Bot-aware Feishu notifier with dedup. Resolution order for `-AutoBot`: (1) walk parent chain to `claude.exe` then read `binding-<pid>.json`; (2) match `$env:CLAUDE_PROJECT_DIR` against `bot-registry.json` `projects[].match_dir_contains`; (3) fall back to `registry.default`. Skip silently if same `chat_id + tag` was notified within the dedup window |
+| `lark-send.ps1` | `-ChatId <oc_xxx> -BodyFile <path> [-Profile ...]` | Send a (possibly multi-line) text message reliably by calling the `lark-cli` Node entry (`run.js`) directly instead of the `.cmd` wrapper, which truncates multi-line args at the first newline on Windows. Reads the message body from a UTF-8 file so callers never fight PowerShell quoting |
 | `find-claude.ps1`, `screenshot-window.ps1`, `send-keys.ps1` | various | For the `/compact!` macro — find the foreground claude.exe-rooted window, screenshot it, SendKeys into it with foreground-guard. Refuse to fire if foreground hwnd doesn't match the passed hwnd |
+
+See [`feishu-bot-runtime.md`](../scripts/feishu-bridge/feishu-bot-runtime.md) for the
+operating manual you reach for *after* the bridge is up — send/receive norms,
+failure-symbol lookup, orphan-subscribe recovery, and the risk-operation
+confirmation flow. It is meant to be loaded as a skill once a session has a
+bot bound, not read up front.
 
 ## File layout under `~/.lark-cli/daemon/`
 
@@ -73,6 +80,7 @@ ensure-bot.ps1
 monitor-bot.sh
 write-binding.ps1
 notify-once.ps1
+lark-send.ps1
 find-claude.ps1
 screenshot-window.ps1
 send-keys.ps1
@@ -200,6 +208,29 @@ Monitor dead → events vanish silently.
 
 Default behavior on any `/compact` or new session: assume orphan, run
 `ensure-bot.ps1` + restart Monitor + rewrite `binding-<pid>.json`.
+
+**Caveat — tool-based liveness checks that look reasonable but are not**:
+`TaskList` / `TaskGet` do **not** track Monitor watches. `TaskGet
+<monitor-task-id>` returns `"Task not found"` even while the Monitor is
+alive and healthy — an empty `TaskList` is not evidence of death, so never
+use either tool to judge liveness. Likewise, a heartbeat `messages-send`
+returning `ok=true` only proves the *outbound* path works; it says nothing
+about whether inbound events are reaching Claude. Use only the two signals
+above (inbound task-notification id-match, or a `stream ended` notice).
+
+For the full ranked liveness signal table, the orphan-subscribe danger
+scenario, and the reconnect flow, see
+[`feishu-bot-runtime.md`](../scripts/feishu-bridge/feishu-bot-runtime.md).
+
+### External Watchdog (defense in depth)
+
+Register `feishu-watchdog.ps1` (shipped alongside the other scripts in
+`scripts/feishu-bridge/`) as a Windows scheduled task that runs every ~30
+minutes. It silently checks whether the bot's `event +subscribe` process is
+alive and only sends a Feishu alert on death — no heartbeat spam. This
+catches the case where nobody is actively chatting with Claude and would
+otherwise not notice the daemon died. See the header comment in the script
+for the exact `schtasks` registration command.
 
 ---
 

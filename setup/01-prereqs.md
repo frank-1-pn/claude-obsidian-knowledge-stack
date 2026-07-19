@@ -8,7 +8,7 @@ Adaptable to macOS/Linux with minor path changes.
 | Tool | Min version | Why |
 | --- | --- | --- |
 | Windows 10/11 | 21H2+ | Foreground/SendKeys APIs assumed by the Feishu bridge |
-| Node.js | 20.x LTS | Claude Code runtime, lark-cli, MCP servers |
+| Node.js | 22.x LTS | Claude Code runtime, lark-cli, MCP servers |
 | Python | 3.12+ | `claude_agent_sdk`, the image-gen helper, any Python MCPs |
 | Git | 2.40+ | Vault history, repo clones |
 | PowerShell | 7.x preferred (5.1 works for most scripts) | Most helper scripts target pwsh syntax that also works in 5.1 |
@@ -19,9 +19,10 @@ Adaptable to macOS/Linux with minor path changes.
 1. **Git** — installer from <https://git-scm.com/download/win>. During the
    installer, accept the bundled "Git Bash" and choose "Use Git from the Windows
    Command Prompt".
-2. **Node.js 20 LTS** — installer from <https://nodejs.org>. Confirm:
+2. **Node.js 22 LTS** — installer from <https://nodejs.org>. (Node 20 LTS
+   reached end-of-life in April 2026 — don't install it new.) Confirm:
    ```powershell
-   node -v   # v20.x.x or later
+   node -v   # v22.x.x or later
    npm -v    # 10.x or later
    ```
 3. **Python 3.12+** — installer from <https://python.org>. Tick "Add python.exe

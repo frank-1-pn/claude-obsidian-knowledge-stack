@@ -29,7 +29,7 @@ raw_path:
 
 | Field | Required | Notes |
 | --- | --- | --- |
-| `type` | yes | `source` = one atomic input; `synthesis` = derived overview combining N sources; `meta` = index / dashboard / notes-graph |
+| `type` | yes | `source` = one atomic input; `synthesis` = derived overview combining N sources; `meta` = index / dashboard / notes-graph / log / 最新笔记 / glossary-index |
 | `title` | yes | Full title; can repeat the filename or be longer. Quote with `"` and use `'` inside (NOT same-kind nested) |
 | `source` | yes | Where the content came from. Long titles with punctuation must follow the YAML quote-nesting rules (next section) |
 | `created` | yes | ISO date when the note was first written |
@@ -105,13 +105,18 @@ meanings:
 ```markdown
 > [!abstract] 摘要
 > 这是 X 的整理，来源 Y，涉及主题 Z。
+>
 > - 核心看点 1
 > - 核心看点 2
+>
 > 适合 [谁] 在 [场景] 时回头查。
 ```
 
 → Every source / synthesis note starts with `> [!abstract] 摘要` per
-`note-generation-rules.md` rule 6.
+`note-generation-rules.md` rule 6. Note the blank `>` lines around the list
+— per rule 11, any callout with more than one paragraph/block needs a blank
+`>` separator between them, or Obsidian's mobile renderer merges everything
+into one unreadable blob.
 
 ```markdown
 > [!insight] Claude 的洞见
@@ -225,5 +230,5 @@ Single-use tags pollute the tag pane.
 
 ## Next
 
-Read `note-generation-rules.md` for the ten generation-time rules Claude
+Read `note-generation-rules.md` for the twelve generation-time rules Claude
 follows when creating or updating notes.

@@ -27,8 +27,8 @@ How the seven components fit. Read after `README.md`, before any `setup/` page.
         ~/.claude/      Obsidian       Feishu       MCP servers
         - settings.json  vault         events        (wechatDownload,
         - CLAUDE.md     - wiki/                       playwright,
-        - plugins/      - .raw/                       context7, etc.)
-        - hooks                        ▲
+        - plugins/      - .raw/                       context7, codegraph,
+        - hooks                        ▲              etc.)
         - skills                       │
                                        │ WebSocket
                                        │
@@ -131,11 +131,20 @@ Claude finishes writing a complex section
 | Per-session bot binding file | Single claude.exe PID | Yes (PID stable) | No |
 | `~/.agent-reach/local-state.md` | Forever (survives skill reinstall) | Yes | Yes |
 | Daily-briefing reports archive | Forever (committed to your fork) | n/a (runs in cloud) | n/a |
+| File-based auto-memory (`MEMORY.md` index + per-fact `.md` files) | Forever (git-backed) | Yes | Yes |
 
-The vault and `claude-mem` are the two long-memory layers. The vault holds
-explicit, hand-curated knowledge; `claude-mem` holds implicit, per-tool-use
-observations that future sessions can grep when you ask "did we already solve
-this?".
+The vault, `claude-mem`, and the file-based auto-memory are the three
+long-memory layers. The vault holds explicit, hand-curated knowledge;
+`claude-mem` holds implicit, per-tool-use observations that future sessions
+can grep when you ask "did we already solve this?"; the file-based
+auto-memory sits in between — a per-project slim index
+(`~/.claude/projects/<project-slug>/memory/MEMORY.md`) that gets loaded
+verbatim into every session's context automatically, plus one atomic `.md`
+file per durable fact (naming convention `project_*` / `feedback_*` /
+`reference_*`), all git-backed so the history survives a machine loss. Where
+`claude-mem`'s SQLite observations are queried on demand, the `MEMORY.md`
+index is always in-context — see `setup/07-memory-plugins.md` for how the two
+systems complement each other.
 
 ## Trust boundaries (be paranoid here)
 

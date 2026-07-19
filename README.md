@@ -28,8 +28,16 @@ private note contents. Templates use placeholders like `<APP_ID>`,
   bypass the referer wall. See `setup/05-wechat-mcp.md`.
 - **Image generation for diagrams** via `gpt-image-2` through a proxy, with
   hard rules that all in-image text be Chinese for cross-device readability.
-- **Long-lived memory** across Claude Code sessions via the `claude-mem`
-  plugin (observations / summaries persisted to a local SQLite).
+- **Long-lived memory, two ways** — the `claude-mem` plugin (observations /
+  summaries persisted to a local SQLite, queried on demand) plus a second,
+  file-based auto-memory layer: a per-project `MEMORY.md` slim index that's
+  loaded verbatim into every session's context, linking out to one atomic
+  `.md` file per durable fact. Git-backed, no plugin or daemon required. See
+  `setup/07-memory-plugins.md`.
+- **Code intelligence for coding-heavy sessions** via an optional `codegraph`
+  MCP — a pre-built symbol graph (search, callers/callees, blast-radius
+  impact) so Claude reads code structure instead of re-grepping the repo
+  every time.
 - **Multi-platform source fetching** via the `agent-reach` skill — Bilibili &
   YouTube subtitles, RSS, podcasts (local GPU transcription), V2EX, web/code
   search, and login-gated socials — each archived into `.raw/` ready to ingest.
@@ -56,10 +64,12 @@ See `ARCHITECTURE.md` for the full picture. The short version:
         │  WebSocket event subscribe
         ▼
 [Claude Code on desktop]
+        │       │       │       │       │
+        │       │       │       │       └── claude-mem  ──► local SQLite (cross-session memory)
         │       │       │       │
-        │       │       │       └── claude-mem  ──► local SQLite (cross-session memory)
+        │       │       │       └── file-based auto-memory ──► MEMORY.md index + per-fact .md (git-backed)
         │       │       │
-        │       │       └── WeChat MCP (hosted/local) ──► public WeChat articles → .raw/wechat/
+        │       │       └── MCP servers (WeChat hosted/local, codegraph, …) ──► e.g. WeChat → .raw/wechat/
         │       │
         │       └── agent-reach skill ──► Bilibili/YouTube/RSS/podcasts/V2EX/… → .raw/{transcripts,social,rss}/
         │
@@ -83,7 +93,7 @@ setup/                  step-by-step install + config (run in order)
   04-obsidian.md         install Obsidian + create vault + sync + plugins
   05-wechat-mcp.md       WeChat ingestion (hosted MCP any-OS / Windows local)
   06-image-generation.md gpt-image-2 via API proxy + helper script
-  07-memory-plugins.md   claude-mem install + key knobs
+  07-memory-plugins.md   claude-mem + file-based auto-memory (MEMORY.md index): install + key knobs
   08-daily-briefing.md   cloud cron AI news digest → Feishu (GitHub Actions)
   09-agent-reach.md      multi-platform fetch (Bilibili/RSS/podcasts/social)
 
@@ -97,13 +107,24 @@ config/
   global-claude-md.template.md       ~/.claude/CLAUDE.md skeleton (with placeholders)
   vault-claude-md.template.md        vault/CLAUDE.md skeleton (the rules)
   settings-json.template.json        ~/.claude/settings.json hooks fragment
-  mcp-config.example.json            ~/.claude.json mcpServers block
+  mcp-config.example.json            ~/.claude.json mcpServers block (WeChat, codegraph, github-server example)
   enabled-plugins.md                 which Claude Code plugins to enable + URLs
   daily-briefing-config.example.json sanitized Horizon-style config for setup/08
   agent-reach-local-state.template.md  per-machine channel/cookie state for setup/09
+  claude-agent-sdk-autopatch.ps1      Windows console-flash fix for claude_agent_sdk (setup/02; wired to SessionStart)
+  claude-mem-autopatch.ps1            re-applies claude-mem URL/truncation patches after plugin upgrades (setup/07; run manually / scheduled, not SessionStart)
+  claude-mem-start.ps1                idempotent claude-mem worker autostart (setup/07)
+  genimg.py / genimg.ps1              gpt-image-2 image-generation helper + wrapper (setup/06)
+  editimg.py                          image-edit helper (setup/06)
+  genimg_edit.py                      image-edit variant helper (setup/06)
+  bili_audio_url.py                   Bilibili audio-URL resolver helper (setup/09 / agent-reach)
 
 scripts/
   check-bootstrap.ps1    sanity-check whether each piece is in place
+  feishu-bridge/         runnable Feishu bridge: daemon + Monitor scripts, bot registry
+    feishu-bot-runtime.md   operational runbook — send/receive rules, failure symbols,
+                            external watchdog, risk-op confirmation (see setup/03)
+    feishu-watchdog.ps1     external watchdog that restarts the bridge daemon if it dies
 
 .gitignore               excludes ~/.claude/settings.local.json patterns,
                          vault contents, anything with real IDs
@@ -111,13 +132,14 @@ scripts/
 
 ## Bootstrap order (90 minutes on a fresh Win 11 machine)
 
-1. `setup/01-prereqs.md` — install Node 20+, Python 3.12+, Git, PowerShell 7
+1. `setup/01-prereqs.md` — install Node 22+, Python 3.12+, Git, PowerShell 7
 2. `setup/02-claude-code.md` — install Claude Code, sign in, install plugins
 3. `setup/04-obsidian.md` — install Obsidian, create the vault, paste the
    vault `CLAUDE.md` from `config/vault-claude-md.template.md`, enable Sync,
    verify cross-device propagation
-4. `setup/07-memory-plugins.md` — install `claude-mem` so your second session
-   onwards has context from prior work
+4. `setup/07-memory-plugins.md` — install `claude-mem` (and, optionally, the
+   file-based `MEMORY.md` auto-memory index) so your second session onwards
+   has context from prior work
 5. `setup/03-feishu-bot.md` — (optional, if you want mobile capture) copy the
    runnable bridge scripts from `scripts/feishu-bridge/` and fill placeholders
 6. `setup/05-wechat-mcp.md` — (optional, if you read WeChat) register a

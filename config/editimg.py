@@ -15,8 +15,9 @@ On success, also writes a sidecar <out>.prompt.json recording the edit chain
 reproduced. The sidecar NEVER contains the API key.
 
 API key resolution (first that exists, never echoed):
-    env GENIMG_KEY_FILE  >  %USERPROFILE%\\.secrets\\vectorengine_key.txt  >  legacy Desktop\\openai_api.txt
-Base URL: https://api.vectorengine.cn (GENIMG_BASE_URL env to override).
+    env GENIMG_KEY_FILE  >  ~/.secrets/vectorengine_key.txt  >  legacy ~/Desktop/openai_api.txt
+Base URL: set via env GENIMG_BASE_URL — point this at your own OpenAI-compatible
+relay/aggregator. Falls back to a placeholder host if unset.
 """
 import sys
 import os
@@ -35,11 +36,11 @@ KEY_FILE = next(
     (Path(c) for c in (
         os.environ.get("GENIMG_KEY_FILE"),
         str(Path.home() / ".secrets" / "vectorengine_key.txt"),
-        r"C:\Users\ke\Desktop\openai_api.txt",
+        str(Path.home() / "Desktop" / "openai_api.txt"),
     ) if c and Path(c).exists()),
     Path.home() / ".secrets" / "vectorengine_key.txt",
 )
-BASE_URL = os.environ.get("GENIMG_BASE_URL", "https://api.vectorengine.cn")
+BASE_URL = os.environ.get("GENIMG_BASE_URL", "https://api.your-relay.example")
 ENDPOINT = f"{BASE_URL}/v1/images/edits"
 
 # Force no proxy (system proxy blocks vectorengine)

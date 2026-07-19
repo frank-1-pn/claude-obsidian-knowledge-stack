@@ -1,8 +1,8 @@
-# Ten note-generation rules
+# Twelve note-generation rules
 
 These rules belong in `<vault>/CLAUDE.md` so Claude reads them at every
 session start in the vault folder. The template at
-`config/vault-claude-md.template.md` includes all ten as enforceable rules.
+`config/vault-claude-md.template.md` includes all twelve as enforceable rules.
 
 Each rule has a **what**, a **why** (the failure mode it prevents), and a
 **how**.
@@ -228,9 +228,9 @@ doubt.
 ## 8. Archive raw before integrating
 
 **What.** Every external artifact (URL, PDF, screenshot, GitHub repo, video
-transcript) is first saved to `.raw/<type>/<YYYY-MM-DD>_<slug>.<ext>`
-**before** any source note is written. The source note's frontmatter
-`raw_path:` field then points back.
+transcript, RSS entry, social post) is first saved to
+`.raw/<type>/<YYYY-MM-DD>_<slug>.<ext>` **before** any source note is
+written. The source note's frontmatter `raw_path:` field then points back.
 
 | Type | Subdirectory | Naming |
 | --- | --- | --- |
@@ -239,7 +239,20 @@ transcript) is first saved to `.raw/<type>/<YYYY-MM-DD>_<slug>.<ext>`
 | Screenshots / images | `.raw/screenshots/` | single `YYYY-MM-DD_<slug>.<ext>`, multiple in `YYYY-MM-DD_<slug>/01.jpg 02.jpg ...` |
 | GitHub READMEs + metadata | `.raw/github/` | `YYYY-MM-DD_<owner>_<repo>_README.md` + `_meta.json` |
 | WebFetch snapshots | `.raw/webfetch/` | `YYYY-MM-DD_<domain>_<path-slug>.md` |
-| Transcripts / dictation | `.raw/transcripts/` | `YYYY-MM-DD_<topic>.md` |
+| Video/audio + dictation transcripts | `.raw/transcripts/` | `YYYY-MM-DD_<platform>_<slug>.md` |
+| RSS / Atom entries | `.raw/rss/` | `YYYY-MM-DD_<feed-slug>_<title-slug>.md` |
+| Social posts | `.raw/social/` | `YYYY-MM-DD_<platform>_<slug>.md` |
+| Articles (legacy) | `.raw/articles/` | kept for backward compatibility only |
+
+**Landing note.** Two folder-naming decisions worth calling out because
+they're easy to get wrong by analogy:
+
+- Video **and** audio downloads (YouTube, podcasts, voice memos) land in
+  `transcripts/` — there is no separate `video/` folder. A transcript is a
+  transcript regardless of whether the source had a picture.
+- The legacy `web/` folder (some early vaults had one) is merged into
+  `webfetch/`. Don't recreate `web/` — one folder for "arbitrary web page
+  snapshot" is enough.
 
 **Why.** Three reasons:
 
@@ -252,8 +265,12 @@ transcript) is first saved to `.raw/<type>/<YYYY-MM-DD>_<slug>.<ext>`
 **How.** Hard sequence: `mkdir -p .raw/<type>/` → save raw → only then start
 writing the synthesis note. **Failure to archive = failure to ingest.**
 
+The `rss/` folder is the one exception to "Claude saves it" — it's filled by
+a scheduled task (e.g. a daily cron/Task Scheduler job) running a small
+fetch script with **no LLM in the loop**. Claude only reads what's already
+there when it ingests an entry into a source note.
+
 Exceptions (operator-approved 2026-05-03):
-- Video: skip (downloader pipeline pending)
 - Pre-2026-05-03 sources: no need to retroactively archive
 
 ---
@@ -306,6 +323,65 @@ substantial. 3-5 analogies per note is plenty. **Don't analogize when:**
 
 ---
 
+## 11. Mobile readability: blank lines inside callouts, one item per line
+
+**What.** Inside every callout, each paragraph must be separated by a blank
+`>` line. Ordered list items each go on their own line — never write
+`1. xxx 2. yyy 3. zzz` crammed into one line/paragraph. Lists (ordered or
+not) get a blank line before and after them, including a blank `>` line when
+the list is inside a callout. Inline enumeration (`①②③`, 甲乙丙丁,
+`a / b / c`) is banned — convert to a real list.
+
+**Why.** Obsidian's mobile renderer lazily merges consecutive `>` lines that
+have no blank `>` separator into a single unreadable blob. A callout with
+three paragraphs and no blank line between them can look fine on desktop and
+render as one run-on wall of text on a phone — which is where most reading
+of this vault actually happens.
+
+**How.** Any callout with more than one paragraph:
+
+```markdown
+> [!example] 标题
+>
+> 第一段正文。
+>
+> 第二段正文，和第一段之间必须留一个空的 `>` 行。
+>
+> 1. 第一步
+> 2. 第二步
+> 3. 第三步
+```
+
+Self-check before finishing any note: "would this collapse into one
+paragraph if I opened it on a phone?" If a section has ≥3 parallel items,
+it's a list, not a long comma/顿号-joined sentence.
+
+---
+
+## 12. Refresh the "最新笔记" (latest-notes) landing page after every ingest
+
+**What.** After writing or updating a source/synthesis note **and** syncing
+the matching `index.md` / `notes-graph.md` / `log.md` entries, rebuild
+`wiki/最新笔记.md` — a mobile-first, time-descending entry page (newest date
+group at the top, one card per note, grouped by day) — by running the
+vault's `refresh-latest.py` helper script. It's linked from the top of
+`index.md` as "🆕 最新笔记" so a phone session has a one-tap "show me what's
+new" page instead of having to remember which domain folder something
+landed in.
+
+**Why.** Users mostly find new notes on mobile, where browsing a nested
+folder tree to spot "what did Claude just add" is painful. A single
+reverse-chronological, regenerated-not-appended page solves that with zero
+navigation.
+
+**How.** The script scans `wiki/sources/**` frontmatter `created:` dates and
+rebuilds the whole page from scratch (it is not an append-only log like
+`log.md` — always a full regeneration). Treat this as the same tier as rule
+6.5's log entry: **don't batch, don't skip, don't wait for the user to ask**
+— run it as the last step of every ingest / organize / synthesis pass.
+
+---
+
 ## How the rules compose
 
 For a typical "ingest this article" flow:
@@ -313,12 +389,14 @@ For a typical "ingest this article" flow:
 1. **8** — Archive raw to `.raw/<type>/`
 2. **2** — Read raw, summarize without external facts
 3. **6** — Write the note with an abstract callout up top
-4. **7.5** — Frontmatter — double-check YAML quote nesting
-5. **7** — If WeChat: localize referenced images to `_attachments/`
-6. **9** — On hard sections, optionally generate 1-2 Chinese-text diagrams
-7. **10** — Add inline analogies where useful
-8. **5** — Update `wiki/meta/notes-graph.md` with cross-source connections
-9. **6.5** — Append entry to `wiki/log.md`
+4. **11** — Format callouts/lists so they survive mobile rendering
+5. **7.5** — Frontmatter — double-check YAML quote nesting
+6. **7** — If WeChat: localize referenced images to `_attachments/`
+7. **9** — On hard sections, optionally generate 1-2 Chinese-text diagrams
+8. **10** — Add inline analogies where useful
+9. **5** — Update `wiki/meta/notes-graph.md` with cross-source connections
+10. **6.5** — Append entry to `wiki/log.md`
+11. **12** — Rebuild `wiki/最新笔记.md` via `refresh-latest.py`
 
 For a "synthesize multiple sources" flow:
 

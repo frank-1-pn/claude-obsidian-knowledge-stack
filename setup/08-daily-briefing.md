@@ -45,31 +45,70 @@ git remote add upstream https://github.com/Thysrael/Horizon.git
 
 Horizon reads a JSON config. Commit a CI-specific copy (CI copies it to the
 runtime path on each run) — see `config/daily-briefing-config.example.json` in
-this repo for a sanitized starting point. Key fields:
+this repo for a sanitized starting point. Top-level shape is `ai` / `sources` /
+`filtering` / `webhook`; categorization (which section a rendered item lands
+in) is **not** a config key — it's decided in code by `scripts/render_html.py`
+(`SOURCE_CAT` / `CATEGORIES` / `CAT_ORDER`).
 
 ```jsonc
 {
-  "llm": { "provider": "deepseek", "model": "deepseek-chat",
-           "api_key_env": "DEEPSEEK_API_KEY" },
-  "languages": ["zh"],                 // summary language(s)
-  "filtering": { "ai_score_threshold": 6.0 },  // 0-10; higher = fewer, higher-signal items
+  "ai": { "provider": "deepseek", "model": "deepseek-chat",
+          "api_key_env": "DEEPSEEK_API_KEY", "languages": ["zh"] },
+  "filtering": { "ai_score_threshold": 6.0, "time_window_hours": 24 },  // 0-10; higher = fewer, higher-signal items
   "sources": {
-    "hackernews": true,
-    "rss": [ "<vendor + industry + hardware + supply-chain feeds>" ],
-    "reddit": ["MachineLearning", "LocalLLaMA"],
-    "ossinsight": true,                // GitHub trending
-    "github_releases": ["vllm/vllm", "huggingface/transformers", "ggerganov/llama.cpp", "ollama/ollama"]
-  }
+    "github": [
+      { "type": "releases", "owner": "vllm-project", "repo": "vllm", "enabled": false },
+      { "type": "releases", "owner": "ggml-org", "repo": "llama.cpp", "enabled": false },
+      { "type": "search", "query": "topic:llm", "min_stars": 60, "max_items": 6 }
+    ],
+    "hackernews": { "enabled": true, "min_score": 80 },
+    "ossinsight": { "enabled": true, "period": "past_week" },
+    "reddit": { "enabled": true, "subreddits": [ { "subreddit": "MachineLearning", "min_score": 50 } ] },
+    "rss": [ "<vendor + industry + digest + supply-chain + blog feeds>" ],
+    "hf_papers": { "enabled": true, "min_upvotes": 10 },
+    "hf_orgs": { "enabled": true, "orgs": ["deepseek-ai", "Qwen"] }
+  },
+  "webhook": { "enabled": false }
 }
 ```
 
+Sources: ~53 curated RSS feeds (vendor/industry/digest/supply-chain/blogs), 8
+Reddit subs with per-sub `min_score`, HackerNews, ossinsight ranking,
+HuggingFace Daily Papers + org new-model monitoring.
+
 Tuning notes learned in production:
-- **Threshold** is the main volume knob. 6.0 ≈ a readable digest; drop to ~4.0
-  on slow news days, raise if it's too noisy.
-- Group GitHub items **by source** (trending vs releases) and put them near the
-  top — they're the highest-signal section for a builder.
-- A dedicated "AI supply chain" category (HBM/DRAM, optical/CPO, power/datacenter
-  cooling, foundry/packaging) is worth adding if you track hardware.
+- **Threshold** (`filtering.ai_score_threshold`) is the main volume knob. 6.0
+  ≈ a readable digest; drop to ~4.0 on slow news days, raise if it's too noisy.
+- GitHub items are split into `releases` watchers (specific repos, off by
+  default) and `search` queries (topic-based, with per-topic `min_stars` /
+  `created_within_days` floors) — both land near the top of the report,
+  the highest-signal section for a builder.
+- A dedicated "ai-supply-chain" RSS category (HBM/DRAM, optical/CPO,
+  power/datacenter cooling, foundry/packaging) is worth adding if you track
+  hardware — it's a `category` value on an RSS entry, not a separate config
+  block.
+
+### Cross-day seen-store dedup
+
+GitHub `search` and `ossinsight` results overlap heavily day to day (a
+trending repo stays trending). `src/storage/seen_store.py` persists a
+`data/seen_github.json` file that the workflow commits back to the repo each
+run, so the dedup state survives across CI runs. Before the AI-analysis step
+(to save tokens), github-search and ossinsight items seen within
+`filtering.seen_suppress_days` (per-source, e.g. `ossinsight: 6`,
+`github_search: 7`) are suppressed; `releases` items are never suppressed.
+Anything appearing for the first time gets a 🆕 badge in the rendered report.
+
+### GitHub quality floor
+
+If the at-threshold GitHub items for the day fall short of
+`filtering.github_min_items`, the pipeline tops up with additional GitHub
+items that scored *below* `ai_score_threshold` but at or above
+`filtering.github_floor_min_score` — so a slow GitHub day doesn't leave the
+section empty, without lowering the bar for every other source. Two more
+GitHub-specific cleanup rules: items with an empty/placeholder description
+("内容不明") are dropped outright, and a Stage-A spam heuristic filters obvious
+low-effort repos before they ever reach the LLM.
 
 ## 3. CI secrets (never commit these)
 
@@ -104,23 +143,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # 0. dedup: if reports/AI-briefing-<UTC-date>.html already on origin/main
+      # 0. dedup: if reports/AI每日咨询-<UTC-date>.html already on origin/main
       #    and not force → exit early (no paid LLM calls, no push)
       # 1. cp data/config.github.json config.json
       # 2. run Horizon: fetch → DeepSeek summarize → write zh markdown
+      #    (GITHUB_TOKEN is auto-injected by Actions — no secret to set;
+      #     it lifts the GitHub search API's rate limit for the github source)
       # 3. python scripts/render_html.py <md> out.html
       # 4. python scripts/push_file_feishu.py out.html <md>   # uploads HTML file + TOP5 text
       # 5. commit out.html to reports/ and push
+      # on failure: python scripts/notify_failure.py            # sends a Feishu alert
 ```
 
 Two robustness pieces worth copying:
 - **Dedup first**: the first step checks whether
-  `reports/AI-briefing-<date>.html` already exists on `origin/main`; if so (and
+  `reports/AI每日咨询-<date>.html` already exists on `origin/main`; if so (and
   not `force`), it skips every paid step. This makes "machine-trigger + cloud
   cron" safe to both fire — at most one report per day.
 - **Deliver as an HTML file**, not as many chat cards. Pushing 20+ cards spams
-  the chat; uploading one self-contained HTML file + a short TOP-5 text intro
-  reads far better on mobile.
+  the chat; `scripts/push_file_feishu.py` uploads one self-contained HTML file
+  + a short TOP-5 text intro, which reads far better on mobile. There's also
+  an older `scripts/push_feishu.py` that posts the whole report as a stream of
+  chat cards — keep it only as a manual fallback, the workflow should call
+  `push_file_feishu.py`.
+- On any step failure, `scripts/notify_failure.py` posts a Feishu alert so a
+  broken run doesn't fail silently.
+
+**Two different "top" lists — don't conflate them**: the rendered HTML report
+has its own 🏆 "今日重点 TOP 8" block (built by `render_html.py`, ranked across
+categories, GitHub items only eligible if 🆕); the Feishu text intro sent
+alongside the file is a separate TOP 5 (built by `push_file_feishu.py`). They
+use different ranking cuts and live in different scripts — a change to one
+doesn't change the other.
 
 ## 5. (Optional) on-time local trigger
 
@@ -159,7 +213,7 @@ HTML with your local `lark-cli im +messages-send --file out.html`.
 | Feishu push fails, log shows auth error | `FEISHU_APP_SECRET` is the encrypted object, not plaintext | Re-set the secret with the console plaintext |
 | File upload fails | Missing message-send permission / wrong file_type | Grant the bot `im:message` send; upload as `file_type=stream` |
 | Report empty or very short | Few items cleared the threshold, or an RSS feed 404'd | Lower `ai_score_threshold` temporarily or widen the time window |
-| Too many messages in chat | Used the per-card pusher | Use the single-HTML-file pusher instead |
+| Too many messages in chat | Workflow called `push_feishu.py` (the old per-card pusher) instead of `push_file_feishu.py` | Use `push_file_feishu.py` (single HTML file + TOP5 text intro) |
 | Schedule silently stopped | GitHub disables cron on repos inactive 60 days; cron only runs on the default branch | Push any commit / run manually; keep work on `main` |
 
 ## Cost

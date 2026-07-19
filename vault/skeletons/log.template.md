@@ -11,7 +11,11 @@ tags:
 > Vault 时间线。每次 ingest / synthesis / 架构变更 / bugfix 都在顶部追加一条。
 > 新的在最上面（reverse chronological）。
 >
-> 参考规则 [[note-generation-rules.md|note-generation rules §6.5]]。
+> 每条固定带一行 `Pages updated：`，列出本次连带更新的 `index` / `sources/_index` /
+> `notes-graph` / `最新笔记`，方便回溯"这次操作动了哪些页面、没漏哪一个"。
+>
+> 参考规则 [[note-generation-rules.md|note-generation rules §6.5]]（写 log）和
+> [[note-generation-rules.md|§12]]（刷新最新笔记）。
 
 ---
 
@@ -23,6 +27,7 @@ tags:
   - `.raw/wechat/2026-MM-DD_<slug>_<wxid>.html`
   - `.raw/wechat/2026-MM-DD_<slug>_<wxid>.md`
 - Output：[[<note title>]]（`wiki/sources/<domain>/<title>.md`）+ 1 张配图 `_attachments/<slug>/<name>.png`
+- Pages updated：[[index]]（<旧计数>→<新计数>、<domain> <旧>→<新>）, [[sources/_index]], [[notes-graph]]（<变动摘要，如"节点+1 关联簇+3 关键词倒排">）, [[最新笔记]]
 - 内容：2-3 句关键事实总结。
 - 外部洞见：3 处 `[!insight]`
   - 观察 1：……
@@ -37,6 +42,7 @@ tags:
 - 合并来源：[[A]] + [[B]] + [[C]]
 - 合并视角：……
 - Output：[[<synthesis title>]]（`wiki/sources/synthesis/<title>.md`）
+- Pages updated：[[index]], [[sources/_index]], [[notes-graph]]（新增 synthesis 节点 + 关联三源）, [[最新笔记]]
 - 外部洞见：N 处
 - 跨笔记关联：……
 - YAML 校验：通过
@@ -53,6 +59,7 @@ tags:
 - 触发：……
 - 改前 → 改后：……
 - 影响的笔记：N 个，列表 …… 或 wiki-lint 跑出来的
+- Pages updated：[[index]], [[sources/_index]], [[notes-graph]], [[最新笔记]]（架构变更通常牵动全部四份）
 - 通过校验：是 / 否
 
 ## [2026-MM-DD] init | Vault scaffolded

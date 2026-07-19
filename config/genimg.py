@@ -14,8 +14,10 @@ sidecar NEVER contains the API key. Use --prompt-file to pass long Chinese
 prompts from a file and avoid PowerShell quoting issues.
 
 API key resolution (first that exists, never echoed):
-    env GENIMG_KEY_FILE  >  %USERPROFILE%\\.secrets\\vectorengine_key.txt  >  legacy Desktop\\openai_api.txt
-Base URL: https://api.vectorengine.cn (中转，绕过 OpenAI org verify); override with env GENIMG_BASE_URL.
+    env GENIMG_KEY_FILE  >  ~/.secrets/vectorengine_key.txt  >  legacy ~/Desktop/openai_api.txt
+Base URL: set via env GENIMG_BASE_URL — point this at your own OpenAI-compatible
+relay/aggregator (中转，绕过 OpenAI org verify). Falls back to a placeholder host
+if unset; you must configure GENIMG_BASE_URL for a real relay to work.
 Transient failures (429/5xx, timeouts, connection errors) are retried with backoff.
 """
 import sys
@@ -31,9 +33,9 @@ from pathlib import Path
 _KEY_CANDIDATES = [
     os.environ.get("GENIMG_KEY_FILE"),
     str(Path.home() / ".secrets" / "vectorengine_key.txt"),
-    r"C:\Users\ke\Desktop\openai_api.txt",
+    str(Path.home() / "Desktop" / "openai_api.txt"),
 ]
-BASE_URL = os.environ.get("GENIMG_BASE_URL", "https://api.vectorengine.cn")
+BASE_URL = os.environ.get("GENIMG_BASE_URL", "https://api.your-relay.example")
 ENDPOINT = f"{BASE_URL}/v1/images/generations"
 
 # Disable system proxies entirely — vectorengine relay is direct, proxy intercepts TLS.

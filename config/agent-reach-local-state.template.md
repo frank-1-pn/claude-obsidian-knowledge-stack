@@ -16,14 +16,14 @@ lives outside the package, so reinstalling the skill never overwrites it.
 | Exa search | ✅ no login | general web search |
 | Jina reader | ✅ no login | any URL → markdown |
 | GitHub (gh) | ✅ logged in | `gh auth status` to confirm |
-| YouTube (yt-dlp) | ✅ no login | subtitles + metadata |
+| YouTube (yt-dlp) | ⚠️ needs cookie + EJS solver | not zero-config — needs a cookie snapshot (`yt-cookies.txt`) + `--remote-components ejs:github`; no-subtitle videos fall back to audio + `transcribe.py` |
 | V2EX | ✅ no login | community threads |
-| RSS / Atom | ✅ no login | feed fetch |
+| RSS / Atom | ✅ automated | daily scheduled task (`KnowledgeVault-RSSFetch` → `fetch_rss.py`), ~10 sources, incremental, zero-LLM, into `.raw/rss/` |
 | WeChat official accts | ✅ local MCP | wechatDownload MCP @ `http://127.0.0.1:4545` (see setup/05) |
-| Bilibili | ⚠️ region-dependent | domestic IP usually direct; overseas trips **412** → `--cookies-from-browser chrome`; search/trending needs `bili login` |
+| Bilibili | ✅ guest API, no login | `yt-dlp` 412s the playurl endpoint unconditionally (stale signing) — even domestic IP + full cookies. Fix: `pip install bilibili-api-python` → `video.Video(bvid=...).get_download_url(0)` → dash audio baseUrl → `curl -H "Referer: https://www.bilibili.com"` → `transcribe.py`. `bili-cli` demoted to metadata/search only |
 | Podcasts (Xiaoyuzhou…) | ✅ local transcription | use local whisper, not a cloud API (see below) |
-| Twitter / X | ❌ needs cookie | enable after dropping in a logged-in cookie |
-| Reddit | ❌ needs cookie | same |
+| Twitter / X | ❌ needs user-supplied token | user provides `auth_token` + `ct0` → `setx TWITTER_AUTH_TOKEN <value>` / `setx TWITTER_CT0 <value>` |
+| Reddit | ✅ logged in | `rdt login` extracts cookies from a logged-in Chrome profile (close Chrome first); re-run if the cookie expires |
 | Xiaohongshu (RED) | ❌ needs cookie | same |
 
 ## Local audio/video transcription (substitute for cloud API)
@@ -34,7 +34,9 @@ If this machine has a GPU, prefer a local whisper pipeline — offline, no key:
 python <USER_HOME_POSIX>/.claude/scripts/transcribe.py <audio_or_video_path> [--lang zh]
 ```
 
-- Download podcast/Bilibili/YouTube audio with `yt-dlp` first, then transcribe.
+- Podcast/YouTube: extract audio with `yt-dlp -x` first, then transcribe.
+- Bilibili: audio comes from `bili_audio_url.py` (guest API) + `curl` with a
+  `Referer` header, NOT `yt-dlp` (see the Bilibili row above) — then transcribe.
 - `ffmpeg` required: Windows `winget install ffmpeg` (not macOS `brew`).
 
 ## Archive landing (vault rule §8)
@@ -45,5 +47,6 @@ transcripts → `.raw/transcripts/` · social → `.raw/social/` · RSS → `.ra
 
 ## TODO (per machine)
 
-- [ ] Twitter / Reddit / Xiaohongshu: add cookies to enable.
-- [ ] Confirm Bilibili path (direct vs cookie) for your network.
+- [ ] Twitter: add a user-supplied `auth_token` + `ct0` to enable.
+- [ ] Xiaohongshu: add cookies to enable.
+- [ ] YouTube: export a cookie snapshot (`yt-cookies.txt`) if you haven't yet.

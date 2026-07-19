@@ -1,11 +1,23 @@
-# 07 — Cross-session memory (claude-mem)
+# 07 — Cross-session memory (claude-mem + file-based auto-memory)
 
-The vault holds explicit knowledge you decided to file. `claude-mem` holds
-implicit knowledge — observations from every Claude session, summarized and
-queryable, so the next session can grep "did we already solve this?" and
-"what did we decide about X last week?".
+The vault holds explicit knowledge you decided to file. This stack layers two
+more memory systems on top of that, and they're complementary rather than
+redundant:
 
-This is optional but recommended once you start running Claude Code regularly.
+- **`claude-mem`** — implicit knowledge: observations from every Claude
+  session, summarized and stored in a local SQLite, queried on demand so the
+  next session can grep "did we already solve this?" and "what did we decide
+  about X last week?".
+- **File-based auto-memory (`MEMORY.md` index)** — a lighter-weight,
+  plaintext-markdown system with no plugin, no daemon, and no database. A
+  slim index file is loaded verbatim into every session's context
+  automatically; it links out to small per-fact files you (or Claude) write
+  by hand or on request. See "File-based auto-memory" below.
+
+Both are optional but recommended once you start running Claude Code
+regularly. You can run either alone or both together — they don't conflict.
+
+## Part 1 — claude-mem
 
 ## What you'll install
 
@@ -89,9 +101,14 @@ This repo ships `config/claude-mem-autopatch.ps1` — an idempotent script that:
 3. Replaces only if found, backs up the pre-patch file, logs to
    `~/.claude-mem/logs/autopatch.log`
 
-Drop it at `~/.claude/scripts/claude-mem-autopatch.ps1`. The template at
-`config/settings-json.template.json` already wires it into the
-`SessionStart` hook chain — no extra config needed.
+Drop it at `~/.claude/scripts/claude-mem-autopatch.ps1`. **It is not wired
+into the `SessionStart` hook chain** in `config/settings-json.template.json`
+— that chain only runs `claude-agent-sdk-autopatch.ps1` (the Windows
+console-flash fix from `setup/02-claude-code.md`). Run
+`claude-mem-autopatch.ps1` manually after a `claude-mem` plugin update, or
+schedule it (e.g. a Windows Scheduled Task alongside `claude-mem-start.ps1`,
+or your own SessionStart entry if you'd rather have it re-checked every
+session).
 
 ## Windows ghost socket
 
@@ -135,11 +152,69 @@ hop calls out to whatever provider you configured. If that bothers you, set
 `CLAUDE_MEM_PROVIDER=offline` (no summaries, observations still queryable
 locally) or uninstall the plugin entirely.
 
+## Part 2 — File-based auto-memory (MEMORY.md index)
+
+No plugin, no daemon, no SQLite — just plain markdown files that Claude Code
+reads and writes directly. This is the mechanism behind `~/.claude/CLAUDE.md`
+itself: a small, always-loaded index, plus a folder of one-fact-per-file notes
+it points to.
+
+### Where it lives
+
+```
+~/.claude/projects/<project-slug>/memory/
+  MEMORY.md              the slim index — auto-injected verbatim into every
+                          session's context for that project
+  project_<name>.md       one atomic fact about a specific project
+  feedback_<name>.md      one atomic fact from user feedback / a correction
+  reference_<name>.md     one atomic fact that's a durable reference/lookup
+```
+
+`<project-slug>` is derived from the project's working-directory path (the
+same slugging Claude Code uses elsewhere under `~/.claude/projects/`). The
+folder is a git repo (`git init` it yourself) so the fact history survives a
+machine loss and you can diff/revert bad entries.
+
+### How it differs from claude-mem
+
+| | `claude-mem` | File-based auto-memory |
+| --- | --- | --- |
+| Storage | SQLite (`~/.claude-mem/claude-mem.db`) | Plain `.md` files |
+| Granularity | Per-tool-use observations, summarized | One atomic fact per file |
+| Retrieval | Queried on demand (search / MCP tools) | `MEMORY.md` index loaded verbatim into every session — no query step |
+| Moving parts | Plugin + worker daemon + summarization LLM call | None — just files Claude reads/writes |
+| Best for | "Did we already solve this?" across large histories | A handful of durable, high-signal facts you want Claude to *always* know, no lookup required |
+
+They're complementary: `MEMORY.md` keeps a short list of things worth
+surfacing unconditionally every session (with a link to the fact file for
+detail); `claude-mem` is the wider, searchable net for everything else.
+
+### Setting it up
+
+1. Create the folder: `~/.claude/projects/<project-slug>/memory/`.
+2. Create `MEMORY.md` with a `# Memory Index` heading and one bullet per fact
+   file, each linking to it by relative path, e.g.
+   `- [short label](reference_some_fact.md) — one-line summary`.
+3. Write one fact per file, named `project_*` / `feedback_*` / `reference_*`
+   depending on what kind of fact it is. Keep each file small — this is meant
+   to be atomic, like the vault's own Note-as-atom convention.
+4. Keep `MEMORY.md` itself short. It is injected into every session's
+   context in full, so bloat here has a real, permanent token cost — push
+   detail into the linked fact files instead.
+5. `git init` the `memory/` folder and commit as you add facts, same as any
+   other durable store in this stack.
+
+There's no autopatch or worker to babysit here — the only failure mode is
+letting `MEMORY.md` grow past "slim index" into a second vault. If that
+happens, prune aggressively; the fact files are still there to link back to
+if you regret trimming a line.
+
 ## You're done with this stack when…
 
 - A fresh Claude Code session in your vault folder reads `wiki/hot.md`,
   greets you in Chinese / English (whichever your CLAUDE.md is in),
-  recognizes `claude-mem` is alive, and is ready to ingest.
+  recognizes `claude-mem` is alive (and, if you set it up, greets you with
+  whatever's in `MEMORY.md`), and is ready to ingest.
 - Sending a message from your phone via Feishu (after `03-feishu-bot.md` is
   done) shows up in the session within a few seconds.
 - Saying "ingest this WeChat URL" produces a properly-formed source note,

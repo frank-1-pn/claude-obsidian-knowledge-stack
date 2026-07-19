@@ -8,7 +8,7 @@
 #
 # Responsibilities:
 #   1. NDJSON log rotation when > $MaxLogBytes (kills daemon, rotates, restarts)
-#   2. ERR  log rotation when > $MaxErrBytes (truncate-in-place, no kill)   <- B2
+#   2. ERR  log rotation when > $MaxErrBytes (kill + rotate + restart)     <- B2
 #   3. Verify daemon process alive + truly subscribing for THIS bot
 #   4. (Re)start via start-bot.ps1 if unhealthy
 #   5. Prune stale binding-<pid>.json files (PID gone)                       <- B6

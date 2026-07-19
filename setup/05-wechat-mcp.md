@@ -90,6 +90,13 @@ the WeChat PC client** — it will not run on macOS/Linux.
 
 The MCP is only up while the app is running. Quit the app = MCP unavailable.
 
+> **Key renewal:** the captured 密钥 can expire after enough time/downloads —
+> symptom is downloads suddenly failing with no config change. Fix: reopen
+> *any* article inside the WeChat client (just view it) to silently refresh
+> the session, then retry the download. To find where output landed
+> afterward, scan the app's `log<YYYYMMDD>.txt` (dated by day) for the
+> written path rather than guessing.
+
 ### Verify + register
 
 ```bash
@@ -144,8 +151,12 @@ python3 wechat-article-for-ai/main.py "https://mp.weixin.qq.com/s/XXXX"
 ```
 
 Heavier to set up (Python + a headless browser), but fully local and works on
-macOS/Linux/Windows. This is the channel `agent-reach` uses for WeChat (see
-`09-agent-reach.md`).
+macOS/Linux/Windows. In the operator's own `agent-reach` install, this script
+lives under `~/.agent-reach/tools/` (agent-reach's local tools folder) rather
+than a standalone repo clone — adjust the path above to wherever you placed
+it. This is the **cross-platform fallback** `agent-reach` uses for WeChat
+when Option B (wechatDownload, Windows-only) isn't available (see
+`09-agent-reach.md`) — its primary channel on Windows is still Option B.
 
 ---
 
@@ -203,8 +214,10 @@ See `vault/note-generation-rules.md` for the full rule set.
   entry in `wiki/log.md`.
 
 > Beyond WeChat: `09-agent-reach.md` adds Bilibili, YouTube, RSS, podcasts,
-> V2EX and the socials. Its WeChat channel uses **Option D (Camoufox)** so it
-> works cross-platform without the Windows app.
+> V2EX and the socials. Its own WeChat channel is **Option B** — the
+> wechatDownload local MCP at `http://localhost:4545` — on Windows, falling
+> back to **Option D (Camoufox)** for cross-platform use without the
+> Windows app.
 
 Move on to `06-image-generation.md` to add diagram generation, or
 `07-memory-plugins.md` to wire cross-session memory.

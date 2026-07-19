@@ -1,6 +1,8 @@
 {
   "_doc": "Merge this 'mcpServers' block into ~/.claude.json. For WeChat ingestion pick ONE: 'wechat-hosted' (any OS, zero install, 3rd-party server) or 'wechatDownload' (Windows-only local app). See setup/05-wechat-mcp.md. The others are optional add-ons described in setup/02-claude-code.md (plugins) or your own preferences.",
 
+  "_mcp_sources_note": "MCP tools in a Claude Code session can come from three different places - don't conflate them when debugging a missing tool: (1) THIS FILE - servers registered by hand in ~/.claude.json, either the top-level global 'mcpServers' (entries like wechat-hosted/wechatDownload/codegraph below) or a specific project's own 'mcpServers' block under that project's entry in .claude.json's 'projects' map (see '_github_server_example' below - it is project-scoped, not global); (2) plugin-provided MCPs - context7, playwright, and claude-mem's own search MCP are wired up automatically the moment you install those plugins via /plugins (config/enabled-plugins.md), no manual entry here needed; (3) claude.ai account-level connectors (Gmail / Google Calendar / Google Drive) - configured once in your claude.ai account settings, never in this file, and surface as mcp__claude_ai_* tools regardless of which machine or project you're in.",
+
   "mcpServers": {
     "wechat-hosted": {
       "_purpose": "WeChat article ingestion - cross-platform (macOS/Linux/Windows), zero install. Community-hosted MCP; the article URL is sent to a 3rd-party server. See setup/05-wechat-mcp.md (Option A).",
@@ -12,6 +14,19 @@
       "_purpose": "WeChat article ingestion - Windows-only, fully local. Requires the wechatDownload desktop app running. See setup/05-wechat-mcp.md (Option B).",
       "type": "http",
       "url": "http://127.0.0.1:4545/mcp"
+    },
+
+    "codegraph": {
+      "_purpose": "Code-intelligence graph over a codebase - symbol search, callers/callees, blast-radius impact - answered off a pre-built SQLite index (sub-millisecond reads; a file watcher keeps it current a second or so behind writes). Requires the codegraph binary on PATH. Optional - only useful in coding-heavy projects.",
+      "type": "stdio",
+      "command": "codegraph",
+      "args": ["serve", "--mcp"]
+    },
+
+    "_github_server_example": {
+      "_purpose": "Project-scoped example (NOT global): GitHub issues/PRs over the REST API. This kind of entry goes under one specific project's own 'mcpServers' block inside ~/.claude.json's 'projects' map (keyed by that project's absolute path) rather than the top-level global mcpServers shown here. The github@claude-plugins-official plugin (config/enabled-plugins.md) auto-registers an equivalent server for you, so you rarely need to hand-add this.",
+      "type": "sse",
+      "url": "https://api.github.com/mcp"
     },
 
     "_optional_examples_below": "Uncomment and adapt for your own setup",

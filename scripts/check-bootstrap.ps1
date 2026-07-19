@@ -27,7 +27,7 @@ function Check([string]$name, [scriptblock]$test, [string]$hint = '') {
 
 Write-Host ""
 Write-Host "=== Prereqs (setup/01) ===" -ForegroundColor Cyan
-Check "Node 20+ installed" { (node -v 2>$null) -match '^v(2\d|[3-9]\d)' } "Install Node 20 LTS from nodejs.org"
+Check "Node 22+ installed" { (node -v 2>$null) -match '^v(2\d|[3-9]\d)' } "Install Node 22 LTS from nodejs.org"
 Check "npm available" { (npm -v 2>$null).Length -gt 0 } "Comes with Node"
 Check "Python 3.12+ installed" { (python --version 2>$null) -match 'Python 3\.(1[2-9]|[2-9]\d)' } "Install from python.org; tick 'Add to PATH'"
 Check "Git installed" { (git --version 2>$null).Length -gt 0 } "Install from git-scm.com/download/win"

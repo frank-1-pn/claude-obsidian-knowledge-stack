@@ -18,13 +18,18 @@ for the architecture decisions.
 
 ```
 .raw/           original artifacts — Claude reads, NEVER modifies, see rule 8
+                (ONE canonical location, at vault root — not nested under wiki/)
 wiki/           Claude-generated knowledge base
   hot.md        current context (~500 words)
   index.md      one-line per note, by domain
   log.md        append-only timeline (newest top)
   overview.md   what this vault is
+  最新笔记.md    (optional) mobile-first "what's new" page, time-descending,
+                rebuilt by refresh-latest.py after every ingest — see rule 12
   sources/      atomic notes, one per source
   meta/         cross-source relationships (notes-graph.md)
+  <glossary>/   (optional) separate glossary/term-explainer subsystem — its
+                own _index.md, deliberately excluded from index/notes-graph/log
   _attachments/ images / PDFs referenced by notes
 ```
 
@@ -34,15 +39,19 @@ This vault is **Note-as-atom**, not Karpathy's original split LLM Wiki.
 
 - **1 source = 1 atomic note**. Claude does **not** generate entity / concept sub-pages.
 - Cross-note relationships, keywords, and groupings are **centralized** in `wiki/meta/notes-graph.md`.
-- Only two top-level folders under `wiki/`: `sources/` + `meta/` (**no `concepts/`, no `entities/`**).
+- Only two top-level folders under `wiki/` carry sources: `sources/` + `meta/` (**no `concepts/`, no `entities/`**).
 - `/save`, `/autoresearch`, `/wiki-ingest` etc. that would create derived pages are **disabled** or modified:
   - `wiki-ingest`: only "read source → update notes-graph", no new content pages
   - `save`: archive conversation to `wiki/sources/sessions/`, single file, no splitting
   - `autoresearch`: only runs with explicit "build research subpages" opt-in
+- **Exception**: an optional glossary subsystem (see the `<glossary>/` folder
+  above) intentionally reverts to entity-per-page for jargon/term explainers.
+  It's a separate rule set, not a loophole in Note-as-atom — see
+  `vault/structure.md` of claude-obsidian-knowledge-stack.
 
 ## User Ingest Rules (HARD rules, always obey)
 
-These are the **ten rules** that keep the vault citable. Full version with
+These are the **twelve rules** that keep the vault citable. Full version with
 *why* and *how* lives in
 [`vault/note-generation-rules.md` of claude-obsidian-knowledge-stack](https://github.com/<github-user>/claude-obsidian-knowledge-stack/blob/main/vault/note-generation-rules.md).
 
@@ -150,7 +159,7 @@ Same-kind nesting silently breaks YAML → Obsidian shows red raw text.
 Hard sequence: `mkdir .raw/<type>/` → save raw → only then write the note.
 Note's frontmatter gets `raw_path: [list]` pointing back.
 
-Subdir + naming:
+Subdir + naming (9 types):
 
 | Type | Subdir | Naming |
 | --- | --- | --- |
@@ -159,13 +168,19 @@ Subdir + naming:
 | Screenshots | `.raw/screenshots/` | single: `YYYY-MM-DD_<slug>.<ext>`; multi: `YYYY-MM-DD_<slug>/01.jpg 02.jpg` |
 | GitHub | `.raw/github/` | `YYYY-MM-DD_<owner>_<repo>_README.md` + `_meta.json` |
 | WebFetch | `.raw/webfetch/` | `YYYY-MM-DD_<domain>_<path-slug>.md` |
-| Transcripts | `.raw/transcripts/` | `YYYY-MM-DD_<topic>.md` |
+| Transcripts | `.raw/transcripts/` | `YYYY-MM-DD_<platform>_<slug>.md` |
+| RSS | `.raw/rss/` | `YYYY-MM-DD_<feed-slug>_<title-slug>.md` — **auto-fetched daily by a scheduled task** running a fetch script, no LLM in the loop |
+| Social | `.raw/social/` | `YYYY-MM-DD_<platform>_<slug>.md` — V2EX / 小红书 / Reddit, post + selected comments |
+| Articles (legacy) | `.raw/articles/` | kept for backward compatibility only |
+
+**Landing note**: video/audio downloads (and dictation) land in
+`transcripts/` — there's no separate `video/` folder. The legacy `web/`
+folder has been merged into `webfetch/` — don't recreate it.
 
 WeChat 专用：HTML + extracted MD pair; per-image local copy only what note
 references; preserve external links in HTML for full reading.
 
-Exception: video skip (downloader pipeline pending); pre-2026-05-03 sources
-need not be retroactively archived.
+Exception: pre-2026-05-03 sources need not be retroactively archived.
 
 ### 9. Generate diagrams on hard sections (Chinese text inside)
 
@@ -194,6 +209,29 @@ Forms (most common first):
 - Quantified concrete ("PB 级 ≈ 5 万部 4K 电影")
 - Scenario re-enactment
 - Counter-example
+
+### 11. Mobile readability: blank lines inside callouts
+
+Every callout with more than one paragraph needs a blank `>` line between
+paragraphs. Ordered list items each go on their own line — never
+`1. xxx 2. yyy 3. zzz` crammed together. Blank line before/after any list
+(blank `>` when the list is inside a callout). Ban inline enumeration
+(`①②③`, 甲乙丙丁, `a / b / c`) — always a real list instead.
+
+Obsidian's **mobile** renderer lazily merges consecutive `>` lines with no
+blank separator into one unreadable blob — this is invisible on desktop and
+only shows up on phone, which is where most reading happens.
+
+### 12. Refresh `最新笔记.md` after every ingest
+
+After writing/updating a source or synthesis note and syncing
+`index.md` / `notes-graph.md` / `log.md`, rebuild `wiki/最新笔记.md` — a
+time-descending, mobile-first entry page (newest date group on top, one
+card per note) — by running the vault's `refresh-latest.py` helper. It
+scans `wiki/sources/**` frontmatter `created:` and **regenerates the whole
+page** (not append-only like `log.md`). Linked from `index.md`'s top nav as
+"🆕 最新笔记". Same tier as rule 6.5 — don't skip, don't batch, run it as the
+last step of every ingest pass.
 
 ## How to Use
 

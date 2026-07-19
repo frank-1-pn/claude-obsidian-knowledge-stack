@@ -25,7 +25,7 @@ param(
 )
 
 $ErrorActionPreference = 'SilentlyContinue'
-$env:PATH = $env:PATH + ';$env:APPDATA\npm'
+$env:PATH = $env:PATH + ";$env:APPDATA\npm"
 $env:LARK_CLI_NO_PROXY = '1'
 
 $daemonDir = "$env:USERPROFILE\.lark-cli\daemon"

@@ -4,6 +4,8 @@
 
 > **这是一份模板。**用 `<>` 包起来的全是占位符，填进你自己的真实值（bot 别名、chat_id、open_id 等）。**不要把填好的版本提交到任何 git 仓库**。
 
+> **组件关系（一句话）**：`daemon`（每 bot 一个·常驻·活过 /compact·写 ndjson）→ `Monitor`（每 session 一个·按 offset 读 ndjson）→ `binding-<pid>.json`（让 PostCompact 路由到对的 bot）。判活只认「入站 task-notification 的 task-id 匹配本 session Monitor」或「stream-ended」，**不认心跳 ok、不认 TaskList**（详见下方「判活规则」）。
+
 ---
 
 ## 已注册的飞书 bot（可选 — 用了 [feishu-claude-code-bridge](https://github.com/<github-user>/feishu-claude-code-bridge) 才有）
@@ -27,7 +29,7 @@
 3. **问用户要不要连**（仅当有空闲 bot 时）
 4. **启 daemon + Monitor**：`ensure-bot.ps1 -Bot <bot1|...>` + `bash monitor-bot.sh <bot1|...>`
 5. **心跳确认**：`lark-cli im +messages-send --chat-id <chat_id> --text "✅ ..." --as bot`
-6. **写本 session 的 binding 文件**：`write-binding.ps1 -Bot <bot1|...> -MonitorTaskId <id>`（让 PostCompact 等 hook 路由对）
+6. **写本 session 的 binding 文件**：`write-binding.ps1 -Bot <bot1|...> -MonitorTaskId <id>`（让 PostCompact 等 hook 路由对）。**注**：较新版本的 `ensure-bot.ps1`（第 4 步）已经会顺手自动写当前 PID 的 binding 文件，本步现为**冗余保险**——跑不跑都行，只在 `ensure-bot.ps1` 版本较旧、没有这个自动写入行为时才需要手动补跑。
 
 ## 判活规则（用户问"飞书还在吗"）
 
@@ -41,6 +43,8 @@
 3. `Get-CimInstance` 看 subscribe 进程在 → 必要不充分（孤儿场景下进程在但流不到 Claude）
 
 新 session 启动 / `/compact` 完成 / 自动压缩完成后，**默认假设是孤儿，无条件重连**（不论 PostCompact hook 说什么）。
+
+**`TaskList` / `TaskGet` 不能用来判活**：这两个工具不追踪 Monitor watch，`TaskGet <monitor-task-id>` 即使在 Monitor 活着时也会返回 "Task not found"，`TaskList` 也不会列出它。同理，心跳 `messages-send` 返回 `ok=true` 只证明出站能发，不证明入站事件能到 Claude。判活只认上面 1、2 两条。
 
 ## 其他偏好
 
@@ -63,6 +67,8 @@ Path: `<USER_HOME>\Documents\<vault-name>\`
 ## Memory 系统（如果装了 claude-mem）
 
 `~/.claude-mem/` 是跨 session 持久记忆。问"上次怎么解决 X" / "之前我们讨论过 Y 吗"时可以查 [[mem-search]] skill。
+
+另外还有一份**文件型**的自动记忆索引（`memory/MEMORY.md`，每个新 session 开始时自动读取），与上面的 claude-mem SQLite 库是两套独立机制，互不替代。搭建/排查参考 `setup/07-memory-plugins.md`。
 
 ---
 

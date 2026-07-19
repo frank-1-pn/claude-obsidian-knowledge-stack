@@ -1,62 +1,98 @@
 {
-  "_comment": "Sanitized example for setup/08-daily-briefing.md. This is the Horizon-style config your fork's CI copies to its runtime path each run. No secrets here — the LLM key and Feishu credentials are GitHub Actions secrets read from env (see api_key_env). Tune sources/threshold to taste.",
+  "_comment": "Sanitized example matching the real Horizon config shape used by this fork's CI (see data/config.github.json in the private repo, copied to the runtime config path on each run). No secrets here: the AI provider key and Feishu credentials are GitHub Actions repository secrets, read at runtime via the *_env names below — never committed as literal values. Categorization (which section a rendered item lands in) is NOT configured here; it's decided in code by scripts/render_html.py (SOURCE_CAT / CATEGORIES / CAT_ORDER). Tune sources/thresholds to taste.",
 
-  "llm": {
+  "ai": {
     "provider": "deepseek",
     "model": "deepseek-chat",
     "api_key_env": "DEEPSEEK_API_KEY",
-    "base_url": "https://api.deepseek.com"
+    "temperature": 0.3,
+    "max_tokens": 4096,
+    "throttle_sec": 0,
+    "analysis_concurrency": 2,
+    "enrichment_concurrency": 2,
+    "languages": ["zh"]
   },
 
-  "languages": ["zh"],
+  "sources": {
+    "_github_note": "10 repo `releases` watchers + ~9 topic `search` queries in the real config; releases are disabled by default (repo_releases can be noisy), search entries carry per-topic min_stars/created_within_days floors. Shown here: 2 of each as a representative sample.",
+    "github": [
+      { "type": "releases", "owner": "vllm-project", "repo": "vllm", "enabled": false },
+      { "type": "releases", "owner": "ggml-org", "repo": "llama.cpp", "enabled": false },
+      { "type": "search", "query": "topic:llm", "created_within_days": 45, "min_stars": 60, "max_items": 6, "enabled": true },
+      { "type": "search", "query": "topic:agent", "created_within_days": 30, "min_stars": 60, "max_items": 4, "enabled": true }
+    ],
+
+    "hackernews": {
+      "enabled": true,
+      "fetch_top_stories": 30,
+      "min_score": 80
+    },
+
+    "ossinsight": {
+      "enabled": true,
+      "period": "past_week",
+      "languages": ["All", "Python", "TypeScript", "Rust"],
+      "keywords": ["llm", "agent", "rag", "gpt", "diffusion", "mcp", "agentic", "embedding"],
+      "min_stars": 5,
+      "max_items": 24,
+      "_comment": "keywords is a substring filter over GitHub's trending feed; real config carries ~23 keywords, shortened here."
+    },
+
+    "reddit": {
+      "enabled": true,
+      "subreddits": [
+        { "subreddit": "MachineLearning", "sort": "hot", "time_filter": "day", "fetch_limit": 15, "min_score": 50 },
+        { "subreddit": "LocalLLaMA", "sort": "hot", "time_filter": "day", "fetch_limit": 15, "min_score": 50 },
+        { "subreddit": "singularity", "sort": "hot", "time_filter": "day", "fetch_limit": 20, "min_score": 200 },
+        { "subreddit": "ClaudeAI", "sort": "hot", "time_filter": "day", "fetch_limit": 15, "min_score": 100 },
+        { "subreddit": "StableDiffusion", "sort": "hot", "time_filter": "day", "fetch_limit": 15, "min_score": 100 },
+        { "subreddit": "mlscaling", "sort": "hot", "time_filter": "day", "fetch_limit": 10, "min_score": 10 },
+        { "subreddit": "OpenAI", "sort": "hot", "time_filter": "day", "fetch_limit": 15, "min_score": 150 },
+        { "subreddit": "hardware", "sort": "hot", "time_filter": "day", "fetch_limit": 15, "min_score": 300 }
+      ],
+      "users": [],
+      "fetch_comments": 5
+    },
+
+    "_rss_note": "6 representative feeds shown below (one per category); the real config carries ~53 curated feeds total, see data/config.github.json — spanning vendor / industry+digest / hardware / supply-chain / independent-blog categories.",
+    "rss": [
+      { "name": "OpenAI News", "url": "https://openai.com/news/rss.xml", "enabled": true, "category": "ai-vendors" },
+      { "name": "Hugging Face Blog", "url": "https://huggingface.co/blog/feed.xml", "enabled": true, "category": "ai-vendors" },
+      { "name": "Simon Willison", "url": "https://simonwillison.net/atom/everything/", "enabled": true, "category": "ai-industry" },
+      { "name": "TLDR AI", "url": "https://raw.githubusercontent.com/alan-turing-institute/ai-rss-feeds/main/feeds/tldr-ai.xml", "enabled": true, "category": "ai-industry" },
+      { "name": "NVIDIA Blog", "url": "https://blogs.nvidia.com/feed/", "enabled": true, "category": "ai-hardware" },
+      { "name": "SemiAnalysis", "url": "https://semianalysis.substack.com/feed", "enabled": true, "category": "ai-supply-chain" }
+    ],
+
+    "hf_papers": {
+      "enabled": true,
+      "max_items": 5,
+      "min_upvotes": 10
+    },
+
+    "hf_orgs": {
+      "enabled": true,
+      "orgs": ["deepseek-ai", "Qwen", "zai-org", "moonshotai"],
+      "models_per_org": 10
+    }
+  },
 
   "filtering": {
     "ai_score_threshold": 6.0,
-    "_comment": "0-10. Higher = fewer, higher-signal items. ~6 is a readable daily digest; drop to ~4 on slow days."
+    "time_window_hours": 24,
+    "github_min_items": 12,
+    "github_floor_min_score": 4.0,
+    "seen_suppress_days": {
+      "ossinsight": 6,
+      "github_search": 7
+    },
+    "_comment": "ai_score_threshold: 0-10, higher = fewer/higher-signal items (~6 = a readable daily digest, drop to ~4 on slow days). time_window_hours: lookback window for time-bounded sources. github_min_items: if at-threshold GitHub items are fewer than this, top up with below-threshold ones down to github_floor_min_score (the 'quality floor'). seen_suppress_days: cross-day dedup window in days, per source, checked against the committed seen-store."
   },
 
-  "window_hours": 24,
-
-  "sources": {
-    "hackernews": true,
-    "ossinsight": true,
-    "github_releases": [
-      "vllm-project/vllm",
-      "huggingface/transformers",
-      "ggerganov/llama.cpp",
-      "ollama/ollama"
-    ],
-    "reddit": ["MachineLearning", "LocalLLaMA"],
-    "rss": [
-      "https://openai.com/blog/rss.xml",
-      "https://huggingface.co/blog/feed.xml",
-      "https://deepmind.google/blog/rss.xml",
-      "https://blogs.microsoft.com/ai/feed/",
-      "https://techcrunch.com/category/artificial-intelligence/feed/",
-      "https://venturebeat.com/category/ai/feed/",
-      "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
-      "https://www.technologyreview.com/feed/",
-      "https://importai.substack.com/feed",
-      "https://simonwillison.net/atom/everything/",
-      "https://blogs.nvidia.com/feed/",
-      "https://www.nextplatform.com/feed/",
-      "https://www.datacenterdynamics.com/en/rss/",
-      "https://blocksandfiles.com/feed/",
-      "https://semiengineering.com/feed/"
-    ]
-  },
-
-  "categories": {
-    "_comment": "How render_html.py groups items. Put GitHub (trending/releases) near the top; an 'ai-supply-chain' bucket is useful if you track hardware (HBM/DRAM, optical/CPO, power/cooling, foundry/packaging).",
-    "order": ["github", "ai-supply-chain", "models", "products", "research", "industry", "hardware", "other"]
-  },
-
-  "push": {
-    "channel": "feishu",
-    "app_id_env": "FEISHU_APP_ID",
-    "app_secret_env": "FEISHU_APP_SECRET",
-    "chat_id_env": "FEISHU_CHAT_ID",
-    "mode": "html_file",
-    "_comment": "html_file = upload one self-contained HTML report + a short TOP-5 text intro. Avoid per-card mode (spams the chat)."
+  "webhook": {
+    "enabled": false,
+    "url_env": "HORIZON_WEBHOOK_URL",
+    "platform": "feishu",
+    "_comment": "Inherited from upstream Horizon's generic card-webhook delivery path — this fork does NOT use it. Actual delivery is a CI step running scripts/push_file_feishu.py, which uploads the rendered HTML report as a file plus a short TOP5 text intro. Leave this block disabled unless you want the upstream webhook-card path instead."
   }
 }

@@ -5,23 +5,74 @@ updated: 2026-MM-DD
 tags:
   - meta
   - graph
+related:
+  - "[[index]]"
+  - "[[hot]]"
 ---
 
 > [!abstract] 这是什么
 > 全 vault 唯一的"跨笔记关系"页。entity / concept / question 都**不**单独成页——
-> 任何跨笔记的关键词、对照、群组都写在这里。
 >
-> 维护方式：每次新增 / 大改源笔记 → 顺手更新本页相关章节。
+> 任何跨笔记的关键词、对照、关系都写在这里。
+>
+> 维护方式：每次新增 / 大改源笔记 → 在它所属 domain 下加/改一条 → 按需补关键词倒排
+> → 关系值得展开时才登记到「跨笔记关系」。
 
 ---
 
-## 1. 关键词索引（按字母 / 拼音）
+## 1. 按 Domain 分组
+
+主结构（也是最常读的一节）。每个源笔记一条，归到它在 `wiki/sources/` 下所属的顶层
+domain —— 分组顺序与 `wiki/index.md` / `wiki/sources/_index.md` 保持一致，三份文件
+互为镜像视角：这份讲**关系**，那两份讲**清单**。
+
+**条目格式固定**：一个标题 bullet + 四条缩进子行。缺内容就留空着写"—"，不要连行本身
+一起省掉——保持四行齐全，方便扫读和以后补全。
+
+```markdown
+- **[[笔记标题]]** (创建日期，来源/处理方式一句话)
+  - 涉及概念：<跨笔记可复用的概念/术语，用 / 分隔>
+  - 涉及实体：<公司/产品/人名/数据集等专有名词>
+  - 关联笔记：[[相关笔记 A]]（一句话讲为什么相关）/ [[相关笔记 B]]
+  - 洞见外标：N 处 `[!insight]`（可选，一句话列出要点）
+```
+
+### 📂 <emoji 1> <Domain 1>
+
+- **[[<笔记标题 1>]]** (2026-MM-DD，<来源/处理方式>)
+  - 涉及概念：<概念 1> / <概念 2> / <概念 3>
+  - 涉及实体：<实体 1> / <实体 2>
+  - 关联笔记：[[<相关笔记 A>]]（同 domain，<一句话讲为什么相关>）
+  - 洞见外标：N 处 `[!insight]`（① … ② …）
+
+- **[[<笔记标题 2>]]** (2026-MM-DD，synthesis：综合 [[源 A]] + [[源 B]] + [[源 C]])
+  - 涉及概念：……
+  - 涉及实体：……
+  - 关联笔记：……
+  - 洞见外标：……
+
+### 📂 <emoji 2> <Domain 2>
+
+- **[[<笔记标题>]]** (2026-MM-DD)
+  - 涉及概念：……
+  - 涉及实体：……
+  - 关联笔记：……
+  - 洞见外标：……
+
+### 📂 <emoji 3> <Domain 3>
+
+…（按需追加更多 `### <emoji> <domain>` 小节，新增 domain 时在此加一个新小节）
+
+---
+
+## 2. 关键词倒排索引（次级，按字母 / 拼音）
+
+辅助检索入口，回答"哪些笔记提到 X"。**只在关键词命中 ≥ 2 篇笔记时才建条目**——单篇
+出现的关键词留在该篇自己的「涉及概念 / 涉及实体」子行里就够，不必倒排。
 
 ### A
 
-- **Agent 控制循环** → [[Anthropic Prompt Caching ...]] / [[Cline SDK 700 万 agent harness ...]] / [[Harness 工程实践复盘 OpenClacky ...]]
-- **AI 制药** → [[合成致死 RAS MAT2A SHP2 机制总结]] / [[AACR 2026 Zoldonrasib ...]] / [[AI 药物设计讨论笔记 2026-04-19]]
-- **autonomous driving** → ……
+- **<关键词 A>** → [[<笔记 A>]] / [[<笔记 B>]] / [[<笔记 C>]]
 
 ### B
 
@@ -33,52 +84,37 @@ tags:
 
 ---
 
-## 2. 主题群组
+## 3. 跨笔记关系（深挖，不是每篇都需要）
 
-### 群组 A：Coding Agent 产品对照
+比域内条目的"关联笔记"子行更深一层——只有当两三篇笔记之间的关系值得单独讲清楚时
+（互为姊妹篇 / synthesis 三角 / 同项目两个视角 / 方法论跨 domain 呼应）才在这里展开：
 
-涵盖各家 coding agent CLI 的功能/价格/工程取舍：
-- [[Claude Code 长程任务记忆管理 4 方案对比]]
-- [[cc-switch 多 Agent 模型切换桌面工具 51K Star]]
-- [[Warp Agent 十个使用技巧 vs Claude Code]]
-- [[DeepSeek-TUI 终端 Coding Agent ...]]
-- [[Cline SDK 700 万 agent harness ...]]（synthesis）
+- **[[笔记 A]]** ↔ **[[笔记 B]]**
+  - 共同主题：……
+  - 关联角度 / 关联类型：……
 
-**关键对比维度**：模型选择灵活性 / 长程记忆 / 多 agent 协作 / 价格 / 开源度
-
-### 群组 B：靶向药物机制
-
-涵盖 KRAS / RAS / 合成致死 等靶点的机制与药物：
-- [[合成致死 RAS MAT2A SHP2 机制总结]]
-- [[KRAS 靶向新局 合成致死与 RAS(ON) 分子胶整合]]（synthesis）
-- [[pan-RAS(ON) 分子胶赛道 ERAS-0015 中国分子海外授权]]
-
-**关键对比维度**：靶点验证程度 / 临床阶段 / 中国 vs 国外分子 / 授权交易
-
-### 群组 C：……
-
----
-
-## 3. 跨笔记观察（合并视角）
-
-> [!insight] 观察 1：所有 coding agent 都在解决 context budget 问题
-> [[Anthropic Prompt Caching ...]] 给出 caching 是关键技术；
-> [[Claude Code 长程任务记忆管理 4 方案对比]] 列举了 compact / hand-off / sub-agent / RAG 4 种 budget 拓展方法；
-> [[Harness 工程实践复盘 OpenClacky ...]] 给出"不做 RAG，做适合 AI 阅读的文档站"作为另一种思路。
-
-> [!insight] 观察 2：……
+- **[[笔记 C]]** ↔ **[[笔记 D]]** ↔ **[[笔记 E]]**
+  - 关联类型：synthesis 三角
+  - 角色分工：……
 
 ---
 
 ## 4. 待补 / 待整理
 
-- [ ] X 方向缺一篇 source 笔记（从 .raw/wechat/YYYY-MM-DD_xxxx 整理）
-- [ ] Y 群组 synthesis 缺最新一篇（YYYY-MM）
+- [ ] X 方向缺一篇 source 笔记（从 `.raw/<type>/YYYY-MM-DD_<slug>` 整理）
+- [ ] Y domain 缺一篇最新 synthesis（YYYY-MM）
 
 ---
 
-**维护规则**（[[note-generation-rules.md|note-generation rules]] 第 5 条）：
+## 维护规则（Claude 的）
 
-- entity / concept / question **不**单独成页 → 在此聚合
-- 关键词索引只列出现 ≥ 2 篇的关键词
-- 主题群组每组 3+ 篇，少于 3 篇直接列在某篇 `related:` 即可
+1. 每次新增 / 大改源笔记 → 在「1. 按 Domain 分组」对应 domain 下加/改一条，四条子行
+   照填（缺的写"—"，不要省行）
+2. 提取关键词 → 命中 ≥ 2 篇才加进「2. 关键词倒排索引」（次级，不是本页重点）
+3. 关系值得展开时 → 登记到「3. 跨笔记关系」
+4. 不修改任何源笔记正文
+5. entity / concept / question **不**单独成页 → 全部在本页聚合
+   （[[note-generation-rules.md|note-generation rules]] 第 5 条）
+6. domain 顺序与 `wiki/index.md` / `wiki/sources/_index.md` 保持一致；新增 domain 时
+   三份文件一起加
+7. 本文件可以被用户随意改，Claude 下次 ingest 时 merge 不覆盖
