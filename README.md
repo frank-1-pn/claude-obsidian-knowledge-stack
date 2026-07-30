@@ -23,9 +23,13 @@ private note contents. Templates use placeholders like `<APP_ID>`,
 - **Mobile-first inbox via Feishu** — your phone is the capture interface.
   Send a WeChat article link, ask a question, request a note — it lands in the
   desktop Claude Code session within seconds.
-- **WeChat article ingestion** — cross-platform: a community-hosted MCP (any
-  OS, zero install) or the Windows-only `wechatDownload` local app; both
-  bypass the referer wall. See `setup/05-wechat-mcp.md`.
+- **WeChat article ingestion** — cross-platform, five methods ranked by cost:
+  a **direct mobile-UA fetch** (`scripts/wechat-fetch/`, ~2s, nothing leaves
+  your machine — works from residential IPs), a community-hosted MCP (any OS,
+  zero install), the Windows-only `wechatDownload` local app, Exa, or a
+  self-hosted Camoufox script. Ships with the three post-fetch checks
+  (length / structure / **facts**) that keep stale article numbers out of your
+  notes. See `setup/05-wechat-mcp.md`.
 - **Image generation for diagrams** via `gpt-image-2` through a proxy, with
   hard rules that all in-image text be Chinese for cross-device readability.
 - **Long-lived memory, two ways** — the `claude-mem` plugin (observations /
@@ -91,7 +95,7 @@ setup/                  step-by-step install + config (run in order)
   02-claude-code.md      install Claude Code + first run + plugins
   03-feishu-bot.md       Feishu bridge: spec + runnable scripts (scripts/feishu-bridge/)
   04-obsidian.md         install Obsidian + create vault + sync + plugins
-  05-wechat-mcp.md       WeChat ingestion (hosted MCP any-OS / Windows local)
+  05-wechat-mcp.md       WeChat ingestion (5 methods: direct fetch / hosted MCP / Windows local / Exa / Camoufox)
   06-image-generation.md gpt-image-2 via API proxy + helper script
   07-memory-plugins.md   claude-mem + file-based auto-memory (MEMORY.md index): install + key knobs
   08-daily-briefing.md   cloud cron AI news digest → Feishu (GitHub Actions)
@@ -121,6 +125,9 @@ config/
 
 scripts/
   check-bootstrap.ps1    sanity-check whether each piece is in place
+  wechat-fetch/          runnable direct WeChat fetcher (Option 0 of setup/05)
+    wechat_fetch.py         curl + mobile UA + regex extraction; exit 3 = hit the wall
+    README.md               usage, the three post-fetch checks, Windows encoding traps
   feishu-bridge/         runnable Feishu bridge: daemon + Monitor scripts, bot registry
     feishu-bot-runtime.md   operational runbook — send/receive rules, failure symbols,
                             external watchdog, risk-op confirmation (see setup/03)
@@ -142,8 +149,9 @@ scripts/
    has context from prior work
 5. `setup/03-feishu-bot.md` — (optional, if you want mobile capture) copy the
    runnable bridge scripts from `scripts/feishu-bridge/` and fill placeholders
-6. `setup/05-wechat-mcp.md` — (optional, if you read WeChat) register a
-   cross-platform hosted MCP (any OS) or the Windows-only wechatDownload app
+6. `setup/05-wechat-mcp.md` — (optional, if you read WeChat) start with the
+   zero-dependency direct fetch in `scripts/wechat-fetch/`; escalate to the
+   hosted MCP / Windows local app / Exa / Camoufox only when it reports the wall
 7. `setup/06-image-generation.md` — (optional, if you want diagrams) drop in
    the helper script with your own API key
 8. `setup/09-agent-reach.md` — (optional) install the agent-reach skill for

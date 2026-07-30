@@ -13,6 +13,7 @@ the methods below cover macOS / Linux too.
 
 | Method | OS | Install | API key | Privacy | Best for |
 | --- | --- | --- | --- | --- | --- |
+| **0. Direct fetch** (mobile UA + regex) | ✅ any | none (curl + Python) | none | fully local, nothing leaves your machine | **try first** — costs ~2s; works from residential IPs |
 | **A. Hosted MCP** (`changfengbox.top`) | ✅ any | none | none | article URL sent to a 3rd-party community server | fastest start, macOS/Linux, "just works" |
 | **B. wechatDownload local MCP** | 🪟 Windows only | desktop app + WeChat PC client | none | fully local | Windows users who want everything offline |
 | **C. Exa crawling** | ✅ any | none (cloud API) | Exa key | URL sent to Exa | macOS/Linux, already using Exa |
@@ -24,6 +25,38 @@ the methods below cover macOS / Linux too.
 
 Whichever method delivers the article body, the **vault note-generation flow
 at the bottom of this page is identical** — only the fetch differs.
+
+---
+
+## Option 0 — Direct fetch with a mobile UA (try this first)
+
+> **This corrects earlier guidance in this file.** A previous revision said
+> never to fall back to raw `curl`. That is **network-dependent, not
+> universal**: from a **residential** connection a direct fetch with a
+> **mobile** User-Agent generally returns the full article; from
+> **datacenter / cloud IPs** it usually gets the
+> `环境异常 / 完成验证后即可继续访问` stub. Verified working 2026-07-30 from a
+> residential connection on two articles (1,826 and 4,927 body chars, metadata
+> fully parsed).
+>
+> Because it costs ~2 seconds and leaks nothing to a third party, **try it
+> first and let it tell you when to escalate** to A–D.
+
+```bash
+python scripts/wechat-fetch/wechat_fetch.py \
+  "https://mp.weixin.qq.com/s/XXXXXXXX" --outdir vault/.raw/wechat --slug some-slug
+```
+
+Exit code `0` = usable; **exit code `3` = you hit the wall, switch to A–D**.
+Full flags, the three post-fetch checks, and the Windows encoding traps are in
+[`scripts/wechat-fetch/README.md`](../scripts/wechat-fetch/README.md).
+
+Why it works without a browser: WeChat articles are **server-rendered static
+HTML** — the body ships in the page inside `id="js_content"`, and the metadata
+sits in inline JS vars (`msg_title` / `author` / `nickname` / `ct`). No JS
+execution needed, so a headless browser buys you nothing but latency and a
+bigger fingerprint. A healthy page is **2–4 MB**; under 100 KB means you didn't
+get the article.
 
 ---
 
@@ -186,7 +219,10 @@ See `vault/note-generation-rules.md` for the full rule set.
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| `curl`/`WebFetch` returns "环境异常 / 完成验证" stub | Hit the referer/CAPTCHA wall | Don't scrape raw — use one of A–D |
+| `curl`/`WebFetch` returns "环境异常 / 完成验证" stub | Hit the referer/CAPTCHA wall — **common from datacenter IPs, rarer from residential** | Retry from a residential network, or use A–D. Option 0 reports this as exit code `3` |
+| Option 0 succeeded but the note came out thin | Body was truncated by a drifted container match, and nobody checked | Run the **three checks** (length / structure / facts) in `scripts/wechat-fetch/README.md` — never publish an unverified body |
+| A figure in the article disagrees with reality | WeChat articles routinely carry stale or miscopied numbers | Verify against a primary source (`gh api` for repos, official changelog for specs) and record *article's figure vs. measured* |
+| Python crashes with `'gbk' codec can't encode character` | `print()`-ing CJK on a Windows console | Write CJK to a UTF-8 file; keep stdout ASCII-only (see Option 0's README) |
 | Hosted MCP returns nothing / times out | Community server down or rate-limited | Retry later, or switch to D (Camoufox) / B (Windows) |
 | Local MCP "connection refused" (Option B) | Desktop app not running | Start it from the tray; it's Windows-only |
 | Article Markdown < 500 chars | Anti-scraping wall or cookie expired | Wait + retry; Option B may need a cookie refresh |
@@ -197,8 +233,18 @@ See `vault/note-generation-rules.md` for the full rule set.
 
 - **Don't tell macOS/Linux users to install wechatDownload.** It's a Windows
   desktop app — point them to Option A or D instead.
-- **Don't fall back to raw `curl` on `mp.weixin.qq.com`** — you'll get a
-  content-less stub and waste an hour. Use A–D.
+- **Don't assume raw `curl` can't work — but don't assume it will either.**
+  With a **mobile** UA it usually succeeds from residential networks and
+  usually fails from datacenter IPs. Run Option 0 first (it's ~2s) and treat
+  its exit code `3` as the signal to escalate to A–D. What you must not do is
+  retry a bare **desktop**-UA `curl` over and over expecting a different
+  answer.
+- **Don't publish a body you haven't length-checked.** A truncated article
+  produces a note that reads as complete but isn't — the hardest kind of error
+  to notice later. Under ~500 chars, assume failure.
+- **Don't repeat an article's numbers without checking them.** Star counts,
+  version numbers and "only N lines" claims go stale fast; verify against a
+  primary source and note the delta.
 - **Don't hardcode Option B's output path** in scripts — resolve at runtime
   from the latest `log<YYYYMMDD>.txt`.
 - **Don't fully localize every image** in 30-image articles — per vault §7,
