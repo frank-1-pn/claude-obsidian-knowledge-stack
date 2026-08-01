@@ -47,8 +47,14 @@ python scripts/wechat-fetch/wechat_fetch.py \
   "https://mp.weixin.qq.com/s/XXXXXXXX" --outdir vault/.raw/wechat --slug some-slug
 ```
 
-Exit code `0` = usable; **exit code `3` = you hit the wall, switch to A–D**.
-Full flags, the three post-fetch checks, and the Windows encoding traps are in
+Add `--json` when an agent is the caller: it returns a machine-readable envelope
+(paths, char count, parsed metadata, warning codes) instead of prose.
+
+Exit code `0` = usable. **`4` = the wall was positively identified, switch to
+A–D** — retrying is pointless. **`3` = the body came out too short**, which can
+also be a drifted container match, so open the HTML once before escalating. The
+codes are an append-only contract, safe to branch on; the full table, all flags,
+the three post-fetch checks and the Windows encoding traps are in
 [`scripts/wechat-fetch/README.md`](../scripts/wechat-fetch/README.md).
 
 Why it works without a browser: WeChat articles are **server-rendered static
@@ -219,7 +225,7 @@ See `vault/note-generation-rules.md` for the full rule set.
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| `curl`/`WebFetch` returns "环境异常 / 完成验证" stub | Hit the referer/CAPTCHA wall — **common from datacenter IPs, rarer from residential** | Retry from a residential network, or use A–D. Option 0 reports this as exit code `3` |
+| `curl`/`WebFetch` returns "环境异常 / 完成验证" stub | Hit the referer/CAPTCHA wall — **common from datacenter IPs, rarer from residential** | Retry from a residential network, or use A–D. Option 0 reports this as exit code `4` |
 | Option 0 succeeded but the note came out thin | Body was truncated by a drifted container match, and nobody checked | Run the **three checks** (length / structure / facts) in `scripts/wechat-fetch/README.md` — never publish an unverified body |
 | A figure in the article disagrees with reality | WeChat articles routinely carry stale or miscopied numbers | Verify against a primary source (`gh api` for repos, official changelog for specs) and record *article's figure vs. measured* |
 | Python crashes with `'gbk' codec can't encode character` | `print()`-ing CJK on a Windows console | Write CJK to a UTF-8 file; keep stdout ASCII-only (see Option 0's README) |
@@ -236,7 +242,7 @@ See `vault/note-generation-rules.md` for the full rule set.
 - **Don't assume raw `curl` can't work — but don't assume it will either.**
   With a **mobile** UA it usually succeeds from residential networks and
   usually fails from datacenter IPs. Run Option 0 first (it's ~2s) and treat
-  its exit code `3` as the signal to escalate to A–D. What you must not do is
+  its exit code `4` as the signal to escalate to A–D. What you must not do is
   retry a bare **desktop**-UA `curl` over and over expecting a different
   answer.
 - **Don't publish a body you haven't length-checked.** A truncated article
