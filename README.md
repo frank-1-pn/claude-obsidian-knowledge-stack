@@ -1,201 +1,61 @@
 # claude-obsidian-knowledge-stack
 
-A reproducible personal knowledge system built on **Claude Code + Obsidian**, with a
-companion bridge to Feishu (Lark) so you can drive it from your phone.
+把当前使用的 Obsidian 笔记流程分享给 WorkBuddy 用户：一份来源一篇笔记，先归档原料，再整理、关联、验收；后续按摘要、索引和原文检索。
 
-This repo is the blueprint. It is not the data. Drop another AI into this folder
-and tell it "set this up for me from scratch on a fresh Windows machine" — by
-following the setup guides in order, that AI can recreate the working system
-without ever needing access to the original operator's notes or credentials.
+本仓库提供 **10 个 skills、项目规则、空白 vault 模板和可运行脚本**。不含个人笔记、原始资料、附件、聊天记录、密钥或本机配置。
 
-Everything here is sanitized: no real bot IDs, no chat IDs, no API keys, no
-private note contents. Templates use placeholders like `<APP_ID>`,
-`<CHAT_ID>`, `<USER_OPEN_ID>` that you fill in once for your own setup.
+微信文章和飞书内容由朋友在 WorkBuddy 中已有的连接器读取。本分享版不提供这两类连接器的安装、抓取器、bot、bridge 或事件订阅。阅读整理规范仍保留。
 
-## What this stack does
+## 给朋友的开始方式
 
-- **Persistent, growing knowledge base** in Obsidian — a Note-as-atom vault where
-  every source is one atomic page, cross-referenced via a hand-curated
-  `notes-graph.md`. No RAG, no vector store; plain markdown + grep is enough at
-  this scale and gives Claude 100% recall.
-- **Claude Code as the operator** — reads sources, files notes, maintains the
-  index, generates the cross-references, retrieves on demand.
-- **Mobile-first inbox via Feishu** — your phone is the capture interface.
-  Send a WeChat article link, ask a question, request a note — it lands in the
-  desktop Claude Code session within seconds.
-- **WeChat article ingestion** — cross-platform, five methods ranked by cost:
-  a **direct mobile-UA fetch** (`scripts/wechat-fetch/`, ~2s, nothing leaves
-  your machine — works from residential IPs), a community-hosted MCP (any OS,
-  zero install), the Windows-only `wechatDownload` local app, Exa, or a
-  self-hosted Camoufox script. Ships with the three post-fetch checks
-  (length / structure / **facts**) that keep stale article numbers out of your
-  notes. See `setup/05-wechat-mcp.md`.
-- **Image generation for diagrams** via `gpt-image-2` through a proxy, with
-  hard rules that all in-image text be Chinese for cross-device readability.
-- **Long-lived memory, two ways** — the `claude-mem` plugin (observations /
-  summaries persisted to a local SQLite, queried on demand) plus a second,
-  file-based auto-memory layer: a per-project `MEMORY.md` slim index that's
-  loaded verbatim into every session's context, linking out to one atomic
-  `.md` file per durable fact. Git-backed, no plugin or daemon required. See
-  `setup/07-memory-plugins.md`.
-- **Code intelligence for coding-heavy sessions** via an optional `codegraph`
-  MCP — a pre-built symbol graph (search, callers/callees, blast-radius
-  impact) so Claude reads code structure instead of re-grepping the repo
-  every time.
-- **Multi-platform source fetching** via the `agent-reach` skill — Bilibili &
-  YouTube subtitles, RSS, podcasts (local GPU transcription), V2EX, web/code
-  search, and login-gated socials — each archived into `.raw/` ready to ingest.
-- **Automated AI daily briefing** — a cloud cron (GitHub Actions) that fetches
-  AI news, summarizes with an LLM, and pushes a categorized HTML report to your
-  Feishu chat every morning. The one proactive, scheduled piece of the stack.
+1. 下载本仓库，或 `git clone https://github.com/frank-1-pn/claude-obsidian-knowledge-stack.git`。
+2. 按 [WorkBuddy 上手](setup/00-workbuddy.md) 初始化自己的空白笔记库。
+3. 在 Obsidian 打开生成的文件夹，在 WorkBuddy 打开或授权访问同一个文件夹。
+4. 把下面这段话发给 WorkBuddy：
 
-## What this stack does NOT do
-
-- Replace your own thinking. The vault grows because you decide what to ingest.
-- Auto-generate notes from arbitrary URLs. You ask explicitly.
-- Sync notes through any cloud you don't control. The vault syncs only via
-  Obsidian Sync (paid, end-to-end encrypted, your account).
-
-## How the pieces talk to each other
-
-See `ARCHITECTURE.md` for the full picture. The short version:
-
-```
-[your phone, Feishu app]
-        │  text / image / WeChat link
-        ▼
-[Feishu bot]  ←──── feishu-claude-code-bridge (separate repo)
-        │  WebSocket event subscribe
-        ▼
-[Claude Code on desktop]
-        │       │       │       │       │
-        │       │       │       │       └── claude-mem  ──► local SQLite (cross-session memory)
-        │       │       │       │
-        │       │       │       └── file-based auto-memory ──► MEMORY.md index + per-fact .md (git-backed)
-        │       │       │
-        │       │       └── MCP servers (WeChat hosted/local, codegraph, …) ──► e.g. WeChat → .raw/wechat/
-        │       │
-        │       └── agent-reach skill ──► Bilibili/YouTube/RSS/podcasts/V2EX/… → .raw/{transcripts,social,rss}/
-        │
-        └── Obsidian vault (this repo's vault/ describes the layout)
-                │
-                └── Obsidian Sync (your paid account) ──► your phone's Obsidian app
-
-[GitHub Actions cron]  ──► AI daily briefing: fetch news → LLM summarize
-        │                  → render HTML → push to your Feishu chat (08:00 daily)
-        ▼
-   reports/ archive (in your private briefing repo)
+```text
+请先完整读取当前笔记库的 AGENTS.md 和 skills/wiki/SKILL.md，再读取 wiki/hot.md。
+以后根据我的任务按需读取对应 SKILL.md。微信文章与飞书内容用我已配置的连接器读取。
+整理时先保存实际取得的原料，再按一份来源一篇笔记处理，完成索引、关系、日志与检查。
+如果没有子 agent 能力，请说明改为串行执行。只有我明确说“同步”才提交和推送 Git。
 ```
 
-## Repo layout
+不依赖 WorkBuddy 自动加载 AGENTS.md 或识别 `/wiki`。用自然语言即可：“整理这篇文章”“从库里查一下”“保存这次讨论”“检查笔记库”。
 
-```
-setup/                  step-by-step install + config (run in order)
-  01-prereqs.md          Windows tools, Node, Python, Git
-  02-claude-code.md      install Claude Code + first run + plugins
-  03-feishu-bot.md       Feishu bridge: spec + runnable scripts (scripts/feishu-bridge/)
-  04-obsidian.md         install Obsidian + create vault + sync + plugins
-  05-wechat-mcp.md       WeChat ingestion (5 methods: direct fetch / hosted MCP / Windows local / Exa / Camoufox)
-  06-image-generation.md gpt-image-2 via API proxy + helper script
-  07-memory-plugins.md   claude-mem + file-based auto-memory (MEMORY.md index): install + key knobs
-  08-daily-briefing.md   cloud cron AI news digest → Feishu (GitHub Actions)
-  09-agent-reach.md      multi-platform fetch (Bilibili/RSS/podcasts/social)
+## 保留的系统
 
-vault/
-  structure.md           folder layout you should end up with
-  conventions.md         frontmatter, wikilinks, callouts, file naming
-  note-generation-rules.md  the ten rules that keep the vault coherent
-  skeletons/             starter templates for each kind of page
+| 能力 | 文件入口 |
+|---|---|
+| 架构、初始化与任务路由 | skills/wiki/SKILL.md |
+| 来源入库、阅读讲解、摘要与溯源 | skills/wiki-ingest/SKILL.md |
+| 有引用的只读检索 | skills/wiki-query/SKILL.md |
+| 结构与链接检查 | skills/wiki-lint/SKILL.md |
+| 单文件会话保存 | skills/save/SKILL.md |
+| 明确发起的研究与综述 | skills/autoresearch/SKILL.md |
+| Canvas、Markdown、Bases、网页清理 | skills/canvas、obsidian-markdown、obsidian-bases、defuddle |
 
-config/
-  global-claude-md.template.md       ~/.claude/CLAUDE.md skeleton (with placeholders)
-  vault-claude-md.template.md        vault/CLAUDE.md skeleton (the rules)
-  settings-json.template.json        ~/.claude/settings.json hooks fragment
-  mcp-config.example.json            ~/.claude.json mcpServers block (WeChat, codegraph, github-server example)
-  enabled-plugins.md                 which Claude Code plugins to enable + URLs
-  daily-briefing-config.example.json sanitized Horizon-style config for setup/08
-  agent-reach-local-state.template.md  per-machine channel/cookie state for setup/09
-  claude-agent-sdk-autopatch.ps1      Windows console-flash fix for claude_agent_sdk (setup/02; wired to SessionStart)
-  claude-mem-autopatch.ps1            re-applies claude-mem URL/truncation patches after plugin upgrades (setup/07; run manually / scheduled, not SessionStart)
-  claude-mem-start.ps1                idempotent claude-mem worker autostart (setup/07)
-  genimg.py / genimg.ps1              gpt-image-2 image-generation helper + wrapper (setup/06)
-  editimg.py                          image-edit helper (setup/06)
-  genimg_edit.py                      image-edit variant helper (setup/06)
-  bili_audio_url.py                   Bilibili audio-URL resolver helper (setup/09 / agent-reach)
-
-scripts/
-  check-bootstrap.ps1    sanity-check whether each piece is in place
-  wechat-fetch/          runnable direct WeChat fetcher (Option 0 of setup/05)
-    wechat_fetch.py         curl + mobile UA + regex extraction; exit 3 = hit the wall
-    README.md               usage, the three post-fetch checks, Windows encoding traps
-  feishu-bridge/         runnable Feishu bridge: daemon + Monitor scripts, bot registry
-    feishu-bot-runtime.md   operational runbook — send/receive rules, failure symbols,
-                            external watchdog, risk-op confirmation (see setup/03)
-    feishu-watchdog.ps1     external watchdog that restarts the bridge daemon if it dies
-
-.gitignore               excludes ~/.claude/settings.local.json patterns,
-                         vault contents, anything with real IDs
+```text
+skills/                当前 10 个技能与必要参考文件
+scripts/               初始化、检查、latest、lint、provenance、集成锁
+config/                新 vault 的 AGENTS.md 与 Claude 兼容入口
+vault/skeletons/       空白入口、元数据、源笔记与综述模板
+setup/                 WorkBuddy 优先的安装与可选能力说明
+ARCHITECTURE.md         数据流与协作边界
+CHANGELOG.md            分享仓库变更与实际验证
 ```
 
-## Bootstrap order (90 minutes on a fresh Win 11 machine)
+快速初始化（路径按自己电脑替换）：
 
-1. `setup/01-prereqs.md` — install Node 22+, Python 3.12+, Git, PowerShell 7
-2. `setup/02-claude-code.md` — install Claude Code, sign in, install plugins
-3. `setup/04-obsidian.md` — install Obsidian, create the vault, paste the
-   vault `CLAUDE.md` from `config/vault-claude-md.template.md`, enable Sync,
-   verify cross-device propagation
-4. `setup/07-memory-plugins.md` — install `claude-mem` (and, optionally, the
-   file-based `MEMORY.md` auto-memory index) so your second session onwards
-   has context from prior work
-5. `setup/03-feishu-bot.md` — (optional, if you want mobile capture) copy the
-   runnable bridge scripts from `scripts/feishu-bridge/` and fill placeholders
-6. `setup/05-wechat-mcp.md` — (optional, if you read WeChat) start with the
-   zero-dependency direct fetch in `scripts/wechat-fetch/`; escalate to the
-   hosted MCP / Windows local app / Exa / Camoufox only when it reports the wall
-7. `setup/06-image-generation.md` — (optional, if you want diagrams) drop in
-   the helper script with your own API key
-8. `setup/09-agent-reach.md` — (optional) install the agent-reach skill for
-   Bilibili / YouTube / RSS / podcast / social fetching beyond WeChat
-9. `setup/08-daily-briefing.md` — (optional) fork the briefing engine, set the
-   four CI secrets, enable the daily cron → Feishu push
-10. Ingest your first source: open a Claude Code session in the vault folder
-    and say "ingest this URL: <some article>". The note-generation rules will
-    produce a properly-shaped page in `wiki/sources/`.
+```powershell
+python -m pip install -r requirements.txt
+python scripts/init_vault.py --vault "D:/my-knowledge-vault"
+python scripts/check_bootstrap.py --vault "D:/my-knowledge-vault"
+```
 
-## Why "Note-as-atom"
+`init_vault.py` 只补缺失文件，不覆盖已有文件。Git 和 Obsidian Sync 都由朋友自行选择配置，不自动创建仓库、安装插件或同步。分享包验证可运行 `python scripts/verify_share.py`。
 
-The original LLM Wiki pattern (Karpathy) splits sources into entity, concept,
-and question sub-pages. After ~3 months of running it that way, we switched to
-**Note-as-atom**: one source = one atomic page, no derived sub-pages.
-Cross-source relationships are hand-curated in a single `wiki/meta/notes-graph.md`.
+脚本在临时 vault 的归档、笔记、索引、日志、manifest 和最新笔记流程见 CHANGELOG.md，可运行 `python scripts/smoke_share.py` 重现；尚未在朋友的 WorkBuddy 环境实测。
 
-The reasoning:
+## 许可与来源
 
-1. Splitting created link rot. Updating one fact meant chasing it across N
-   derived pages, and it never stayed consistent.
-2. The derived pages were lower-quality than just re-reading the source.
-3. Search-by-grep on whole-source pages gives Claude 100% recall when the user
-   asks a specific question. RAG / vector recall caps out around 90% and
-   doesn't surface enough context anyway.
-
-If you don't agree, you can adopt the original entity/concept split — but the
-ten rules in `vault/note-generation-rules.md` assume Note-as-atom.
-
-## Placeholder legend
-
-Templates throughout this repo use several placeholder styles. Pick one per
-field and substitute consistently before saving the file in your own setup:
-
-| Placeholder | Means | Example after substitution |
-| --- | --- | --- |
-| `<USER_HOME>` | Windows-style user home | `C:\Users\you` |
-| `<USER_HOME_POSIX>` | MSYS / Git Bash style of the same path | `/c/Users/you` |
-| `<APP_ID_*>`, `<CHAT_ID_*>`, `<USER_OPEN_ID>` | Feishu bot identifiers (from your `~/.lark-cli/config.json`) | `cli_xxxxxxxx`, `oc_xxxxxxxx`, `ou_xxxxxxxx` |
-| `<your-github-user>` | Your GitHub handle | (your handle) |
-| `<your-provider>` | Your OpenAI-compatible API provider host | e.g. `api.openai.com` |
-| `<bot1>`, `<bot2>`, ... | Short name you give a bot in `bot-registry.json` | up to you |
-| `<vault-name>` | Folder name for your Obsidian vault | `knowledge-vault` |
-
-## License
-
-MIT. The mechanism is for anyone to copy. The notes are yours.
+源码与模板使用 MIT；保留 [LICENSE](LICENSE) 和 [ATTRIBUTION.md](ATTRIBUTION.md)。来源内容的权限另行判断。项目基于 AgriciDaniel/claude-obsidian，并按本地 Note-as-atom 流程适配。

@@ -1,65 +1,32 @@
 ---
 type: source
-title: "<完整描述性标题>"
-source: "<URL / 公众号文章名 / 书名 + 章节 / 对话日期 / GitHub repo + version>"
-created: 2026-MM-DD
-tags:
-  - <主题>
-  - <次主题>
-  - <格式：article|conversation|repo|paper|video-transcript>
-related:
-  - "[[相关笔记 A]]"
-  - "[[相关笔记 B]]"
-raw_path:
-  - .raw/<type>/<YYYY-MM-DD>_<slug>.<ext>
+title: "待填写标题"
+created: "YYYY-MM-DD"
+updated: "YYYY-MM-DD"
+authors: []
+url: ""
+tags: []
+status: developing
+related: []
+raw_path: []
+provenance:
+  schema: v1
+  model: unrecorded
+  derived: false
+  recorded: "YYYY-MM-DD"
+  verified: []
 ---
 
-> [!abstract] 摘要
-> 这是 X 的整理，来源 Y，涉及主题 Z。（1 句话定位）
+# 待填写标题
+
+> [!abstract] 检索摘要
 >
-> - 核心看点 1
-> - 核心看点 2
-> - 核心看点 3
->
-> 适合 [谁] 在 [什么场景] 时回头查。（可选）
+> 填写 100–200 字的主题、别名、问题、机制和适用场景；不要保留此提示作为摘要。
 
----
+## 来源信息
 
-## 一、第一节
+记录作者、原始标题、URL、日期、取得方式与实际内容覆盖。
 
-正文（只用原文 fact；外部知识开 `[!external]` callout）。
+## 阅读主体
 
-> [!insight] Claude 的洞见
-> Claude 看完后补的判断、推断、对比、反例。和正文区分开。
-
-## 二、第二节
-
-如有需要解释的复杂概念，**配图**或**类比**就放这一段：
-
-（打比方：xxx 就像 yyy。）
-
-或者：
-
-![[<note-slug>/<diagram-name>.png]]
-
-## 三、第三节
-
-继续……
-
----
-
-## 引用与外链
-
-- 原文：<URL or other locator>
-- 相关源（站内）：
-  - [[相关笔记 A]] —— 一句话讲为什么相关
-  - [[相关笔记 B]]
-- 外部参考（如有）：
-  - [外链 1](https://...)（外部补充：作者立场 / 数据来源）
-
----
-
-## Changelog（可选）
-
-- 2026-MM-DD 初稿
-- 2026-MM-DD 补 §三的类比 + 配图
+按权限保留原文或整理学习摘要；解释就地标 AI 补充。

@@ -1,59 +1,32 @@
 ---
 type: synthesis
-title: "<两三句话讲清 synthesis 视角>"
-source: "Synthesis of [[源 A]] / [[源 B]] / [[源 C]] + Claude 加 N 处 [!insight]"
-created: 2026-MM-DD
-tags:
-  - synthesis
-  - <主题>
-  - <次主题>
-related:
-  - "[[源 A]]"
-  - "[[源 B]]"
-  - "[[源 C]]"
+title: "待填写标题"
+created: "YYYY-MM-DD"
+updated: "YYYY-MM-DD"
+authors: []
+url: ""
+tags: []
+status: developing
+related: []
+raw_path: []
+provenance:
+  schema: v1
+  model: unrecorded
+  derived: false
+  recorded: "YYYY-MM-DD"
+  verified: []
 ---
 
-> [!abstract] 摘要
-> 这是 [[A]] + [[B]] + [[C]] 三篇的合并，合并视角是「X 是怎么演化到 Y」（说清楚**为什么合**）。
+# 待填写标题
+
+> [!abstract] 检索摘要
 >
-> - 三方共同点：…
-> - 三方分歧点：…
-> - Claude 加了 N 处 `[!insight]` 跨笔记观察
->
-> 适合 [谁] 在 [什么场景] 时回头查。
+> 填写 100–200 字的主题、别名、问题、机制和适用场景；不要保留此提示作为摘要。
 
----
+## 来源信息
 
-## 一、共同点
+记录作者、原始标题、URL、日期、取得方式与实际内容覆盖。
 
-> [!info] 出处：三篇共有
-> 三篇都谈 X，并且立场一致——…
+## 综合发现
 
-正文。
-
-## 二、分歧
-
-| 维度 | [[A]] | [[B]] | [[C]] |
-| --- | --- | --- | --- |
-| <比较项 1> | … | … | … |
-| <比较项 2> | … | … | … |
-| <比较项 3> | … | … | … |
-
-> [!insight] Claude 的 cross-cut 观察
-> 三家立场看似分歧，但都指向同一个上游约束：…
-
-## 三、合并启示
-
-正文。
-
----
-
-## 引用源
-
-- [[源 A]] —— 提供 X 视角，发布时间 YYYY-MM
-- [[源 B]] —— 提供 Y 反例，发布时间 YYYY-MM
-- [[源 C]] —— 提供 Z 工业实践，发布时间 YYYY-MM
-
-## Changelog
-
-- 2026-MM-DD 初稿合并
+逐条说明对应来源、比较与缺口；默认只建这一篇综述。

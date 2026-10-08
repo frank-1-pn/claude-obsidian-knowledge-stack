@@ -1,43 +1,21 @@
-# Anything containing real values for these patterns should never enter the repo.
-# This is belt-and-suspenders; the actual sanitization happens by hand
-# (or via the sister repo's sync-from-local.ps1 if you adopt that pattern).
-
-# OS / editor
-.DS_Store
-Thumbs.db
-*.swp
-.vscode/
-.idea/
-
-# Python build artifacts
-__pycache__/
-*.pyc
-
-# Local-only secret maps (mirror the sister repo's convention)
-sync-secrets.local.json
-sync-secrets*.json
-*.local.json
+# Personal data and machine state never belong in the share package.
+/wiki/
+/.raw/
+/_attachments/
+/.obsidian/
+/.local/
+/.claude/
 .env
 .env.*
-!.env.example
-
-# Any actual API keys someone forgot was here
-openai_api.txt
-api_keys.txt
-
-# Vault contents (if a user clones this into a vault by accident, don't leak)
-wiki/sources/
-wiki/_attachments/
-wiki/log.md
-wiki/hot.md
-wiki/index.md
-wiki/meta/notes-graph.md
-.raw/
-
-# Per-session runtime
-binding-*.json
-*.ndjson
+*.local.json
+*.local.md
+*cookies*
+*token*.txt
 *.log
-*.offset
-*.pid
-*.last
+vault_lint_report.md
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+.DS_Store
+Thumbs.db
