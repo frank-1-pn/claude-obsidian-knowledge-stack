@@ -7,4 +7,4 @@ python --version
 python -m pip install -r requirements.txt
 ```
 
-初始化器和检查器不需要 Node、管理员权限、API key、Claude Code、daemon 或新增连接器。网络来源由已有连接器/可用工具读取。额外工具按实际需要自行选择。
+默认初始化需要联网检查并安装缺少的 Obsidian；已安装时不会下载或重装。纯脚本环境可加 `--skip-obsidian`。初始化器和检查器不需要 Node、API key、Claude Code、daemon 或新增连接器。网络来源由已有连接器/可用工具读取。额外工具按实际需要自行选择。

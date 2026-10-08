@@ -22,11 +22,11 @@ def run(*args, cwd=None, success=True):
 def main():
     with tempfile.TemporaryDirectory(prefix='knowledge-stack-smoke-') as directory:
         vault = Path(directory) / '朋友的测试笔记库'
-        run(sys.executable, PACKAGE / 'scripts/init_vault.py', '--vault', vault)
+        run(sys.executable, PACKAGE / 'scripts/init_vault.py', '--vault', vault, '--skip-obsidian')
         agent = vault / 'AGENTS.md'
         agent.write_text(agent.read_text(encoding='utf-8') + '\n用户自定义规则。\n', encoding='utf-8')
         before = {p.relative_to(vault): p.read_bytes() for p in vault.rglob('*') if p.is_file()}
-        run(sys.executable, PACKAGE / 'scripts/init_vault.py', '--vault', vault)
+        run(sys.executable, PACKAGE / 'scripts/init_vault.py', '--vault', vault, '--skip-obsidian')
         assert all((vault / rel).read_bytes() == content for rel, content in before.items()), 'initializer overwrote an existing file'
         run(sys.executable, vault / 'scripts/check_bootstrap.py', '--vault', vault)
         run('git', 'init', '--quiet', vault)

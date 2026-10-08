@@ -4,6 +4,7 @@ import argparse
 import subprocess
 import sys
 from pathlib import Path
+from ensure_obsidian import ensure_obsidian
 
 PACKAGE = Path(__file__).resolve().parents[1]
 
@@ -11,9 +12,16 @@ PACKAGE = Path(__file__).resolve().parents[1]
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--vault', required=True, type=Path)
-    vault = parser.parse_args().vault.resolve()
+    parser.add_argument('--skip-obsidian', action='store_true', help='Skip desktop installation for headless/script-only usage.')
+    args = parser.parse_args()
+    vault = args.vault.resolve()
     if vault == PACKAGE or PACKAGE.is_relative_to(vault) or vault.is_relative_to(PACKAGE):
         parser.error('Choose your own vault outside the share checkout.')
+    if not args.skip_obsidian:
+        try:
+            ensure_obsidian()
+        except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as exc:
+            parser.exit(1, f'Obsidian setup failed: {exc}\n')
     for name in ['.raw', 'wiki/sources', 'wiki/meta', '_attachments', '_templates']:
         (vault / name).mkdir(parents=True, exist_ok=True)
     mapping = {
@@ -35,7 +43,7 @@ def main():
             rel = path.relative_to(PACKAGE).as_posix()
             mapping[rel] = rel
     for name in ['refresh-latest.py', 'vault_lint.py', 'provenance_query.py',
-                 'note_integration_lock.py', 'check_bootstrap.py']:
+                 'note_integration_lock.py', 'check_bootstrap.py', 'ensure_obsidian.py']:
         mapping['scripts/' + name] = 'scripts/' + name
     created = preserved = 0
     for source, destination in mapping.items():

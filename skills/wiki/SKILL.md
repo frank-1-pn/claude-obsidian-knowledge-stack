@@ -84,6 +84,8 @@ provenance:
 
 仅在用户明确要求搭建新 vault，或现有 vault 缺少核心结构时执行。
 
+先运行 `python scripts/ensure_obsidian.py` 检查桌面程序：已有 Obsidian 就复用，没有则自动下载安装并检查实际程序路径。默认初始化器已调用此步骤。脚本来自官方发布源，失败则说明安装停在哪一步；不要重复询问已经包含在本次搭建流程里的安装许可。纯脚本/无桌面环境显式用 `--skip-obsidian`；不安装 Obsidian 插件或配置同步账号。
+
 1. 检查现有 `AGENTS.md`、`.raw/`、`wiki/`、`_attachments/` 和 git 状态。已存在内容时只补缺失项，禁止覆盖或迁移用户文件。
 2. 若用途仍不明确，只问一个问题：“这个 vault 主要用来积累什么知识？”得到答案后直接继续。
 3. 创建最小目录：`.raw/`、`wiki/sources/`、`wiki/meta/`、`_attachments/`；`_templates/` 仅在确有模板需求时创建。

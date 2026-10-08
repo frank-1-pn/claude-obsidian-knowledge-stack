@@ -15,6 +15,7 @@
 
 ```text
 请先完整读取当前笔记库的 AGENTS.md 和 skills/wiki/SKILL.md，再读取 wiki/hot.md。
+先运行 python scripts/ensure_obsidian.py 检查 Obsidian；没有安装就自动下载安装，完成后核对程序路径。
 以后根据我的任务按需读取对应 SKILL.md。微信文章与飞书内容用我已配置的连接器读取。
 整理时先保存实际取得的原料，再按一份来源一篇笔记处理，完成索引、关系、日志与检查。
 如果没有子 agent 能力，请说明改为串行执行。只有我明确说“同步”才提交和推送 Git。
@@ -52,7 +53,7 @@ python scripts/init_vault.py --vault "D:/my-knowledge-vault"
 python scripts/check_bootstrap.py --vault "D:/my-knowledge-vault"
 ```
 
-`init_vault.py` 只补缺失文件，不覆盖已有文件。Git 和 Obsidian Sync 都由朋友自行选择配置，不自动创建仓库、安装插件或同步。分享包验证可运行 `python scripts/verify_share.py`。
+`init_vault.py` 会先检查 Obsidian，缺少时从官方源下载、校验并自动安装；已安装则复用。笔记库文件只补缺失，不覆盖已有文件。Git 和 Obsidian Sync 都由朋友自行选择配置，不自动创建仓库、安装插件或同步。纯脚本环境可加 `--skip-obsidian`。分享包验证可运行 `python scripts/verify_share.py`。
 
 脚本在临时 vault 的归档、笔记、索引、日志、manifest 和最新笔记流程见 CHANGELOG.md，可运行 `python scripts/smoke_share.py` 重现；尚未在朋友的 WorkBuddy 环境实测。
 

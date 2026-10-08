@@ -4,13 +4,15 @@
 
 ## 初始化自己的 vault
 
-在下载的分享仓库运行：
+让 AI 先检查 Obsidian 是否已经安装；有则复用，没有则自动从官方源下载安装并检查程序是否落盘。此步骤已接入默认初始化命令，无需再次询问同范围安装许可。在下载的分享仓库运行：
 
 ```powershell
 python -m pip install -r requirements.txt
 python scripts/init_vault.py --vault "D:/my-knowledge-vault"
 python scripts/check_bootstrap.py --vault "D:/my-knowledge-vault"
 ```
+
+`init_vault.py` 首先执行 `ensure_obsidian.py`：Windows 安装到当前用户，macOS 放入 `~/Applications`，Linux 使用当前用户的官方 AppImage；下载版本由官方最新稳定发布动态确定，校验 SHA-256 后才安装。安装失败就停止并报告具体问题，不把“下载完成”当成安装完成。纯脚本/无桌面环境可显式加 `--skip-obsidian`。
 
 把生成的文件夹在 Obsidian 打开，并在 WorkBuddy 中选为工作区或授予相应本地文件访问。若宿主无本地写入能力，先解决文件访问，不能只在聊天中输出笔记就声称已入库。
 
@@ -22,6 +24,7 @@ python scripts/check_bootstrap.py --vault "D:/my-knowledge-vault"
 
 ```text
 请完整读取 AGENTS.md、skills/wiki/SKILL.md 和 wiki/hot.md，遵循本地规则。
+先运行 python scripts/ensure_obsidian.py；已安装则复用，未安装则自动下载安装并核对实际程序路径。
 按任务读取 wiki-ingest、wiki-query、save、wiki-lint 或 autoresearch 的 SKILL.md。
 微信文章和飞书用我现有的连接器取得；在 .raw/ 中保存实际取得的正文和来源信息。
 先核对完整性，再生成一篇原子笔记，逐篇完成关系、索引、日志、latest、检查，manifest 最后写。

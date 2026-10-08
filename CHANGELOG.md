@@ -1,5 +1,14 @@
 # 变更记录
 
+## 2026-10-08 — 初始化前自动检查与安装 Obsidian
+
+- 触发：用户追加要求让 AI 检查 Obsidian，未安装时自动下载安装。
+- 输出：scripts/ensure_obsidian.py、scripts/test_ensure_obsidian.py、初始化器、wiki skill、规则模板及上手说明。
+- 行为：已有安装复用；未安装从官方最新稳定发布下载并核对 SHA-256，再执行当前用户安装。Windows 静默安装、macOS 用户 Applications、Linux 官方 AppImage；安装后核对程序路径，失败返回非零并停止初始化。纯脚本环境可显式跳过桌面安装。
+- 依据：Obsidian 官方下载/安装说明及 Microsoft WinGet 的 Obsidian 安装清单；未固定第三方镜像或版本。
+- 验证：安装器的 12 项隔离/模拟测试通过，覆盖已有安装不下载、默认初始化检查、失败阻止初始化、SHA-256 不符拒绝、非官方地址拒绝、安装后复查及三种平台的安装分支；临时 vault 闭环、54 份文本文件分享扫描、wiki skill 和 Git diff 校验通过。本机只读检查找到现有 Obsidian，未安装或重装软件；朋友机器上的完整安装与桌面启动仍需实机验收。
+- 原始物、ingest manifest 与笔记关系：不适用，本项为系统流程变更。
+
 ## 2026-10-08 — 同步当前笔记系统，适配 WorkBuddy
 
 - 触发：用户要求同步到 claude-obsidian-knowledge-stack，给已有微信/飞书连接器的 WorkBuddy 朋友分享。
