@@ -20,7 +20,7 @@ def main():
         rel = path.relative_to(ROOT).as_posix()
         if not path.is_file() or '.git' in path.parts or '__pycache__' in path.parts:
             continue
-        if path.suffix not in {'.md', '.py', '.ps1', '.json', '.txt'} and path.name != '.gitignore':
+        if path.suffix not in {'.md', '.html', '.py', '.ps1', '.json', '.txt'} and path.name != '.gitignore':
             continue
         count += 1
         text = path.read_text(encoding='utf-8-sig')
