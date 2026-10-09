@@ -1,0 +1,117 @@
+{
+  "data_kind": "synthetic-pipeline-demo",
+  "scope": "expected values for these exact synthetic inputs only; not a processing implementation",
+  "source_sha256": {
+    "examples/pipeline/assets.csv": "fbb7663309855682cb240b7d601e9b7fcf3f15fb7a12d3e8ecd6a0a21974f4a3",
+    "examples/pipeline/asset_updates.csv": "4f62c4ec3ccf38af44cbb84081810aea75ad2d27020936162b020372a0a3164c"
+  },
+  "phase_order_for_fixture": [
+    "discovery",
+    "preclinical",
+    "phase_1"
+  ],
+  "cases": [
+    {
+      "as_of": "2026-09-15",
+      "target": "DemoTarget-A",
+      "expected_assets": [
+        {
+          "asset_id": "DEMO-001",
+          "current_status": "preclinical",
+          "highest_phase": "preclinical",
+          "current_source_date": "2026-09-01",
+          "current_record_ids_at_latest_date": [
+            "R001",
+            "R002"
+          ]
+        },
+        {
+          "asset_id": "DEMO-002",
+          "current_status": "phase_1",
+          "highest_phase": "phase_1",
+          "current_source_date": "2026-09-01",
+          "current_record_ids_at_latest_date": [
+            "R003"
+          ]
+        },
+        {
+          "asset_id": "DEMO-003",
+          "current_status": "discovery",
+          "highest_phase": "discovery",
+          "current_source_date": "2026-09-01",
+          "current_record_ids_at_latest_date": [
+            "R004"
+          ]
+        }
+      ]
+    },
+    {
+      "as_of": "2026-10-09",
+      "target": "DemoTarget-A",
+      "expected_assets": [
+        {
+          "asset_id": "DEMO-001",
+          "current_status": "preclinical",
+          "highest_phase": "preclinical",
+          "current_source_date": "2026-09-01",
+          "current_record_ids_at_latest_date": [
+            "R001",
+            "R002"
+          ]
+        },
+        {
+          "asset_id": "DEMO-002",
+          "current_status": "discontinued",
+          "highest_phase": "phase_1",
+          "current_source_date": "2026-10-01",
+          "current_record_ids_at_latest_date": [
+            "R006"
+          ]
+        },
+        {
+          "asset_id": "DEMO-003",
+          "current_status": "discovery",
+          "highest_phase": "discovery",
+          "current_source_date": "2026-09-01",
+          "current_record_ids_at_latest_date": [
+            "R004"
+          ]
+        }
+      ]
+    },
+    {
+      "as_of": "2026-10-11",
+      "target": "DemoTarget-A",
+      "expected_assets": [
+        {
+          "asset_id": "DEMO-001",
+          "current_status": "preclinical",
+          "highest_phase": "preclinical",
+          "current_source_date": "2026-09-01",
+          "current_record_ids_at_latest_date": [
+            "R001",
+            "R002"
+          ]
+        },
+        {
+          "asset_id": "DEMO-002",
+          "current_status": "discontinued",
+          "highest_phase": "phase_1",
+          "current_source_date": "2026-10-01",
+          "current_record_ids_at_latest_date": [
+            "R006"
+          ]
+        },
+        {
+          "asset_id": "DEMO-003",
+          "current_status": "preclinical",
+          "highest_phase": "preclinical",
+          "current_source_date": "2026-10-11",
+          "current_record_ids_at_latest_date": [
+            "R007"
+          ]
+        }
+      ]
+    }
+  ]
+}

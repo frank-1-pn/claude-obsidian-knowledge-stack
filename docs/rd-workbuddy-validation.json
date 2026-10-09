@@ -1,0 +1,110 @@
+{
+  "date": "2026-10-09",
+  "status": "core-synthetic-acceptance-passed",
+  "host": "WorkBuddy Desktop 5.7.6",
+  "runtime_model_id": "deepseek-v4.1-flash (client task metadata)",
+  "scope": "real desktop-host tasks with synthetic data; not real enterprise research or all 24 scientific software/API workflows",
+  "skills": {
+    "total": 39,
+    "obsidian": 10,
+    "scientific": 24,
+    "workflow_presentation": 2,
+    "unconnected_email_templates": 3
+  },
+  "cases": {
+    "WB-01": "role and installed skill entries read in actual host",
+    "WB-02": "brief/strategy response; formal saved+read-back plan before processor, real CSV execution, stage/conflict fixes and independent CLI audit",
+    "WB-03": "actual upstream NCA and statistics, input/hash/numeric review, 13 tests",
+    "WB-04": "actual source JSON to 5-slide editable PPTX; native objects, notes and PowerPoint rendering checked",
+    "WB-05": "raw-first one source note, serial lock/checkpoints, graph/index/log/hot/latest, validate, manifest last and lock release",
+    "WB-06": "new host task reads hot/index/note/raw; explicit supplementary raw JSON read, correct citations, source library unchanged"
+  },
+  "pipeline_plan_order": {
+    "plan_write_record": 85,
+    "plan_read_record": 90,
+    "processor_write_record": 97,
+    "first_processing_record": 106
+  },
+  "pipeline_processor_sha256": "cd6269b5e76a0c6ba775f3033016f8dc54c03728b52de50ab9be2e9151936106",
+  "independent_cli_runs": [
+    {
+      "name": "case-2026-09-15",
+      "returncode": 0,
+      "result_line": "",
+      "hash_result_line": ""
+    },
+    {
+      "name": "case-2026-10-09",
+      "returncode": 0,
+      "result_line": "RESULT: PASS",
+      "hash_result_line": ""
+    },
+    {
+      "name": "case-2026-10-11",
+      "returncode": 0,
+      "result_line": "RESULT: PASS",
+      "hash_result_line": ""
+    },
+    {
+      "name": "hashcheck-2026-09-15",
+      "returncode": 0,
+      "result_line": "",
+      "hash_result_line": "HASH_RESULT: PASS"
+    },
+    {
+      "name": "hashcheck-2026-10-09",
+      "returncode": 0,
+      "result_line": "RESULT: PASS",
+      "hash_result_line": "HASH_RESULT: PASS"
+    },
+    {
+      "name": "hashcheck-2026-10-11",
+      "returncode": 0,
+      "result_line": "RESULT: PASS",
+      "hash_result_line": "HASH_RESULT: PASS"
+    },
+    {
+      "name": "unknown-phase",
+      "returncode": 3,
+      "result_line": "RESULT: ERROR",
+      "hash_result_line": ""
+    },
+    {
+      "name": "same-day-conflict",
+      "returncode": 3,
+      "result_line": "RESULT: UNRESOLVED_CONFLICT",
+      "hash_result_line": ""
+    }
+  ],
+  "independent_expected_rows_matched": 9,
+  "processor_version_drift": false,
+  "query": {
+    "report_sha256": "41b4044ee901fe525e5236e0eb9e04a720e855efe175eefaacc3d30c8ef3fecb",
+    "library_files_unchanged": 12,
+    "primary_source_read_before_validation_cross_check": true,
+    "supplementary_raw_json_read_record": 72
+  },
+  "artifacts": {
+    "analysis_sha256": "c5fc6732386bd79be3febebecc2afa290bc3e69db62e64d092f728e25f857035",
+    "pptx_sha256": "d03ca7ad21e8cfad3e278125ba91f3ba46d752c19457f913897d73cd2439a993"
+  },
+  "installation": {
+    "bootstrap_tests_passed": 6,
+    "scientific_tests_passed": 13,
+    "pinned_dependencies": 13,
+    "obsidian_existing_install_detected": true,
+    "absent_obsidian_live_install_tested": false,
+    "tested_platform": "Windows, Python 3.12.12; installer negative/other-platform branches use isolated tests"
+  },
+  "excluded_connections": {
+    "patsnap": "design-only, not connected",
+    "email": "design/templates only, not connected; no monitoring or sending"
+  },
+  "parallel_host_tasks": true,
+  "publication": "pending path-scoped Git sync; remote receipt is separate",
+  "review_notes": [
+    "First pipeline rehearsal violated plan order and had stage bug; preserved, not accepted as formal proof.",
+    "Independent reviewer narrative mistakenly listed R006 as future at 10/09; actual JSON only R007. Integrator used actual JSON, no unperformed rerun claim.",
+    "Private task IDs, histories, account screenshots and vault sources are not included."
+  ]
+}

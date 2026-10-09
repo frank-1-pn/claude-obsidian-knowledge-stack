@@ -1,0 +1,7 @@
+# Shared scientific dependencies use the same pinned versions.
+jsonschema==4.25.1
+numpy==2.3.3
+PyYAML==6.0.3
+python-pptx==1.0.2
+XlsxWriter==3.2.9
+Pillow==12.2.0

@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-09",
+  "artifact": "docs/rd-director-assistant.html",
+  "viewports": [
+    {
+      "viewport": 320,
+      "body": 320,
+      "html": 320,
+      "width": 320,
+      "noPageOverflow": true
+    },
+    {
+      "viewport": 390,
+      "body": 390,
+      "html": 390,
+      "width": 390,
+      "noPageOverflow": true
+    },
+    {
+      "viewport": 768,
+      "body": 768,
+      "html": 768,
+      "width": 768,
+      "noPageOverflow": true
+    },
+    {
+      "viewport": 1440,
+      "body": 1440,
+      "html": 1440,
+      "width": 1440,
+      "noPageOverflow": true
+    }
+  ],
+  "checks": [
+    "24 science cards match fixed catalog",
+    "10 Obsidian skills",
+    "all internal anchors resolve",
+    "offline responsive layout",
+    "seven skill filters",
+    "search, empty state and reset",
+    "four case tabs",
+    "keyboard tabs with arrows, Home and End",
+    "copy and selected-text fallback",
+    "rule accordions",
+    "print includes filtered skills and all case panels",
+    "print expands rules and restores state"
+  ],
+  "errors": [],
+  "remoteRequests": [],
+  "passed": true,
+  "artifact_sha256": "c9e3fc622174af0954ed2dbd7aa0f5e2b12b4889dd48e1e4168052e4db7aea64",
+  "scope": "offline-headless-browser; separate from WorkBuddy acceptance"
+}

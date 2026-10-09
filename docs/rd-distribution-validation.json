@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-09",
+  "scope": "final shared assets copied to fresh Windows path; separate from actual WorkBuddy business acceptance",
+  "workbuddy_verified": false,
+  "status": "prepared",
+  "created_count": 1660,
+  "repeat_created_count": 0,
+  "repeat_conflicts": [],
+  "obsidian_existing_install_detected": true,
+  "skills": 39,
+  "dependencies": {
+    "PyYAML": "6.0.3",
+    "numpy": "2.3.3",
+    "scipy": "1.16.2",
+    "jsonschema": "4.25.1",
+    "python-pptx": "1.0.2",
+    "XlsxWriter": "3.2.9",
+    "Pillow": "12.2.0",
+    "attrs": "26.1.0",
+    "jsonschema-specifications": "2025.9.1",
+    "referencing": "0.37.0",
+    "rpds-py": "2026.9.1",
+    "lxml": "6.1.3",
+    "typing-extensions": "4.16.0"
+  },
+  "check_errors": [],
+  "sealed_assets_byte_equal": true,
+  "packaged_pipeline_cases_passed": 3
+}

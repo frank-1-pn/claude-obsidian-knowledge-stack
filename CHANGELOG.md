@@ -1,5 +1,29 @@
 # 变更记录
 
+## 2026-10-09 — 核心 WorkBuddy 合成链验收与复刻收敛
+
+- 触发：用户要求真实 WorkBuddy 跑通后同步，并追加允许多任务并行、包括宿主测试。
+- 实际宿主：WorkBuddy 5.7.6；角色/39skills/13项固定依赖初始化，管线与查询并行，另开独立管线测试任务。用户的私人 vault、邮箱和凭据未进入分享包。
+- 科学与呈现：实际统计与上游 NCA、13项测试；本轮 JSON→真实5页PPT、1原生Chart/2原生Table/5份notes与PowerPoint渲染，通过数字与逐页核对。实际样例和哈希复制到 integrations/presentation/examples/workbuddy-run/。
+- 知识库：本体持锁串行 raw-first，单来源笔记、graph/index/log/hot/latest、真实校验、manifest-last及锁释放；新任务从hot/index/笔记/raw查回并引用，12个库内文件前后hash未变。未知source模型按现行词表诚实写unrecorded，首次空库不编造related。
+- 管线：保留首次先算后补计划的预演；正式轮计划Write→Read→代码→实际执行。修复历史最高阶段被旧低阶段覆盖、同日矛盾当前状态择一、固定断言与参数敏感性混淆、子进程/wrapper退出码混用。独立WorkBuddy快照实际8次CLI运行，三截点9/9资产行吻合，冲突/未知阶段child3；代码版本未漂移。
+- 复刻：已审核处理器收入examples/pipeline，实际读CSV而非复写答案；新增三截点独立预期。对vendor、脚本、封存输入和PPT/JSON证据保留字节；Windows core.autocrlf=true临时Git checkout-index测试11文件0字节差异，保护hash与来源链。
+- 文档：角色、实施、现场智慧芽/邮件设计、WorkBuddy正常打开/信任步骤、上手与HTML最终状态收敛。各项来源、许可、真实事件和限制见docs/rd-assistant-validation.md及结构化回执。
+- 发布：本条记录核心验收完成；目标仓库同步和远端读回单独记录，不将资产prepared当本体验收。
+- 原始物/ingest manifest：分享源码维护不适用；实际测试入库只发生在独立合成vault。
+
+## 2026-10-09 — 研发总监助手集成与阶段验收（尚未全部跑通）
+
+- 触发：用户要求 WorkBuddy 作为运行中台，集成角色、Superpowers、精选科学技能、PPT-master 与现有 Obsidian，并在本体跑通后同步；智慧芽与邮件连接本轮仅设计。
+- 输出：agent.md、CODEBUDDY.md、实施计划/当前验收记录、研发助手离线 HTML、隔离 bootstrap/checker、24 个科学技能、2 个研发适配、3 个未连接邮件模板、合成样例和固定上游快照。
+- 本地验证：24 skills 的 387 个来源/许可 hash、111 个 Python AST；合成统计与实际上游 NCA，在 Python 3.12.12 固定依赖环境通过 13 项测试；PPT 实际生成 5 页并由 PowerPoint 渲染，含 1 个原生图表/2 个原生表格。本体科学/PPT 任务尚未完成。
+- HTML：320/390/768/1440 自适应、目录一致、筛选/搜索/页签/键盘/复制回退/规则展开与打印状态恢复通过，离线 0 网络请求、0 浏览器错误；手机截图和打印版已检查。
+- 真实 WorkBuddy：桌面 5.7.6 的角色读取与首次 bootstrap 已执行、任务完成且实际产物已读回；新工作区发现 39 skills、13 项依赖 pin 和既有 Obsidian。首次初始化早于最后审核修复，最终版本新项目与完整业务链仍待验证。
+- 审核修复：BLQ 数值标记不再静默丢弃、schema 拒绝重复比较、bootstrap 检查补充许可 hash、Obsidian helper 的 RuntimeError 进入 partial。bootstrap 6 项测试通过；没有把异常、mock 或本地 smoke 充作真实宿主闭环。
+- 当前阻塞：系统暂时不能提供 WorkBuddy 前台输入窗口，已请求恢复；未启用旁路调试/权限入口。剩余真实调研、科学/PPT、入库与新任务查询见当前验收记录，未提前推送。
+- 来源与连接：保留用户邮件方案原件与完整许可，不分享私人 vault、凭据、账号或原始会话；不建设微信/飞书 bridge，智慧芽与邮箱保持未连接设计状态。
+- 原始物与 ingest manifest：不适用，本轮是源码/系统集成；测试笔记只在独立验证 vault 生成。
+
 ## 2026-10-08 — 单文件 HTML 知识库介绍
 
 - 触发：用户要求 HTML 版介绍，包含 10 个 skills、原料/检索笔记/分类关联三层架构与写入规则，并补充有用内容。

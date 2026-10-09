@@ -1,5 +1,17 @@
 # claude-obsidian-knowledge-stack
 
+## 药企研发总监助手
+
+本仓库提供 WorkBuddy 可复刻的研发总监助手：角色职责见 [agent.md](agent.md)，开场入口见 [CODEBUDDY.md](CODEBUDDY.md)，实施与真实宿主验收见 [实施计划](docs/rd-assistant-implementation-plan.md)。
+
+组合包含 Superpowers 的澄清/计划/执行/验证工作方法、精选 24 个生物医药与通用科学技能、PPT-master 的实际演示文稿生成，以及下方 Obsidian 10 skills。智慧芽管线 MCP 与私人邮件后台仅提供现场接入设计，通讯复用 WorkBuddy 自带连接器。
+
+先看可离线打开的 [研发总监助手 HTML 介绍](docs/rd-director-assistant.html)，复刻步骤见 [WorkBuddy 研发助手上手](setup/10-rd-director-workbuddy.md)，证据与实测范围见 [验收记录](docs/rd-assistant-validation.md)。2026-10-09 已在真实 WorkBuddy 完成角色/初始化、澄清与正式管线处理、科学分析、PPT 生成/渲染、笔记入库与新任务查回；管线与查询并行，并另开任务独立运行 8 项 CLI 验收。
+
+已验收的合成 [管线处理器与数据](examples/pipeline/README.md) 和 [实际 PPT/渲染](integrations/presentation/examples/workbuddy-run/README.md) 一起分享。24 个科学技能文件已安装并固定来源；离线样例实测统计/PK，不把安装当作全部专业软件或商业 API 都已执行。智慧芽与邮箱只提供现场设计，尚未连接。
+
+---
+
 把当前使用的 Obsidian 笔记流程分享给 WorkBuddy 用户：一份来源一篇笔记，先归档原料，再整理、关联、验收；后续按摘要、索引和原文检索。
 
 本仓库提供 **10 个 skills、项目规则、空白 vault 模板和可运行脚本**。不含个人笔记、原始资料、附件、聊天记录、密钥或本机配置。
@@ -61,4 +73,6 @@ python scripts/check_bootstrap.py --vault "D:/my-knowledge-vault"
 
 ## 许可与来源
 
-源码与模板使用 MIT；保留 [LICENSE](LICENSE) 和 [ATTRIBUTION.md](ATTRIBUTION.md)。来源内容的权限另行判断。项目基于 AgriciDaniel/claude-obsidian，并按本地 Note-as-atom 流程适配。
+本仓库自有源码与模板使用 MIT；保留 [LICENSE](LICENSE) 和 [ATTRIBUTION.md](ATTRIBUTION.md)。项目基于 AgriciDaniel/claude-obsidian，并按本地 Note-as-atom 流程适配。
+
+固定上游源码保留各自许可和署名：Superpowers 与 PPT-master 的 MIT，科学技能目录声明的 MIT、BSD、Apache、CC-BY 和 Biopython 等许可分别适用，见 [科学来源锁](integrations/scientific/upstream-lock.json) 与各 vendor 的 snapshot/许可。原始文章、数据、图片与真实企业材料的使用权限另行判断，不因代码开源自动获得转载授权。

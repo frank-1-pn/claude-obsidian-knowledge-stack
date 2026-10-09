@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Synthetic preclinical analysis report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "data_kind", "runtime", "sources", "upstream_revision", "efficacy", "pk", "citation"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "data_kind": {"const": "synthetic-preclinical-demo"},
+    "upstream_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "citation": {"type": "string"},
+    "runtime": {"type": "object", "required": ["python", "numpy", "scipy"], "additionalProperties": {"type": "string"}},
+    "sources": {
+      "type": "object", "required": ["efficacy", "pk"], "additionalProperties": false,
+      "properties": {"efficacy": {"$ref": "#/$defs/source"}, "pk": {"$ref": "#/$defs/source"}}
+    },
+    "efficacy": {
+      "type": "object", "required": ["experimental_unit", "groups", "comparisons", "analysis_plan", "limitations"], "additionalProperties": false,
+      "properties": {
+        "experimental_unit": {"type": "string"},
+        "groups": {"type": "object", "required": ["vehicle", "low", "high"], "additionalProperties": false,
+          "properties": {"vehicle": {"$ref": "#/$defs/group"}, "low": {"$ref": "#/$defs/group"}, "high": {"$ref": "#/$defs/group"}}},
+        "comparisons": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"$ref": "#/$defs/comparison"}, "allOf": [
+          {"contains": {"properties": {"contrast": {"const": "low-vehicle"}}, "required": ["contrast"]}, "minContains": 1, "maxContains": 1},
+          {"contains": {"properties": {"contrast": {"const": "high-vehicle"}}, "required": ["contrast"]}, "minContains": 1, "maxContains": 1}
+        ]},
+        "analysis_plan": {"type": "object", "required": ["primary_endpoint", "contrasts", "test", "multiplicity", "ci", "missing_data"]},
+        "limitations": {"$ref": "#/$defs/strings"}
+      }
+    },
+    "pk": {
+      "type": "object", "required": ["engine", "exit_code", "report", "conventions", "limitations"], "additionalProperties": false,
+      "properties": {
+        "engine": {"type": "string"}, "exit_code": {"enum": [0, 1]},
+        "report": {"type": "object", "required": ["scalars", "tables", "findings", "notes"], "additionalProperties": false,
+          "properties": {
+            "scalars": {"type": "object"},
+            "tables": {"type": "array", "minItems": 2, "items": {"type": "object", "required": ["title", "columns", "rows"], "properties": {"title": {"type": "string"}, "columns": {"$ref": "#/$defs/strings"}, "rows": {"type": "array", "items": {"type": "object"}}}}},
+            "findings": {"$ref": "#/$defs/strings"}, "notes": {"$ref": "#/$defs/strings"}
+          }},
+        "conventions": {"type": "object", "required": ["time_unit", "concentration_unit", "dose_unit", "dose_mg", "auc_method", "terminal_window_h", "blq"],
+          "properties": {"time_unit": {"const": "h"}, "concentration_unit": {"const": "mg/L"}, "dose_unit": {"const": "mg"}, "dose_mg": {"const": 0.125}, "terminal_window_h": {"const": [8, 24]}}},
+        "limitations": {"$ref": "#/$defs/strings"}
+      }
+    }
+  },
+  "$defs": {
+    "strings": {"type": "array", "items": {"type": "string"}},
+    "source": {"type": "object", "required": ["filename", "sha256"], "additionalProperties": false, "properties": {"filename": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}},
+    "group": {"type": "object", "required": ["n_animals", "mean_mm3", "sd_mm3", "shapiro_p_descriptive", "mean_body_weight_change_pct", "animals_with_weight_loss_ge_10pct"], "additionalProperties": false,
+      "properties": {"n_animals": {"type": "integer", "minimum": 3}, "mean_mm3": {"type": "number", "exclusiveMinimum": 0}, "sd_mm3": {"type": "number", "exclusiveMinimum": 0}, "shapiro_p_descriptive": {"type": ["number", "null"], "minimum": 0, "maximum": 1}, "mean_body_weight_change_pct": {"type": "number"}, "animals_with_weight_loss_ge_10pct": {"type": "integer", "minimum": 0}}},
+    "comparison": {"type": "object", "required": ["contrast", "mean_difference_mm3", "mean_difference_ci95_unadjusted_mm3", "relative_endpoint_reduction_pct", "welch_t", "welch_df", "p_raw", "p_holm", "reject_null_after_holm_at_0_05"], "additionalProperties": false,
+      "properties": {"contrast": {"enum": ["low-vehicle", "high-vehicle"]}, "mean_difference_mm3": {"type": "number"}, "mean_difference_ci95_unadjusted_mm3": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "number"}}, "relative_endpoint_reduction_pct": {"type": "number"}, "welch_t": {"type": "number"}, "welch_df": {"type": "number", "exclusiveMinimum": 0}, "p_raw": {"type": "number", "minimum": 0, "maximum": 1}, "p_holm": {"type": "number", "minimum": 0, "maximum": 1}, "reject_null_after_holm_at_0_05": {"type": "boolean"}}}
+  }
+}

@@ -1,0 +1,2 @@
+# Bootstrap and vault YAML parsing. Domain/demo requirements remain separately pinned.
+PyYAML==6.0.3

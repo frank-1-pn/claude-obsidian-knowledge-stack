@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-09",
+  "scope": "WB-03 and WB-04 synthetic case only",
+  "host": "WorkBuddy Desktop 5.7.6",
+  "runtime_model": "deepseek-v4.1-flash",
+  "host_execution_verified": true,
+  "input_kind": "synthetic-preclinical-demo",
+  "slides": 5,
+  "native_charts": 1,
+  "native_tables": 2,
+  "renderer": "Microsoft PowerPoint COM",
+  "visual_review": "Five rendered pages read by integrator and independent reviewer",
+  "artifact_sha256": {
+    "analysis.json": "c5fc6732386bd79be3febebecc2afa290bc3e69db62e64d092f728e25f857035",
+    "preclinical-demo.pptx": "d03ca7ad21e8cfad3e278125ba91f3ba46d752c19457f913897d73cd2439a993",
+    "powerpoint-render/slide-01.png": "2bf221a70ea8e79430c830d54268c6b8ce04f5d3aa25d926f69982826e747e08",
+    "powerpoint-render/slide-02.png": "df57fdcd946d071973caa55191695d255cf1ab628736a78185e1dc9437634597",
+    "powerpoint-render/slide-03.png": "1086320b85a6d1a14397b6f9782532acf5f4450b19314709b0116ed029f6c9b0",
+    "powerpoint-render/slide-04.png": "5da23311016e0ba31767300c14057a1c2e476265bedf20402bfd82e5d038c05c",
+    "powerpoint-render/slide-05.png": "f89c2a13119f97829c8e8ffda616e3c0802adec620694a380310b6b4ba60ac5f"
+  },
+  "limits": "Synthetic core acceptance passed; all 24 scientific software/APIs not individually executed; Patsnap/email connection remains design-only; remote Git receipt is separate.",
+  "case_acceptance_complete": true
+}

@@ -1,0 +1,3 @@
+record_id,source_id,source_date,asset_id,drug,alias,target,indication,modality,organization,country,highest_phase,dev_status
+R006,SYNTH-UPDATE,2026-10-01,DEMO-002,DemoBeta,DB-02,DemoTarget-A,DemoIndication-A,antibody,DemoOrg-B,US,phase_1,discontinued
+R007,SYNTH-UPDATE,2026-10-11,DEMO-003,DemoGamma,DG-03,DemoTarget-A,DemoIndication-B,small-molecule,DemoOrg-C,JP,preclinical,preclinical

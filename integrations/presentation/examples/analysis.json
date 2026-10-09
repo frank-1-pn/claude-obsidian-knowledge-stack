@@ -1,0 +1,407 @@
+{
+  "schema_version": "1.0",
+  "data_kind": "synthetic-preclinical-demo",
+  "runtime": {
+    "python": "3.14.2",
+    "numpy": "2.3.3",
+    "scipy": "1.16.2"
+  },
+  "sources": {
+    "efficacy": {
+      "filename": "efficacy.csv",
+      "sha256": "e7cd19c3f1e893b1ac0654161b7d593374c386fd1db25fcbdfa7e9ae376ef99b"
+    },
+    "pk": {
+      "filename": "pk.csv",
+      "sha256": "35890c2a604ff2650a5e48db5a3d8819a19d3b20db6a8ef84a1219ffed3358fd"
+    }
+  },
+  "upstream_revision": "92ace75ac21efe19a620434e0ca4e356081fe807",
+  "efficacy": {
+    "experimental_unit": "animal; one prespecified endpoint per animal",
+    "groups": {
+      "vehicle": {
+        "n_animals": 8,
+        "mean_mm3": 507.5,
+        "sd_mm3": 32.4037034920393,
+        "shapiro_p_descriptive": 0.9950759998003658,
+        "mean_body_weight_change_pct": 0.8125,
+        "animals_with_weight_loss_ge_10pct": 0
+      },
+      "low": {
+        "n_animals": 8,
+        "mean_mm3": 460.0,
+        "sd_mm3": 29.7609523657138,
+        "shapiro_p_descriptive": 0.888161226114189,
+        "mean_body_weight_change_pct": -1.0625,
+        "animals_with_weight_loss_ge_10pct": 0
+      },
+      "high": {
+        "n_animals": 8,
+        "mean_mm3": 313.75,
+        "sd_mm3": 26.692695630078276,
+        "shapiro_p_descriptive": 0.9782133905594876,
+        "mean_body_weight_change_pct": -4.5,
+        "animals_with_weight_loss_ge_10pct": 0
+      }
+    },
+    "comparisons": [
+      {
+        "contrast": "low-vehicle",
+        "mean_difference_mm3": -47.5,
+        "mean_difference_ci95_unadjusted_mm3": [
+          -80.88514791744055,
+          -14.114852082559452
+        ],
+        "relative_endpoint_reduction_pct": 9.35960591133005,
+        "welch_t": -3.0536409820462644,
+        "welch_df": 13.89987832905232,
+        "p_raw": 0.008647265431239183,
+        "p_holm": 0.008647265431239183,
+        "reject_null_after_holm_at_0_05": true
+      },
+      {
+        "contrast": "high-vehicle",
+        "mean_difference_mm3": -193.75,
+        "mean_difference_ci95_unadjusted_mm3": [
+          -225.69477724754685,
+          -161.80522275245315
+        ],
+        "relative_endpoint_reduction_pct": 38.177339901477836,
+        "welch_t": -13.053354776531044,
+        "welch_df": 13.504803493449781,
+        "p_raw": 4.8445931549198675e-09,
+        "p_holm": 9.689186309839735e-09,
+        "reject_null_after_holm_at_0_05": true
+      }
+    ],
+    "analysis_plan": {
+      "primary_endpoint": "synthetic terminal tumor_volume_mm3",
+      "contrasts": [
+        "low-vehicle",
+        "high-vehicle"
+      ],
+      "test": "two-sided independent Welch t-test, prespecified",
+      "multiplicity": "Holm family-wise correction for the 2 prespecified contrasts",
+      "ci": "95% pointwise mean-difference intervals; not simultaneous family intervals",
+      "missing_data": "fail on missing, nonfinite or duplicate records; no deletion/imputation"
+    },
+    "limitations": [
+      "Independence is a declared synthetic design assumption, not a normality-test conclusion.",
+      "Shapiro p-values are descriptive; non-rejection does not prove normality.",
+      "Endpoint reduction is not longitudinal tumor-growth inhibition (TGI).",
+      "Body weight is descriptive tolerability context, not a toxicology/NOAEL assessment.",
+      "Significance in invented data supplies no evidence about a real compound or disease."
+    ]
+  },
+  "pk": {
+    "engine": "pinned K-Dense pkpd-modeling/scripts/nca.py",
+    "exit_code": 0,
+    "report": {
+      "scalars": {},
+      "tables": [
+        {
+          "title": "per-subject parameters",
+          "columns": [
+            "id",
+            "dose",
+            "n_obs",
+            "n_blq",
+            "cmax",
+            "tmax",
+            "clast",
+            "tlast",
+            "auc_last",
+            "lambda_z",
+            "t_half",
+            "r2_adj",
+            "lambda_z_n",
+            "auc_inf_obs",
+            "auc_inf_pred",
+            "pct_auc_extrap",
+            "pct_aumc_extrap",
+            "mrt",
+            "cl_f",
+            "vz_f",
+            "span_ratio"
+          ],
+          "rows": [
+            {
+              "id": "PK01",
+              "dose": 0.125,
+              "n_obs": 8,
+              "n_blq": 0,
+              "cmax": 0.12,
+              "tmax": 1.0,
+              "clast": 0.0025,
+              "tlast": 24.0,
+              "auc_last": 0.7911885663395022,
+              "lambda_z": 0.17328679513998632,
+              "t_half": 4.0,
+              "r2_adj": 1.0,
+              "lambda_z_n": 3,
+              "auc_inf_obs": 0.8056155167483918,
+              "auc_inf_pred": 0.8056155167483918,
+              "pct_auc_extrap": 1.790798477556563,
+              "pct_aumc_extrap": 8.185207509384218,
+              "mrt": 6.513392327738043,
+              "cl_f": 0.15516086445867172,
+              "vz_f": 0.8953992387782813,
+              "span_ratio": 4.0
+            },
+            {
+              "id": "PK02",
+              "dose": 0.125,
+              "n_obs": 8,
+              "n_blq": 0,
+              "cmax": 0.108,
+              "tmax": 1.0,
+              "clast": 0.00225,
+              "tlast": 24.0,
+              "auc_last": 0.7120697097055521,
+              "lambda_z": 0.17328679513998632,
+              "t_half": 4.0,
+              "r2_adj": 1.0,
+              "lambda_z_n": 3,
+              "auc_inf_obs": 0.7250539650735527,
+              "auc_inf_pred": 0.7250539650735527,
+              "pct_auc_extrap": 1.7907984775565566,
+              "pct_aumc_extrap": 8.185207509384204,
+              "mrt": 6.5133923277380426,
+              "cl_f": 0.17240096050963524,
+              "vz_f": 0.9948880430869792,
+              "span_ratio": 4.0
+            },
+            {
+              "id": "PK03",
+              "dose": 0.125,
+              "n_obs": 8,
+              "n_blq": 0,
+              "cmax": 0.132,
+              "tmax": 1.0,
+              "clast": 0.00275,
+              "tlast": 24.0,
+              "auc_last": 0.8703074229734525,
+              "lambda_z": 0.17328679513998632,
+              "t_half": 4.0,
+              "r2_adj": 1.0,
+              "lambda_z_n": 3,
+              "auc_inf_obs": 0.8861770684232312,
+              "auc_inf_pred": 0.8861770684232312,
+              "pct_auc_extrap": 1.7907984775565675,
+              "pct_aumc_extrap": 8.185207509384215,
+              "mrt": 6.513392327738042,
+              "cl_f": 0.14105533132606518,
+              "vz_f": 0.8139993079802555,
+              "span_ratio": 4.0
+            }
+          ]
+        },
+        {
+          "title": "lambda_z diagnostics",
+          "columns": [
+            "id",
+            "lambda_z",
+            "t_half",
+            "n_points",
+            "window_start",
+            "window_end",
+            "r2",
+            "r2_adj",
+            "clast_pred",
+            "basis"
+          ],
+          "rows": [
+            {
+              "id": "PK01",
+              "lambda_z": 0.17328679513998632,
+              "t_half": 4.0,
+              "n_points": 3,
+              "window_start": 8.0,
+              "window_end": 24.0,
+              "r2": 1.0,
+              "r2_adj": 1.0,
+              "clast_pred": 0.0025000000000000005,
+              "basis": "manual window"
+            },
+            {
+              "id": "PK02",
+              "lambda_z": 0.17328679513998632,
+              "t_half": 4.0,
+              "n_points": 3,
+              "window_start": 8.0,
+              "window_end": 24.0,
+              "r2": 1.0,
+              "r2_adj": 1.0,
+              "clast_pred": 0.0022499999999999994,
+              "basis": "manual window"
+            },
+            {
+              "id": "PK03",
+              "lambda_z": 0.17328679513998632,
+              "t_half": 4.0,
+              "n_points": 3,
+              "window_start": 8.0,
+              "window_end": 24.0,
+              "r2": 1.0,
+              "r2_adj": 1.0,
+              "clast_pred": 0.0027500000000000007,
+              "basis": "manual window"
+            }
+          ]
+        },
+        {
+          "title": "summary statistics",
+          "columns": [
+            "parameter",
+            "n",
+            "mean",
+            "sd",
+            "cv_pct",
+            "median",
+            "min",
+            "max",
+            "geo_mean",
+            "geo_cv_pct"
+          ],
+          "rows": [
+            {
+              "parameter": "cmax",
+              "n": 3,
+              "mean": 0.12,
+              "sd": 0.012000000000000004,
+              "cv_pct": 10.000000000000004,
+              "median": 0.12,
+              "min": 0.108,
+              "max": 0.132,
+              "geo_mean": 0.11959865920951157,
+              "geo_cv_pct": 10.063065735401176
+            },
+            {
+              "parameter": "tmax",
+              "n": 3,
+              "mean": 1.0,
+              "sd": 0.0,
+              "cv_pct": 0.0,
+              "median": 1.0,
+              "min": 1.0,
+              "max": 1.0,
+              "geo_mean": 1.0,
+              "geo_cv_pct": 0.0
+            },
+            {
+              "parameter": "auc_last",
+              "n": 3,
+              "mean": 0.7911885663395023,
+              "sd": 0.07911885663395024,
+              "cv_pct": 10.000000000000002,
+              "median": 0.7911885663395022,
+              "min": 0.7120697097055521,
+              "max": 0.8703074229734525,
+              "geo_mean": 0.7885424309675013,
+              "geo_cv_pct": 10.063065735401176
+            },
+            {
+              "parameter": "auc_inf_obs",
+              "n": 3,
+              "mean": 0.8056155167483919,
+              "sd": 0.08056155167483925,
+              "cv_pct": 10.000000000000007,
+              "median": 0.8056155167483918,
+              "min": 0.7250539650735527,
+              "max": 0.8861770684232312,
+              "geo_mean": 0.8029211303457123,
+              "geo_cv_pct": 10.063065735401176
+            },
+            {
+              "parameter": "t_half",
+              "n": 3,
+              "mean": 4.0,
+              "sd": 0.0,
+              "cv_pct": 0.0,
+              "median": 4.0,
+              "min": 4.0,
+              "max": 4.0,
+              "geo_mean": 4.0,
+              "geo_cv_pct": 0.0
+            },
+            {
+              "parameter": "cl_f",
+              "n": 3,
+              "mean": 0.15620571876479072,
+              "sd": 0.015698914217844216,
+              "cv_pct": 10.05015331191754,
+              "median": 0.15516086445867172,
+              "min": 0.14105533132606518,
+              "max": 0.17240096050963524,
+              "geo_mean": 0.15568154240277493,
+              "geo_cv_pct": 10.063065735401176
+            },
+            {
+              "parameter": "vz_f",
+              "n": 3,
+              "mean": 0.9014288632818387,
+              "sd": 0.0905949827577004,
+              "cv_pct": 10.050153311917548,
+              "median": 0.8953992387782813,
+              "min": 0.8139993079802555,
+              "max": 0.9948880430869792,
+              "geo_mean": 0.8984039567297133,
+              "geo_cv_pct": 10.063065735401176
+            },
+            {
+              "parameter": "mrt",
+              "n": 3,
+              "mean": 6.5133923277380426,
+              "sd": 8.881784197001252e-16,
+              "cv_pct": 1.3636187949522304e-14,
+              "median": 6.5133923277380426,
+              "min": 6.513392327738042,
+              "max": 6.513392327738043,
+              "geo_mean": 6.513392327738042,
+              "geo_cv_pct": 0.0
+            },
+            {
+              "parameter": "auc_inf_pred",
+              "n": 3,
+              "mean": 0.8056155167483919,
+              "sd": 0.08056155167483925,
+              "cv_pct": 10.000000000000007,
+              "median": 0.8056155167483918,
+              "min": 0.7250539650735527,
+              "max": 0.8861770684232312,
+              "geo_mean": 0.8029211303457123,
+              "geo_cv_pct": 10.063065735401176
+            }
+          ]
+        }
+      ],
+      "findings": [],
+      "notes": [
+        "route: extravascular (oral, SC, IM, ...)",
+        "trapezoidal rule: linup-logdown; BLQ rule: missing",
+        "AUCinf_obs uses the observed Clast; AUCinf_pred uses the value predicted by the lambda_z fit. Report which one you used - they are not interchangeable.",
+        "Exposure metrics (AUC, Cmax) are conventionally summarised as geometric mean with geometric CV%; Tmax as median and range. Arithmetic statistics are shown alongside."
+      ]
+    },
+    "conventions": {
+      "time_unit": "h",
+      "concentration_unit": "mg/L",
+      "dose_unit": "mg",
+      "dose_mg": 0.125,
+      "auc_method": "linear-up/log-down",
+      "terminal_window_h": [
+        8,
+        24
+      ],
+      "blq": "none in fixture; numeric completeness enforced"
+    },
+    "limitations": [
+      "Separate synthetic PK cohort: no animal-level exposure-response link to the efficacy cohort.",
+      "Oral clearance and volume are apparent CL/F and V/F; F is not identified.",
+      "A perfect synthetic terminal fit does not validate a real PK model or sampling design.",
+      "Dose is illustrative arithmetic; no clinical dose or species safety inference."
+    ]
+  },
+  "citation": "K-Dense Scientific Agent Skills; https://doi.org/10.48550/arXiv.2609.00065; see vendored CITATION.cff"
+}

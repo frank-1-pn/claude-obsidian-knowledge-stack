@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "verified_date": "2026-10-09",
+  "scope": "isolated-local-bootstrap",
+  "status": "prepared",
+  "python_version": "3.12.12",
+  "counts": {
+    "files_copied_in_proof": 1649,
+    "skills": 39,
+    "obsidian_skills": 10,
+    "scientific_skills": 24,
+    "workflow_presentation_skills": 2,
+    "unconnected_email_templates": 3,
+    "direct_dependency_pins": 7,
+    "transitive_dependency_pins": 6
+  },
+  "dependency_pins": {
+    "PyYAML": "6.0.3",
+    "numpy": "2.3.3",
+    "scipy": "1.16.2",
+    "jsonschema": "4.25.1",
+    "python-pptx": "1.0.2",
+    "XlsxWriter": "3.2.9",
+    "Pillow": "12.2.0",
+    "attrs": "26.1.0",
+    "jsonschema-specifications": "2025.9.1",
+    "referencing": "0.37.0",
+    "rpds-py": "2026.9.1",
+    "lxml": "6.1.3",
+    "typing-extensions": "4.16.0"
+  },
+  "dependency_imports_verified": true,
+  "upstream_revisions": {
+    "scientific-agent-skills": "92ace75ac21efe19a620434e0ca4e356081fe807",
+    "superpowers": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+    "ppt-master": "b4efe3ddf237a97a42880164759162f8e2412f2f"
+  },
+  "upstream_file_sha256_verified": true,
+  "source_sha256": {
+    "scripts/bootstrap_rd_assistant.py": "d9651ce1b64977e312ae9e89e3767314d1b478fe1e71093e8f93799be8c417ed",
+    "scripts/check_rd_assistant.py": "d7d5b100733a3175b99a8d7be3e2acf9427bce9e7f2eb1b61d1af1c8da7cf987",
+    "scripts/test_rd_bootstrap.py": "4ef2e31fb1bf78d0c2548b0dd6b2f11e6c0e74d2abd7b06de4e91061ec143b1c",
+    "config/rd-project/CODEBUDDY.template.md": "fed3e552f2797c050632d175f2b81d64bc6856859bd52ca569e41bc2ba408eb3",
+    "config/rd-project/dependencies.lock.txt": "fd0374d09ea9853ad4404031a54af9b21f86390c20a1c1022ac732f3b177a050"
+  },
+  "tests": {
+    "suite": "scripts/test_rd_bootstrap.py",
+    "passed": 6,
+    "failed": 0,
+    "cases": [
+      "existing-static-conflict-stops-before-copy",
+      "workspace-containment-and-idempotence",
+      "real-pack-relocation-and-tamper-detection",
+      "existing-note-metadata-and-templates-preserved",
+      "additional-license-integrity-prechecked",
+      "obsidian-runtimeerror-retains-partial"
+    ]
+  },
+  "fresh_bootstrap_exit_code": 0,
+  "fresh_check_errors": [],
+  "obsidian_desktop_verified": false,
+  "workbuddy_verified": false,
+  "note": "Local preparation proof only. Desktop WorkBuddy acceptance is a separate integrator-owned record.",
+  "scientific_tests": {
+    "passed": 13,
+    "failed": 0,
+    "python": "3.12.12",
+    "scope": "corrected-current-share-source in pinned isolated environment"
+  },
+  "repeat_check_errors": [],
+  "obsidian_existing_install_detected": true
+}

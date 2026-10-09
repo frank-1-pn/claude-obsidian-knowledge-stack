@@ -1,0 +1,6 @@
+record_id,source_id,source_date,asset_id,drug,alias,target,indication,modality,organization,country,highest_phase,dev_status
+R001,SYNTH-BASE,2026-09-01,DEMO-001,DemoAlpha,DA-01,DemoTarget-A,DemoIndication-A,small-molecule,DemoOrg-A,CN,preclinical,preclinical
+R002,SYNTH-BASE,2026-09-01,DEMO-001,DA-01,DemoAlpha,DemoTarget-A,DemoIndication-A,small-molecule,DemoOrg-A,CN,preclinical,preclinical
+R003,SYNTH-BASE,2026-09-01,DEMO-002,DemoBeta,DB-02,DemoTarget-A,DemoIndication-A,antibody,DemoOrg-B,US,phase_1,phase_1
+R004,SYNTH-BASE,2026-09-01,DEMO-003,DemoGamma,DG-03,DemoTarget-A,DemoIndication-B,small-molecule,DemoOrg-C,JP,discovery,discovery
+R005,SYNTH-BASE,2026-09-01,DEMO-004,DemoDelta,DD-04,DemoTarget-B,DemoIndication-A,small-molecule,DemoOrg-D,CN,preclinical,preclinical

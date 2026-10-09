@@ -1,0 +1,2365 @@
+{
+  "schema_version": "1.0",
+  "repository": "https://github.com/K-Dense-AI/scientific-agent-skills",
+  "revision": "92ace75ac21efe19a620434e0ca4e356081fe807",
+  "retrieved": "2026-10-09",
+  "selection": [
+    "database-lookup",
+    "depmap",
+    "rdkit",
+    "medchem",
+    "pytdc",
+    "pkpd-modeling",
+    "relsa-severity-assessment",
+    "analytical-method-validation",
+    "experimental-design",
+    "statistical-power",
+    "statistical-analysis",
+    "statsmodels",
+    "uncertainty-and-units",
+    "biopython",
+    "bulk-rnaseq",
+    "pydeseq2",
+    "scanpy",
+    "pathway-enrichment",
+    "literature-review",
+    "citation-management",
+    "scientific-critical-thinking",
+    "scientific-writing",
+    "exploratory-data-analysis",
+    "scientific-visualization"
+  ],
+  "root_license": "MIT",
+  "files": [
+    {
+      "path": "CITATION.cff",
+      "git_blob": "ef8bd3008c47515eb0fa1e0ca3e834826fb6c29b",
+      "sha256": "ee6d1317242d8db01760f75cc1f43b7a8e3e072815d4d07ac93b52484b1f09ed",
+      "bytes": 1620
+    },
+    {
+      "path": "LICENSE.md",
+      "git_blob": "eb246475fd5a66b9bb56176f3a718984632dd98d",
+      "sha256": "09b02a3c9df3053c55531d503357a9c7cde275970e6c3ceaa1ddf5f0e90b40c1",
+      "bytes": 1068
+    },
+    {
+      "path": "skills/analytical-method-validation/SKILL.md",
+      "git_blob": "27f59e7e543d076b55c930c13f776a8612bd7cde",
+      "sha256": "7c2cd278bd397f0f85f4fc790b236a61190cff8799c8ece8da923342f4dc0032",
+      "bytes": 19873
+    },
+    {
+      "path": "skills/analytical-method-validation/assets/validation-protocol-template.md",
+      "git_blob": "a995ab14627b3ab21e07254c682e9c4fb918f837",
+      "sha256": "c157c47eb77e136b40904f6323988ccf662dad6b60811d330323b189c232fc5f",
+      "bytes": 4247
+    },
+    {
+      "path": "skills/analytical-method-validation/assets/validation-report-template.md",
+      "git_blob": "f0eaaf029e9acfb4a875db225a97f03e34b60d3b",
+      "sha256": "f0519fb2abd9d0315f0b6cba76527659ab500f9a311f268d66452f7798e574e0",
+      "bytes": 4027
+    },
+    {
+      "path": "skills/analytical-method-validation/references/compendial-and-clsi.md",
+      "git_blob": "478a6d9c353463abe705b299ceb7f74c1f96031f",
+      "sha256": "f3bfe0e15892966b3c4db43c542b32af89455f755529f1f13a04c15421013230",
+      "bytes": 7820
+    },
+    {
+      "path": "skills/analytical-method-validation/references/framework-selection.md",
+      "git_blob": "d65dea5c2722b3520a336caf242fdd07de4b8253",
+      "sha256": "ad7a9d07c6c66d68464ed759bd9a646df8db06fca2897478825e0de12d341945",
+      "bytes": 5427
+    },
+    {
+      "path": "skills/analytical-method-validation/references/ich-m10-bioanalytical.md",
+      "git_blob": "1b0ec6d17778514ebbb3d7accbbc575caad675fe",
+      "sha256": "695367208b8b4883879b364f57df9bc73f17cb98181a093d43880c0453764c4a",
+      "bytes": 9001
+    },
+    {
+      "path": "skills/analytical-method-validation/references/ich-q2r2.md",
+      "git_blob": "c5215ca1e27535bec7010b6137da96263368f441",
+      "sha256": "9871db11c76e1c74e191f28a44e3047a67663d487384188b4f0b228f886ad34b",
+      "bytes": 13759
+    },
+    {
+      "path": "skills/analytical-method-validation/references/source-ledger.md",
+      "git_blob": "c2ddfd583a56b6406aa0b60a78ead44ff4f47536",
+      "sha256": "fd5605e03d4203df8caffa7ba3464147a65c3ee5f8a7056bdcc8a2d2beb2fca6",
+      "bytes": 7718
+    },
+    {
+      "path": "skills/analytical-method-validation/references/statistics.md",
+      "git_blob": "d71f764fa49512dc660d757c3c3a8c03d0f7a50b",
+      "sha256": "0f8f33bc0c363e0fe7088ea718fe8928bd1bdd4afef1646f927cca317915d453",
+      "bytes": 13379
+    },
+    {
+      "path": "skills/analytical-method-validation/scripts/_catalog.py",
+      "git_blob": "41d9c7b912115e23edfe03b3efab16997d06a1fb",
+      "sha256": "c597f14d44eceb997b7f12a5035e81669c3ad3ded1e487796f58d4392efef8ed",
+      "bytes": 23851
+    },
+    {
+      "path": "skills/analytical-method-validation/scripts/_common.py",
+      "git_blob": "6be4f8fdac35c8aab517207aa62df0636a177c94",
+      "sha256": "c801e568b409acf7a510069b3697e6a74bf372adcfa7dcfb27b442a670580b26",
+      "bytes": 34649
+    },
+    {
+      "path": "skills/analytical-method-validation/scripts/check_accuracy_precision.py",
+      "git_blob": "9d768afaa463d23b318f4ca7a0be0fba0b098413",
+      "sha256": "1d24ee3f5a81d0bc40d30009f6ea7dab7422455eaf9adef6e4d0f5a1f5cd88a7",
+      "bytes": 16422
+    },
+    {
+      "path": "skills/analytical-method-validation/scripts/check_bioanalytical_run.py",
+      "git_blob": "58eee560043ac7ff4c3b589ba34b4e85b7993fe7",
+      "sha256": "e754fc8407e5e6b003c96e25db577a1e88b6dcebc0c47f188e299cc13dfbc18c",
+      "bytes": 13832
+    },
+    {
+      "path": "skills/analytical-method-validation/scripts/check_detection_limits.py",
+      "git_blob": "3672bb17364cf701a105757be360aeb8ff1fe830",
+      "sha256": "78178d76499005497f7b05a2a8ca6b948c151860ad34195e0f3701f0b2f4d402",
+      "bytes": 14834
+    },
+    {
+      "path": "skills/analytical-method-validation/scripts/check_response.py",
+      "git_blob": "241f3c456aa3141217a1456ca4f6be2fb89ab85b",
+      "sha256": "fa732cb35a6652a5ffa08208271180d51160f73e89307883251da670f9aaac1d",
+      "bytes": 10262
+    },
+    {
+      "path": "skills/analytical-method-validation/scripts/compare_methods.py",
+      "git_blob": "ddaafc3642fb37874f297334023d9a5fbf5fcc0f",
+      "sha256": "d3f51cd0a31fbcc9e4259f791e1a9c515ba42f0d4090348962387cdf91f0fead",
+      "bytes": 9346
+    },
+    {
+      "path": "skills/analytical-method-validation/scripts/plan_validation.py",
+      "git_blob": "81679246cc190f3eb7cbc4aab0344ee37d545288",
+      "sha256": "e2d95299d6a4e1eaf57de9e96dfd5dae82596e5f239b14b19e0e35cc0dcf01b3",
+      "bytes": 15478
+    },
+    {
+      "path": "skills/biopython/SKILL.md",
+      "git_blob": "0394ffc8a5a03a06c32999ab5fbe3fdc5aa8c185",
+      "sha256": "b617561b38a2e3ecc8f8cf3dd8bb0307ac1aaf4d67e6e0432b0c248bc4382245",
+      "bytes": 17223
+    },
+    {
+      "path": "skills/biopython/references/advanced.md",
+      "git_blob": "b5a95401a4be4eee5a9fa99c46cb21d962aaa664",
+      "sha256": "b023aa7df32c4c5f8db621929e23dde64ae0ef77169cbfdefdf479068c0001a8",
+      "bytes": 16115
+    },
+    {
+      "path": "skills/biopython/references/alignment.md",
+      "git_blob": "9d73af9f4016e18fd61c0c11a2c5a4a9256f8536",
+      "sha256": "99668ee8cf0314f655149a8383f931d51ec039dea566a51219f7f37b02ef6bd4",
+      "bytes": 9957
+    },
+    {
+      "path": "skills/biopython/references/blast.md",
+      "git_blob": "6f367dfadc3ed9e965431e8f168501fe96d63c80",
+      "sha256": "487953c8120658887de77fe794cc07881b0a223f68e29b4575ec317995fa7151",
+      "bytes": 14077
+    },
+    {
+      "path": "skills/biopython/references/databases.md",
+      "git_blob": "67dd89edda01b5b33dbf3e468b5447e9d4449663",
+      "sha256": "87dcee5bb51eff9959c313b6680aebf7ff064155599bbb03630325148809bb50",
+      "bytes": 13802
+    },
+    {
+      "path": "skills/biopython/references/phylogenetics.md",
+      "git_blob": "8d18dfe016cfe76d49c2d611cb6fdf0a88f96c9d",
+      "sha256": "c0129d6636b7628a512f5338e2afc0101561377210467d17c47008115d851ac6",
+      "bytes": 15174
+    },
+    {
+      "path": "skills/biopython/references/review.md",
+      "git_blob": "b845b22b107c003bfaea5174a5f73e7337f69b76",
+      "sha256": "a44292d82f9ec99f1b232a835275e694275709b928e297ed9cc24ed1dbc2f139",
+      "bytes": 6322
+    },
+    {
+      "path": "skills/biopython/references/sequence_io.md",
+      "git_blob": "391eb4e02b96ba2f8d67e3390b1d059fde4ffac3",
+      "sha256": "cb858b46c28873e5b681b54eba37cbf919dc9febe7d282ca3aeafafe3603c514",
+      "bytes": 8215
+    },
+    {
+      "path": "skills/biopython/references/structure.md",
+      "git_blob": "0013bb80f9fb72b936152e7a4835c94a80f1a2f7",
+      "sha256": "c5805632d9bd56cc933374a932a3669444329b135ba275216492659d5420da2e",
+      "bytes": 13432
+    },
+    {
+      "path": "skills/bulk-rnaseq/SKILL.md",
+      "git_blob": "6ff6d3c7c585dd3d1859166cefe5383d304941d6",
+      "sha256": "e945e970268505368e20d9ddc0c135de469e86626d67565ae9047fb05f70cdbf",
+      "bytes": 16890
+    },
+    {
+      "path": "skills/bulk-rnaseq/references/counts-and-handoff.md",
+      "git_blob": "05e66b9a21dbd7440deac6186e8f2b0a9de44bb6",
+      "sha256": "1e2583f8a8906e6e7739f71ebe2486b4c2e0e89718bc7dfdf51875e6bab79d39",
+      "bytes": 8483
+    },
+    {
+      "path": "skills/bulk-rnaseq/references/design-and-qc.md",
+      "git_blob": "de444cd44a377a2885820d8df444141ed3dc39a0",
+      "sha256": "fd416ee212c785b6ab5e242000e651780ba9a268869b1c82624474b5a6e1c236",
+      "bytes": 6388
+    },
+    {
+      "path": "skills/bulk-rnaseq/references/upstream-manual.md",
+      "git_blob": "236e788d324ffcc8f1ffc707802f99f855ec0acc",
+      "sha256": "02b53631e73c916889e34c80392d85687dd60c93bc143385071970dd6e83d9aa",
+      "bytes": 7119
+    },
+    {
+      "path": "skills/bulk-rnaseq/references/upstream-nfcore.md",
+      "git_blob": "2879ea4ccae9cd312b5540047e4a059e6d383e7d",
+      "sha256": "d4c4fc8e8e5d199175af51fa571605179811a92c1e8293687e81c95ebe44001f",
+      "bytes": 7473
+    },
+    {
+      "path": "skills/bulk-rnaseq/scripts/_tabular.py",
+      "git_blob": "9a5e92453315428382e5c637fd7cbdc062ce428e",
+      "sha256": "6f6f5e58a3fe870197e24d24c74eb033eee16145d74517388f69961a658c80dc",
+      "bytes": 975
+    },
+    {
+      "path": "skills/bulk-rnaseq/scripts/build_counts_matrix.py",
+      "git_blob": "1731035298a3b16bfe64f92a1860f95daa8be295",
+      "sha256": "76b79c1426ae4c90c143b6b8a04a04d72cfd1f2c90cfeab56a655820776eda84",
+      "bytes": 14423
+    },
+    {
+      "path": "skills/bulk-rnaseq/scripts/validate_samplesheet.py",
+      "git_blob": "bea5081035d6ea55cf39b7ecc80bdf75f03a244b",
+      "sha256": "de46d3ea873b272fdb1aa8f54512d23ff5e1f0f147f9ccc3f6bbe0eb72ef5c4a",
+      "bytes": 10518
+    },
+    {
+      "path": "skills/citation-management/SKILL.md",
+      "git_blob": "b63b589d4d423969a63e032e62c2b74969147c1c",
+      "sha256": "dc79fe1e8438dcf598040615d5323360c6a7ed0b868fc3ffc82512c871a1e3ff",
+      "bytes": 16630
+    },
+    {
+      "path": "skills/citation-management/assets/bibtex_template.bib",
+      "git_blob": "4cc74a8ed142e441a53f9957f1feef39e59f4cf1",
+      "sha256": "08e21647fa68cad1aa1658264798c7d24775ba89bfbd2723ea6bfe4b562e2be1",
+      "bytes": 9305
+    },
+    {
+      "path": "skills/citation-management/assets/citation_checklist.md",
+      "git_blob": "d321768a3b4520f9981a6ac9ae90c1d8c570b00e",
+      "sha256": "ce7317f2983f8b7fd02949aad726ebd6188319c7e57c929fffe689d5ae18ce36",
+      "bytes": 10434
+    },
+    {
+      "path": "skills/citation-management/references/api_contracts.md",
+      "git_blob": "99e5b1bcf3d181a22ebcf57f8b5387847dfab352",
+      "sha256": "3e82a14f77133a215831d2627b65c93199589782f6907fc42af3c75f2ab3c5a8",
+      "bytes": 6712
+    },
+    {
+      "path": "skills/citation-management/references/best_practices.md",
+      "git_blob": "bc4ed3b0f1f3a6f751c4376b5caf0929ea53ca07",
+      "sha256": "df90d19c8f639590a6a430a889160b478dce61f4a5c0a5a36df5ab1be749b6b1",
+      "bytes": 2723
+    },
+    {
+      "path": "skills/citation-management/references/bibtex_formatting.md",
+      "git_blob": "31d05a016583c59a9b55671c6e09d1698848fa79",
+      "sha256": "6337a8d2b87de96bf0f72c076feb0fc5d61ed9c342d9c8f19b3633efbfec6fed",
+      "bytes": 19394
+    },
+    {
+      "path": "skills/citation-management/references/citation_validation.md",
+      "git_blob": "2474645bf7482c70483467507e77bcfe992c0a15",
+      "sha256": "f235f82e02db282f0abdd23fd8d2973d870d427d355979e869f736259ba95774",
+      "bytes": 18996
+    },
+    {
+      "path": "skills/citation-management/references/core_workflow.md",
+      "git_blob": "0b8dab6057e63d3c84f5fda84c3d83450d8b1850",
+      "sha256": "19e8b52c43f5822163c79904236016616dc4515d21a01d29073d968c9251af8d",
+      "bytes": 20986
+    },
+    {
+      "path": "skills/citation-management/references/example_workflows.md",
+      "git_blob": "8685e5bd11c05cdd6649d478429173c05c0823a2",
+      "sha256": "01c0a15e08e8115e10a07623f63565d119812fd2bb68c669eac413db2f9cd482",
+      "bytes": 3382
+    },
+    {
+      "path": "skills/citation-management/references/google_scholar_search.md",
+      "git_blob": "15149523b3570d0444e35e3d864731385ea5a398",
+      "sha256": "5b705ec8d6276ef83b819b737ed10bd991815ccb413de27e046b7bfdf4da8399",
+      "bytes": 17993
+    },
+    {
+      "path": "skills/citation-management/references/metadata_extraction.md",
+      "git_blob": "ae972e9511a9cc790cfb5aa495ea822806e51413",
+      "sha256": "68c27886aff0d4efbf3a6f7e0a318dedd706d4cfd0f55dd859466de36ed78d46",
+      "bytes": 21419
+    },
+    {
+      "path": "skills/citation-management/references/pubmed_search.md",
+      "git_blob": "0927bbb262be116ba76e711af67acd3289791a10",
+      "sha256": "fab82cda700a0dfc6dccc9465c9cc60b9df68cb58d0bec9abe7b2d8748a49cd1",
+      "bytes": 19233
+    },
+    {
+      "path": "skills/citation-management/references/script_reference.md",
+      "git_blob": "ea8df755381fe63d90ddd5da6600c44d98d7ca0b",
+      "sha256": "bd23683cb3a7edb932fc5a13bb9215969a834a778a8765eea82553bf1b8b3417",
+      "bytes": 7536
+    },
+    {
+      "path": "skills/citation-management/references/search_strategies.md",
+      "git_blob": "5e1d501e01daace93a9896a48c206301019d8545",
+      "sha256": "776c0dd1cbaf0432004ae80273640ff324b570401c569413c674829436385c85",
+      "bytes": 2727
+    },
+    {
+      "path": "skills/citation-management/scripts/_common.py",
+      "git_blob": "645d6beed8601c63a46f6148f1ad4f035a1cdf5f",
+      "sha256": "87540160163671b972c2fccb4d0a42db3cca2603c664d26d5da3ca5dbc7dfdd2",
+      "bytes": 10912
+    },
+    {
+      "path": "skills/citation-management/scripts/doi_to_bibtex.py",
+      "git_blob": "f6412724860834f68bcc600a342a4a8ab27b9e34",
+      "sha256": "1b7d1ab2e8bf9bcf5a7d49bf45496e0f8b7d8e0d0cda8efd8fce4e527082dc4b",
+      "bytes": 6783
+    },
+    {
+      "path": "skills/citation-management/scripts/extract_metadata.py",
+      "git_blob": "d3c3a7e0ab9ad358c9b6ef8aebf04486475a3bec",
+      "sha256": "bebc7835b5e659cdeee0087980e881635894330bac5eda4ce01f490fd41df781",
+      "bytes": 29650
+    },
+    {
+      "path": "skills/citation-management/scripts/format_bibtex.py",
+      "git_blob": "dd05a9f728e52cdcae035cff975454de1d23d5ff",
+      "sha256": "cc74fdc4d5819df8db3999e59f96469cebfb353ecf406a49a5a0fc60896707cb",
+      "bytes": 11075
+    },
+    {
+      "path": "skills/citation-management/scripts/search_google_scholar.py",
+      "git_blob": "ddec828873708b3fac52cad160319848e76b461e",
+      "sha256": "05cfd67aea6475029d017f1b4ff68e7ba727e1fa9b52f1e614c80287940b4985",
+      "bytes": 8746
+    },
+    {
+      "path": "skills/citation-management/scripts/search_openalex.py",
+      "git_blob": "e66a6bddeec8309da379f4e71da218ad364be721",
+      "sha256": "538b2f086625fd1e9a2cb2fe8bd46ee852d888f17d2d1e889b8f50592594f693",
+      "bytes": 12055
+    },
+    {
+      "path": "skills/citation-management/scripts/search_pubmed.py",
+      "git_blob": "9d9967a3650ff3ff426cbc259e8cf8eec8bb9c40",
+      "sha256": "4543b74bf773747bae47a2bbb18acf2a4a050071119d88d1711db6049d157116",
+      "bytes": 14912
+    },
+    {
+      "path": "skills/citation-management/scripts/validate_citations.py",
+      "git_blob": "0513c351ba734443a0fbd9ee57e97100592a2503",
+      "sha256": "a08e8e0774287e9aca2bd87c3a66cd3dfc751018eafb6cdee37987e3f416d2b5",
+      "bytes": 28361
+    },
+    {
+      "path": "skills/database-lookup/SKILL.md",
+      "git_blob": "f5f3d4921ed5a0a205f07e643fbaf48fc39521f6",
+      "sha256": "ead247f623212ca1560486d863a2d0a8c0555d8d20b975d55053eeb4ed043d37",
+      "bytes": 27582
+    },
+    {
+      "path": "skills/database-lookup/references/addgene.md",
+      "git_blob": "f6c2d809937fc9533db39231a3393c2cfe70876d",
+      "sha256": "f00236e01cc49c837104a0becab4c9583bf826c0d352c1f026363448954a4c25",
+      "bytes": 1778
+    },
+    {
+      "path": "skills/database-lookup/references/alphafold.md",
+      "git_blob": "5a5e0d50e083bd64b4e6319c049ccbeb6f1a4e75",
+      "sha256": "887217bb9a0174a64b0d2b84475fa961e9d9c2c48dfac1e0bc7b6c0bb958b5bc",
+      "bytes": 3002
+    },
+    {
+      "path": "skills/database-lookup/references/alphavantage.md",
+      "git_blob": "2d9a76860c2bff3223126497f40534d7fa3b8bab",
+      "sha256": "d7f38702848cff7239fa1c00271dc4fff445f4eda88774ad65724468d1497f97",
+      "bytes": 8121
+    },
+    {
+      "path": "skills/database-lookup/references/bea.md",
+      "git_blob": "4be56bd96821c897d114048f06fb1f27454d2470",
+      "sha256": "2ceb06d34c26bb679de7d8645b754e1da0e9461de2a595006971877a9b06b757",
+      "bytes": 14614
+    },
+    {
+      "path": "skills/database-lookup/references/bindingdb.md",
+      "git_blob": "c1646ffa4d6367d39ed89dfe07dcb386171f7444",
+      "sha256": "390dabcc89dd9750bedca0b9d8d2edefc984157202b83a5e8b39138d3e26873f",
+      "bytes": 2997
+    },
+    {
+      "path": "skills/database-lookup/references/biogrid.md",
+      "git_blob": "30996fb73b6ed541f4f1769745068f7f1bc012f5",
+      "sha256": "887c72e6858db7ab113c37dcd93378ba422e7e6a195f27c466f50e45c611bf0d",
+      "bytes": 3885
+    },
+    {
+      "path": "skills/database-lookup/references/bls.md",
+      "git_blob": "1d808787fea41f9988c2257118a13999f69f0a76",
+      "sha256": "711e31c51e600970a31815fd3b224d61501bb12705496c498de3379868612620",
+      "bytes": 9284
+    },
+    {
+      "path": "skills/database-lookup/references/brenda.md",
+      "git_blob": "1b0d4e1606b1efbc574523b359df0e86e74282b4",
+      "sha256": "4cb904eadbe76a2a392b5826e4eec46d9e59c4c61acddf0322059d94ca07af0c",
+      "bytes": 2921
+    },
+    {
+      "path": "skills/database-lookup/references/cbioportal.md",
+      "git_blob": "2c8eb788d785233336859754e10c54953ea0ed9f",
+      "sha256": "d57ec6a08a5538e38bb1b73bc1eea855b14b87bf0babdf62730a312298f6c85b",
+      "bytes": 7588
+    },
+    {
+      "path": "skills/database-lookup/references/census.md",
+      "git_blob": "57531265b18eab5112856a51f315aa2737c2cd63",
+      "sha256": "ceaeae4a0c35cf87ba20de4b7405b867bb105dc7f6f82ab80685d0b1af437ff1",
+      "bytes": 9195
+    },
+    {
+      "path": "skills/database-lookup/references/chebi.md",
+      "git_blob": "e4f5c76df3fbb39c775f8019b9809817e43aad1c",
+      "sha256": "657014c7416c6418c911fd710c10c02221edf17fba08f22e54dd9619ab614a43",
+      "bytes": 3596
+    },
+    {
+      "path": "skills/database-lookup/references/chembl.md",
+      "git_blob": "d19450f61805a7db039f0f80a20d184f41b01676",
+      "sha256": "8b48ee10535d4df944c0a1c5bede8efe8c6a96ee39744191e7d4827ab8fcd25c",
+      "bytes": 2715
+    },
+    {
+      "path": "skills/database-lookup/references/clinicaltrials.md",
+      "git_blob": "ace581ec4642fb1298e9da115d499a80a8a26e4a",
+      "sha256": "aaa72ade4740edee237cb10371fc07e0b662145f45b03f95410f16a9e93c02e9",
+      "bytes": 3434
+    },
+    {
+      "path": "skills/database-lookup/references/clinpgx.md",
+      "git_blob": "9f5e51bc7533bebd4256b0748196df77f59f8876",
+      "sha256": "563c95c97fbad8f5cbc4b9ff1783e32439a916beb0d579cb73215accdb8ef0a3",
+      "bytes": 1530
+    },
+    {
+      "path": "skills/database-lookup/references/clinvar.md",
+      "git_blob": "de81de5b8607d556e0963c49655a8760cf80490d",
+      "sha256": "5c051b539f8df9f292cdb63f627e19d754388e627c0d891d4b0293be30d30a3c",
+      "bytes": 4232
+    },
+    {
+      "path": "skills/database-lookup/references/cod.md",
+      "git_blob": "a5659c02711f05565cbcc66ea9ba4c24ded7d0cc",
+      "sha256": "45569fbad65309ddff67bba27f2b7f231bc6e10d715e6ccd60ae8263fb509ed1",
+      "bytes": 3097
+    },
+    {
+      "path": "skills/database-lookup/references/cosmic.md",
+      "git_blob": "3b585db7932da9b381b6443cfa9d58642034f59c",
+      "sha256": "06639396334327201880e26a52647c41675411c56bd6a89c22bd2bdd527a6100",
+      "bytes": 1368
+    },
+    {
+      "path": "skills/database-lookup/references/dailymed.md",
+      "git_blob": "0af4798bc259b4ece1b90809ebd9bbd0224868bb",
+      "sha256": "2a4ed938cc7b2611e272a655699a0a98105b926eeb00cb68d41c9aafd306088e",
+      "bytes": 1805
+    },
+    {
+      "path": "skills/database-lookup/references/database_selection_guide.md",
+      "git_blob": "284b043f40a28eae6dfebde3695d4331214d8f0d",
+      "sha256": "02fb77429b15d8e599f05ab5ee7de4988b8d04d815285112f2dc182e86e18d6b",
+      "bytes": 10276
+    },
+    {
+      "path": "skills/database-lookup/references/datacommons.md",
+      "git_blob": "964ecd4fc8960254e01d72844f553fb8aa6241f0",
+      "sha256": "4e080cd83e5a9fedbf8c0b1c2be71c2d4cd0cbc333810834a8c24d574138e258",
+      "bytes": 7145
+    },
+    {
+      "path": "skills/database-lookup/references/dbsnp.md",
+      "git_blob": "e39df04eec41db0114de8e16f96b6716973f2803",
+      "sha256": "bdee23c89aca51a6a0e33593da3059ffca314f29e399891713cf57583d86da8d",
+      "bytes": 3533
+    },
+    {
+      "path": "skills/database-lookup/references/disgenet.md",
+      "git_blob": "eb43865e533b7081cdf93372b83c05c09ea3d52d",
+      "sha256": "0c3fda50de43234d4e213cc7c572c6edbb58b47fc5abe2458fe1a4eca7ddad4f",
+      "bytes": 1403
+    },
+    {
+      "path": "skills/database-lookup/references/drugbank.md",
+      "git_blob": "341c58d2f9de9fe6366c81853907aef71de973af",
+      "sha256": "5f874bda7098c244e65b69a08894f25ced01c548ae116a49f6388ff7d465b841",
+      "bytes": 1364
+    },
+    {
+      "path": "skills/database-lookup/references/ecb.md",
+      "git_blob": "0a1d032031a2c8ecb320078e3471d7c19b6a52a9",
+      "sha256": "8452e47f271c9f0b6ec7f346af2c72ab296dfaa1e13a83310e1170e3f48bd372",
+      "bytes": 5318
+    },
+    {
+      "path": "skills/database-lookup/references/emdb.md",
+      "git_blob": "0ced4b2ba34f0f39cba47cb735b087592a6f5a83",
+      "sha256": "3d07236a2b91bed128afbab61cfb60e397e79ec17fb659359ea86029e61cb185",
+      "bytes": 1089
+    },
+    {
+      "path": "skills/database-lookup/references/ena.md",
+      "git_blob": "0d88669cf4c53c4e80bb6a3885ec99129b38e0bb",
+      "sha256": "7ab747fbcf9be9e4f22caf88c7a6912d3e676382baf80c3bb5d699e572d18729",
+      "bytes": 10127
+    },
+    {
+      "path": "skills/database-lookup/references/encode.md",
+      "git_blob": "1fb28aeae4c8f0096bfe4fbf819767ca062fe204",
+      "sha256": "e11c15b74cb30f3b6222ed7bb398967027ebcaa3ca5e789e3a4022cfdc658735",
+      "bytes": 1801
+    },
+    {
+      "path": "skills/database-lookup/references/ensembl.md",
+      "git_blob": "a33de8a5a8a9fd2d62127cf1bfffec949d7c0037",
+      "sha256": "80d118b56d9e250f69570e651d60961ddddc8ada3a117bad94c38b66d8a9a935",
+      "bytes": 14337
+    },
+    {
+      "path": "skills/database-lookup/references/epa.md",
+      "git_blob": "a19e0c272f8a5e143e3ba117a376b8d80cc02507",
+      "sha256": "d5bbac5283f1caae1d6ab7013787f8abeabf85c354e1a2caf58d286e7bb882fa",
+      "bytes": 1902
+    },
+    {
+      "path": "skills/database-lookup/references/eurostat.md",
+      "git_blob": "bb2f46557eea06dc593fec1577c772e6e3e7f72c",
+      "sha256": "46b125c99fb756ce62655e6a6d5d5562d0694b329844c7089ce6612daf8c9dfb",
+      "bytes": 7489
+    },
+    {
+      "path": "skills/database-lookup/references/fda.md",
+      "git_blob": "029f5445a052fef83f69e3789c87f195081bb2ae",
+      "sha256": "b42a94499aadea58802a6116731244d84941ba9ffca698eac31bead5ceb38331",
+      "bytes": 2147
+    },
+    {
+      "path": "skills/database-lookup/references/federal-reserve.md",
+      "git_blob": "a21ce028c063b4d0c4bdfb760af9f534821c21b5",
+      "sha256": "a8b47c7925eba9cc268106a1a8bb54f2fdf849ffbda6fa2dd00f0f561473d11e",
+      "bytes": 6881
+    },
+    {
+      "path": "skills/database-lookup/references/fred.md",
+      "git_blob": "fc85be036074d0fa7edd408ce9e1d61db650e8d0",
+      "sha256": "cabb0f8c96da6dd5cc53c11861ea179477800896260c9753f490079962542f96",
+      "bytes": 10170
+    },
+    {
+      "path": "skills/database-lookup/references/gene-ontology.md",
+      "git_blob": "a7032b66f7f33a1f53feb85d6296a4b0475b6567",
+      "sha256": "59cdfdf414893ee82d1a51f390fe96ca3713da780e96dd2c6a3cdb354afe63a8",
+      "bytes": 4509
+    },
+    {
+      "path": "skills/database-lookup/references/geo.md",
+      "git_blob": "89f565e6b3748883d18b4c08afeef3a432b1d9a9",
+      "sha256": "43fcec5baddb616903e2811bbc49fe5c5f24fda6e491498e98d775c6671015b1",
+      "bytes": 3869
+    },
+    {
+      "path": "skills/database-lookup/references/gnomad.md",
+      "git_blob": "4a9f1aed95aacb6ba469547cfefefba528319dbd",
+      "sha256": "bf319407d088b321295211aaff377db8f21d60dae0f75bd9311f2e2e65e3ed20",
+      "bytes": 3574
+    },
+    {
+      "path": "skills/database-lookup/references/gtex.md",
+      "git_blob": "01bd414b34c4c247fa40a4230d0f2f5b057adb09",
+      "sha256": "ff4b57debc74a39f2e879e81a43d18193714bb75dc855d1dd9a5bb12dd09593b",
+      "bytes": 4164
+    },
+    {
+      "path": "skills/database-lookup/references/gwas-catalog.md",
+      "git_blob": "a8caf4c66c442cd620251b8dac17fafd2c036148",
+      "sha256": "93d34d7047bfbcde62de6458814d83608a7dc99a4e0599fc32322f923cebc333",
+      "bytes": 1644
+    },
+    {
+      "path": "skills/database-lookup/references/hca.md",
+      "git_blob": "82f1982d6564c900b8efaae02afdeb0390b10fa1",
+      "sha256": "4a8afd752e835065feab3b21989f27dde56172af7fa0b79acdac7eb7536750e1",
+      "bytes": 1390
+    },
+    {
+      "path": "skills/database-lookup/references/hpo.md",
+      "git_blob": "cd499f8370ad9085af81080ed3fe5bc81aa77225",
+      "sha256": "74f281daf81f4e544b62a0a9177242816ede3de45b8b6c58ba509a2cd8642a75",
+      "bytes": 1230
+    },
+    {
+      "path": "skills/database-lookup/references/human-protein-atlas.md",
+      "git_blob": "beaba193f8fa70367f154bd51d20e30b86c45b49",
+      "sha256": "e93b1038d79249e58aa22ea60e1c954edd32db8b8ace7aa76a14a9b88a9a11f3",
+      "bytes": 1226
+    },
+    {
+      "path": "skills/database-lookup/references/interpro.md",
+      "git_blob": "b064536653cfd186f6124aed1ee52c65aa7eb130",
+      "sha256": "18304f87ac9c9f11d399040be52290bc2287c583bff43348bf875a50cd6ba0f4",
+      "bytes": 3496
+    },
+    {
+      "path": "skills/database-lookup/references/jaspar.md",
+      "git_blob": "5b389dcc8f499bd1f2327260a5778bcf4a3bf76d",
+      "sha256": "53d0f4111fb7ca547062bbde4fe2f4ebc418e0088da0e401733287018a4cd837",
+      "bytes": 1475
+    },
+    {
+      "path": "skills/database-lookup/references/kegg.md",
+      "git_blob": "ef0e5ded8e9b7b0df9c81ae053dde07fe6d080a5",
+      "sha256": "10af18380cd77b3651854519a60f2a28e4dec53172e8db658b7681d4cbabd99f",
+      "bytes": 2592
+    },
+    {
+      "path": "skills/database-lookup/references/lincs-l1000.md",
+      "git_blob": "339706c6915a8e2aff9072783a909ac814e84abb",
+      "sha256": "ddbc6b02bd394782b824c9f084b9079bf79168dc99bd1085163778c5e91de8cb",
+      "bytes": 2191
+    },
+    {
+      "path": "skills/database-lookup/references/materials-project.md",
+      "git_blob": "17316a686e91fd2ac12dbc23e315d3910b055c6a",
+      "sha256": "0c54129b9294a9464623faa362b91bf32a73bfcdbe5b514802f3e0acd12c2d12",
+      "bytes": 4897
+    },
+    {
+      "path": "skills/database-lookup/references/metabolomics-workbench.md",
+      "git_blob": "24dee36ea4077906caa42aecc7c9f4ed80b6f86d",
+      "sha256": "c5d33c855da6f96c23a923703bfea13818650ce6c7755ee7e4ed6eac788c943e",
+      "bytes": 3929
+    },
+    {
+      "path": "skills/database-lookup/references/monarch.md",
+      "git_blob": "07bcb22a4ac41aa39cc6d005305aff91d1720856",
+      "sha256": "dedd349124dba2f685ab9e041e624e61ea93e3672181c2a7c7c9b3e986e75660",
+      "bytes": 1515
+    },
+    {
+      "path": "skills/database-lookup/references/mousemine.md",
+      "git_blob": "a14453554a02d98bd952bbe1952b3c6921ea4c9a",
+      "sha256": "4d63c40019bc259ab6eb72cbf5ab23c14b6cb9a992ee3a18c6a7f07554ef6e21",
+      "bytes": 1569
+    },
+    {
+      "path": "skills/database-lookup/references/myvariant.md",
+      "git_blob": "f4fee33b51583273cb9f76bed3574e1a8c46f6b7",
+      "sha256": "4bcb1c829fdb89ad5af864135c84aa40667cbeb8271d80999c1518c223600cb0",
+      "bytes": 1344
+    },
+    {
+      "path": "skills/database-lookup/references/nasa-exoplanet-archive.md",
+      "git_blob": "8db176ae495299f6e3c8b6c24a123704508852a4",
+      "sha256": "9be3b02563289e9cf4351d5f4f185d022fe6e5de76450a8e1b477545c5721ffe",
+      "bytes": 4394
+    },
+    {
+      "path": "skills/database-lookup/references/nasa.md",
+      "git_blob": "159ecf020f180b99a3105c52f198ef4291523753",
+      "sha256": "bd7719904299fd8bd93a87804e1eb281388b57e7d64c984d3f7728c7c2c7c2a2",
+      "bytes": 3112
+    },
+    {
+      "path": "skills/database-lookup/references/ncbi-gene.md",
+      "git_blob": "aa1a6a697ca3ee0bdf7120a762527b20ec255085",
+      "sha256": "c1d32a4eddb24e20129467adafc177366327c9e48ee5a67b78515b07c36370c1",
+      "bytes": 1700
+    },
+    {
+      "path": "skills/database-lookup/references/ncbi-protein.md",
+      "git_blob": "68fa3c8eb2537143d3ddc88685c2ce5b77d457aa",
+      "sha256": "7b5489a99bddb357567a6287cb7630413db9e298378397e4d16f3ae0bdb8733a",
+      "bytes": 3298
+    },
+    {
+      "path": "skills/database-lookup/references/ncbi-taxonomy.md",
+      "git_blob": "20800adc0d85235421e345ffa1198b215eba9188",
+      "sha256": "f9508cebfb72825c9752fe96ef72e52d057a7ea46dd64fe8fb3aab435f85f266",
+      "bytes": 3738
+    },
+    {
+      "path": "skills/database-lookup/references/nist.md",
+      "git_blob": "5e31f267db9d23494180f928a2c181176868c5dd",
+      "sha256": "8587c7dbb384718b4bc0e769b2279e355ad6acc0273bb2dedf7619feb9e67738",
+      "bytes": 3683
+    },
+    {
+      "path": "skills/database-lookup/references/noaa.md",
+      "git_blob": "9415cc94f854ece5400dfb5625676398f81dd768",
+      "sha256": "54c296b7bacd0b3b0321a8889428534e6b56c9ceac126914c09016d8f09b2dcc",
+      "bytes": 6909
+    },
+    {
+      "path": "skills/database-lookup/references/omim.md",
+      "git_blob": "a6c09da70b8d4f696dc9c4a952044289ae666533",
+      "sha256": "ea5d3063474fec788ed4fa6d0f2e1d972d843ae34ee6538456386a57c36e161a",
+      "bytes": 3515
+    },
+    {
+      "path": "skills/database-lookup/references/opentargets.md",
+      "git_blob": "a7d6b00c47966aa336b68abc3dccaad6eae3c332",
+      "sha256": "e72ab37f5cd87a748c91bc9ccecde2627329523c85f6d024a9093611b3eafc52",
+      "bytes": 7176
+    },
+    {
+      "path": "skills/database-lookup/references/openweathermap.md",
+      "git_blob": "f2c6381c07103f8e02505c795484c57b425974f1",
+      "sha256": "89caa890cd45dcc1b500cdc6bd927a2aac846c4bb6af3109bca51e5a0191a531",
+      "bytes": 8357
+    },
+    {
+      "path": "skills/database-lookup/references/pdb.md",
+      "git_blob": "1821a354c8ef2907c307912070db269f814f4bea",
+      "sha256": "38eaeeff4ca768c9545450233ac3942b5cf389b9347f9541cdd0267036cd30fc",
+      "bytes": 3245
+    },
+    {
+      "path": "skills/database-lookup/references/pride.md",
+      "git_blob": "37a6c683fc9714bd3f5a2345f5e0becf4be6c82f",
+      "sha256": "cff5062cd99d22d928732383c6142408be83c95d2d166e9d265866352b94ce4d",
+      "bytes": 1442
+    },
+    {
+      "path": "skills/database-lookup/references/pubchem.md",
+      "git_blob": "ec7f0ede09646c508e86dc71004a75d7e629bb8a",
+      "sha256": "93225212346b327623446874090cb458c954f5820cba66a4163e5e8eb6d75524",
+      "bytes": 3491
+    },
+    {
+      "path": "skills/database-lookup/references/quickgo.md",
+      "git_blob": "195d1d14c09c0fdd38e88827c6e6ddb4bdc76244",
+      "sha256": "b567b7e4b17f5d91c6b09476fcbd06d2c772538805c45655f00309bae84d4de6",
+      "bytes": 1539
+    },
+    {
+      "path": "skills/database-lookup/references/reactome.md",
+      "git_blob": "3a7bddf8e9dca29eaeaaf75fbff713d4fcfac213",
+      "sha256": "c91bc6c1464005d405c5d5320d9e7527ac7c9fcd0ef8497a9e8e988e24c70424",
+      "bytes": 2964
+    },
+    {
+      "path": "skills/database-lookup/references/regulomedb.md",
+      "git_blob": "7016e7b52cb01743d1e5eff02af048aec504c21e",
+      "sha256": "933970cc4586ec2d6d342ccda90c7378d085129b94f8654605b6bca43a9c5883",
+      "bytes": 2096
+    },
+    {
+      "path": "skills/database-lookup/references/retrieval-contract.md",
+      "git_blob": "379da8ccfd16395840d0f04b4f823fa07202d04d",
+      "sha256": "a268604e226309c291aa7c981a99219edde25346d69645ad9d8acc3cbabbaaf2",
+      "bytes": 7414
+    },
+    {
+      "path": "skills/database-lookup/references/rummageo.md",
+      "git_blob": "c47e04d8349e3ea5afe719f269233aee4d3a2b3e",
+      "sha256": "1dce8be4c7ac7b3f79e59988da7cef6358176a2619bd09d56ad00ffd89ddb443",
+      "bytes": 1365
+    },
+    {
+      "path": "skills/database-lookup/references/sdss.md",
+      "git_blob": "da886bf419c5c9129aee5b6f32977bd5dca16afb",
+      "sha256": "b6c1dc13446aaad2ebd5cd6a894a69b979da4a93b047d8a48bd507a33ee2a75f",
+      "bytes": 4458
+    },
+    {
+      "path": "skills/database-lookup/references/sec-edgar.md",
+      "git_blob": "27b28ed3186e56dcaa9e3a025133bed4f69c7be7",
+      "sha256": "282e045e9675e309a6c720045fd10475da3b9759459d876b3a8ba10beab457e6",
+      "bytes": 8511
+    },
+    {
+      "path": "skills/database-lookup/references/simbad.md",
+      "git_blob": "7253442af5b761df8b32a41eba90ed6deac62658",
+      "sha256": "d14a765a17f1de3299cdb68e5ed64a38b5790fe7529cde19b1534f78fd34ed25",
+      "bytes": 12628
+    },
+    {
+      "path": "skills/database-lookup/references/sra.md",
+      "git_blob": "a0ad89036c29b138653fbdef74361ed2509f8625",
+      "sha256": "f70d0b4ce1d0a2b2ce01fdbd358929ffbc99eb77256d18ae3d215d190a5fc452",
+      "bytes": 4584
+    },
+    {
+      "path": "skills/database-lookup/references/string.md",
+      "git_blob": "e23e5c0fedda8e7b90a37b95b7aa89625a22ccd1",
+      "sha256": "8d39fe9d9fb46bf7ce6830703603f07777ea21770e83f883bc98cba5ab20f699",
+      "bytes": 7905
+    },
+    {
+      "path": "skills/database-lookup/references/tcga-gdc.md",
+      "git_blob": "c30dbbb36ac2320ba48d541415f288d9a25a2883",
+      "sha256": "91f8be4bf809b9f3ac87641980fd33b6ec5f76ddf17b32e9c2f5c5b9f090d70b",
+      "bytes": 1998
+    },
+    {
+      "path": "skills/database-lookup/references/treasury.md",
+      "git_blob": "5353fc12d76946399931196597b5c1b3c6f96ca6",
+      "sha256": "a1b4c3a4d18d1f5a55135585384c4e51705722a7b04c1e1ba151b954f01dd7f6",
+      "bytes": 7335
+    },
+    {
+      "path": "skills/database-lookup/references/ucsc-genome.md",
+      "git_blob": "eb339f2fbd760055f166675705a0359f8a4bedc9",
+      "sha256": "8be92a6a4978a12e56c412b94195f44128837ae66528779859dd994aa57f4781",
+      "bytes": 3401
+    },
+    {
+      "path": "skills/database-lookup/references/uniprot.md",
+      "git_blob": "a76062ee17592d772c034b2aebe6e42a8aff6177",
+      "sha256": "8e625f9f6e3becd9dde739d8937b306feafd29482af2c359b579915ea560f2de",
+      "bytes": 7275
+    },
+    {
+      "path": "skills/database-lookup/references/usgs.md",
+      "git_blob": "7cc598349b6ece429b2080c47843ffe9333b581c",
+      "sha256": "343bb71e510f43b54a444f486b97f1e47e957aed4f35b81fa588c3e3247bbd30",
+      "bytes": 10134
+    },
+    {
+      "path": "skills/database-lookup/references/uspto.md",
+      "git_blob": "dd9a56d1f100a738312448a31d08e75ccd937188",
+      "sha256": "858002e1a231ae0eae30c48b7dec00d97b80fe7e08c9305dfbec0805434c19b0",
+      "bytes": 4746
+    },
+    {
+      "path": "skills/database-lookup/references/who.md",
+      "git_blob": "81da3b22fdba5db52aff917ab685b14de5714d54",
+      "sha256": "9260f58512a9de4f3647207c759451931ffbd4e15415afa39b0bfdedbdb12d4b",
+      "bytes": 8890
+    },
+    {
+      "path": "skills/database-lookup/references/worldbank.md",
+      "git_blob": "0aafb89def486e93d2e87b8d9d8bb0ed0abf45f4",
+      "sha256": "673144b300cdbef6fc0a6bb995df3182f13230dd5dd83264db593c13b3e4f0c4",
+      "bytes": 7131
+    },
+    {
+      "path": "skills/database-lookup/references/zinc.md",
+      "git_blob": "e1a160caabc7600aa956dc3d5beb753fb8dec789",
+      "sha256": "7aa76cb2cd7f2cdae05c73faf95be0445f86c404259e4efabb352ed179e97274",
+      "bytes": 5836
+    },
+    {
+      "path": "skills/depmap/SKILL.md",
+      "git_blob": "646ee21e9c87d217cf199a139e9851a5b176da19",
+      "sha256": "893eb02a2dc8a77e61260dfb74b2acdf6c85e08f33028329d73657a23d398586",
+      "bytes": 13887
+    },
+    {
+      "path": "skills/depmap/references/dependency_analysis.md",
+      "git_blob": "3ad8f696a8f7c5c77d1d3d6c61786f43d4e17286",
+      "sha256": "4bf745e94ff70da89f8c3d67c3de625d2d06b24812012fe446fa9d9c2422cd96",
+      "bytes": 10165
+    },
+    {
+      "path": "skills/depmap/scripts/depmap_data.py",
+      "git_blob": "28abc40525c012334e70440d2a2e650c946faae7",
+      "sha256": "28604159f7c87d7e5a5002a0512af100a440d73f0fa5f2ba6794ccafce66ebfb",
+      "bytes": 9237
+    },
+    {
+      "path": "skills/experimental-design/SKILL.md",
+      "git_blob": "ee14f9ed795c791ac80e3ea946858d97d09c3e50",
+      "sha256": "db2de0f3d29b7729776a91e923c9c83801298f5ad8e88fe44570045fbefcc248",
+      "bytes": 16328
+    },
+    {
+      "path": "skills/experimental-design/references/design_types.md",
+      "git_blob": "f4ff1908a6c0d967375abb5447e5c8e62ec7d628",
+      "sha256": "1f36f14160bc9895773a2922402869202866410c9130f2b32c5a54e5f5a6e71b",
+      "bytes": 7972
+    },
+    {
+      "path": "skills/experimental-design/references/factorial_and_doe.md",
+      "git_blob": "9e7558fcbfa301e1507b9779cc57e33749e2252b",
+      "sha256": "a59fa2279c439c096a66955b4923ad68c00d6046570665e6f6d36e807fa1de63",
+      "bytes": 9069
+    },
+    {
+      "path": "skills/experimental-design/references/randomization_and_blocking.md",
+      "git_blob": "1b0dd39fee22c4fd0347cd30e6163d8c9d1fa731",
+      "sha256": "fabcfae913397fb8c3018b959b67ddf8fe47322b40cbf4155d898fa11738e9ae",
+      "bytes": 7831
+    },
+    {
+      "path": "skills/experimental-design/references/sequential_and_adaptive.md",
+      "git_blob": "ee93386737a996b34519932b62fd07a89b01682a",
+      "sha256": "83085e2cde0942de23670d3aabb30768fb576a6aa99c2e4ac6f7790b00977051",
+      "bytes": 6530
+    },
+    {
+      "path": "skills/experimental-design/scripts/doe_designs.py",
+      "git_blob": "4b8033c43cc5c885d7102a896f21dd0ae5ed808e",
+      "sha256": "916996b5e6a5dbb9a408aa1e755a95800af70231e46d12c8c5efddb9e3e30683",
+      "bytes": 9575
+    },
+    {
+      "path": "skills/experimental-design/scripts/randomization.py",
+      "git_blob": "b4ef4355289ef556fcde40a703eb383597564b78",
+      "sha256": "c7c2eab469618a4b27548058b924ec3f4aafaf635d3797af920b9058e700bce4",
+      "bytes": 9592
+    },
+    {
+      "path": "skills/exploratory-data-analysis/SKILL.md",
+      "git_blob": "c461f99dea057872298ce6f04e7c090a83d80d01",
+      "sha256": "955c4cefa49106dd03b55cbd62603bab2d2fb678e627dd452ba62040c7128484",
+      "bytes": 14722
+    },
+    {
+      "path": "skills/exploratory-data-analysis/assets/report_template.md",
+      "git_blob": "cf651d8d360f702230d03c124a2ff0f5b2e2e97c",
+      "sha256": "c6cd0644dbefeb64c77e84935509f52a92d45256daf2cd4be84012e99e4d7d44",
+      "bytes": 7873
+    },
+    {
+      "path": "skills/exploratory-data-analysis/references/bioinformatics_genomics_formats.md",
+      "git_blob": "c82fb3679a4e7db3be07bf11c98666166e9b4605",
+      "sha256": "b3594673cbe22e29fd5bc2681c1b53d4f8b02b48ff17fc9ffaf5a09d1d885be3",
+      "bytes": 8977
+    },
+    {
+      "path": "skills/exploratory-data-analysis/references/chemistry_molecular_formats.md",
+      "git_blob": "40d5dff9437c596e79bf53d98ce5135e8d1bec49",
+      "sha256": "3ff937541ebf0396d4c2304016cebc42d405110300df7379f59c40953fc8ed41",
+      "bytes": 8732
+    },
+    {
+      "path": "skills/exploratory-data-analysis/references/general_scientific_formats.md",
+      "git_blob": "1fcfd35ac18b2caa932ca2009b987ae0b1261550",
+      "sha256": "42bcf3389bbd78e426dd41139208517f3f78bdc17e068a1eb3a984d2f2487320",
+      "bytes": 12276
+    },
+    {
+      "path": "skills/exploratory-data-analysis/references/microscopy_imaging_formats.md",
+      "git_blob": "4159a6bd6aaeddbc5147b9e71ade65359fce13b2",
+      "sha256": "c96bb7291ded320a106800c1132191683aa3028f2240c5fcf954079f1a26c382",
+      "bytes": 9305
+    },
+    {
+      "path": "skills/exploratory-data-analysis/references/proteomics_metabolomics_formats.md",
+      "git_blob": "f04246379bca90d2a8bf0e27633da55dfd276596",
+      "sha256": "66d9493fe14c717f5e8e60500e8fa7bfe1f619084e23b643a767f0952a35efd7",
+      "bytes": 9821
+    },
+    {
+      "path": "skills/exploratory-data-analysis/references/spectroscopy_analytical_formats.md",
+      "git_blob": "429ddc84592a6deee21c13b69d6ae16eefa972d3",
+      "sha256": "102a68c212ef5447815c889cf06668f3cb5bd8644f018354d6e98d1a15101a0f",
+      "bytes": 9555
+    },
+    {
+      "path": "skills/exploratory-data-analysis/scripts/__init__.py",
+      "git_blob": "7fb9dd8fa120dd2d00eb2be0c5a4c1c4349c908a",
+      "sha256": "87539288ce5d4caf24fc9fca14e5d70c41730c9d4285106ac4db0c4b5cefd60c",
+      "bytes": 69
+    },
+    {
+      "path": "skills/exploratory-data-analysis/scripts/_capabilities.py",
+      "git_blob": "9aa1327f23a58324baabb777c98a01b577787fa1",
+      "sha256": "93fd42bcc6940db0a6cad364dab42a52f0867e782f7e93c9b27c4185249edc06",
+      "bytes": 20714
+    },
+    {
+      "path": "skills/exploratory-data-analysis/scripts/_common.py",
+      "git_blob": "d098fc4e0acf3a0f67c8a4f6596ba69e29388b1b",
+      "sha256": "f363af255cc78ea63864e0da9f679f57a9e71efd36b6813332f3d2c419b30d51",
+      "bytes": 14293
+    },
+    {
+      "path": "skills/exploratory-data-analysis/scripts/_structured.py",
+      "git_blob": "714ec59a5d187359c0a329c3d81b5b3196af9ee9",
+      "sha256": "8cb23c8552339acc926f4dc84e1ec032c79152515098e1fd97f2326b84b4ead9",
+      "bytes": 14683
+    },
+    {
+      "path": "skills/exploratory-data-analysis/scripts/_tabular.py",
+      "git_blob": "5311d1a9aef4995210442792e6a75221e8ad60f1",
+      "sha256": "5d1db825890dd035c30e51ac1c11aee56e1e1dca6ffd238ee87ae7d51d8df2f0",
+      "bytes": 32782
+    },
+    {
+      "path": "skills/exploratory-data-analysis/scripts/capability_manifest.py",
+      "git_blob": "a1ee36326ea6889b38428714283ce2f4952db461",
+      "sha256": "1e52e1db668ebce919751a75b53ad959c36749e4b1695f59d8ac2d6c8eda4abf",
+      "bytes": 5433
+    },
+    {
+      "path": "skills/exploratory-data-analysis/scripts/distribution_sensitivity.py",
+      "git_blob": "f8db91f4b7391152ae2b808387d67543bf52bb38",
+      "sha256": "ca6e9f3dd59cfb382b1ff0874e709933c136ec942085a0437d4000bbf7f1f3c8",
+      "bytes": 3304
+    },
+    {
+      "path": "skills/exploratory-data-analysis/scripts/eda_analyzer.py",
+      "git_blob": "40781abbc7879354c3430fc6f35ebad2331f195e",
+      "sha256": "6532b28ad3f28dd9f58acecb54361c8271d2755584a54ecb0be34da74d1e5d20",
+      "bytes": 10547
+    },
+    {
+      "path": "skills/exploratory-data-analysis/scripts/image_inspector.py",
+      "git_blob": "a051fd39b64f3d511e3b764eda78b9f72d776db4",
+      "sha256": "79c21b35d01376929ff0edf26a3bb25923b9e75458c586e0f5721cec356fe639",
+      "bytes": 7931
+    },
+    {
+      "path": "skills/exploratory-data-analysis/scripts/missingness_leakage_audit.py",
+      "git_blob": "af3f1e98588547674dbfc6bc56644fe749b747c8",
+      "sha256": "28458714e80ee31db636c0265ba21e1623ba27816d31e236fdc9b873a5b78ffc",
+      "bytes": 3904
+    },
+    {
+      "path": "skills/exploratory-data-analysis/scripts/report_scaffold.py",
+      "git_blob": "a816e5f422078b7fddbe6bd4c465422c9a5ea651",
+      "sha256": "4d745592384bfceb0ec7384eecfc5e8ba49ebfa4ec55be75a99ce7c7e102f60b",
+      "bytes": 4247
+    },
+    {
+      "path": "skills/exploratory-data-analysis/scripts/sequence_inspector.py",
+      "git_blob": "66e985e15ef369ba26cbdd65cc2a6ec4460d7a0c",
+      "sha256": "11ca2fa3a0d660192631b9b562f362b0fd120c9e54639bfb049c600c6920be28",
+      "bytes": 8621
+    },
+    {
+      "path": "skills/exploratory-data-analysis/scripts/tabular_profile.py",
+      "git_blob": "874ef86b871eb72b8f95a87cfc4cad29f72be148",
+      "sha256": "78cd139292c18e31d17de882762948db7b51fdc3278546f994270a287d0149db",
+      "bytes": 3077
+    },
+    {
+      "path": "skills/literature-review/SKILL.md",
+      "git_blob": "5178dce6419cee412155e7b9dd523d5b2ef703f5",
+      "sha256": "16a9e85bcdcb9bb859e1646bf836e51b22900445ba2e367d8d75be05b5a5cba8",
+      "bytes": 12869
+    },
+    {
+      "path": "skills/literature-review/assets/review_template.md",
+      "git_blob": "d4188470de723bc75d617b8aaf2fb47a0b65dce4",
+      "sha256": "08671516976d01a7004f8ae7c944a50c253877504720c15d5fa24eed90889819",
+      "bytes": 13769
+    },
+    {
+      "path": "skills/literature-review/references/citation_styles.md",
+      "git_blob": "a12c1f8a6dc1a93abfe3c7d74b198062176ce3cf",
+      "sha256": "2a50e43b18c2fff781e04406deb66186ba8f91ed28af32004aba63c63dcc1789",
+      "bytes": 7627
+    },
+    {
+      "path": "skills/literature-review/references/core_workflow.md",
+      "git_blob": "6a0bab11cd67d05dd683576f512b2045d85c826b",
+      "sha256": "4d63f1087c98efeec7c7bf622bed6e0456a9c7c3defe584995917f2de6f2c601",
+      "bytes": 11876
+    },
+    {
+      "path": "skills/literature-review/references/database_strategies.md",
+      "git_blob": "ed342f27145805ad585ba260c75d60678b60ac20",
+      "sha256": "24b56cd88128a9016520ed6b5e2abb79e19dc9b86cbf064927e9056aa1504f48",
+      "bytes": 10431
+    },
+    {
+      "path": "skills/literature-review/references/example_workflow.md",
+      "git_blob": "521308758c8847254edb1d62ad242e982f00dbe5",
+      "sha256": "86336c42f78ff282430a6cdd2282a99562cc9d5e46b62e70a33bd839f9ab726a",
+      "bytes": 3078
+    },
+    {
+      "path": "skills/literature-review/references/search_and_citation.md",
+      "git_blob": "ed27ee9d24c9cef3381cc414834dda7d69a4a019",
+      "sha256": "f33d671351989ee86066b9a21bdbf630a1f60001ada92fda4c942006d37b74fe",
+      "bytes": 4685
+    },
+    {
+      "path": "skills/literature-review/scripts/generate_pdf.py",
+      "git_blob": "dea8d556e808c006c911131ee761b2bd1ae8ecc0",
+      "sha256": "0ba1b16b196b64d4966e5f055a289f0c17e3579a84254abe47ff63be95b4f136",
+      "bytes": 4990
+    },
+    {
+      "path": "skills/literature-review/scripts/generate_schematic.py",
+      "git_blob": "10aacec40261d1dfb4c51c406e1d12590ab865bb",
+      "sha256": "0c81ce099d5ab9aa3d3c486aa9bd3e81ee1117e18a54db14bb0a68de61eaa4bc",
+      "bytes": 7782
+    },
+    {
+      "path": "skills/literature-review/scripts/generate_schematic_ai.py",
+      "git_blob": "a7f586678624e23fb70b271188b70fa539d8fc99",
+      "sha256": "7316f2df92f442b8c60a5dd2bd8b504e17449d4be89352e5af24be2239700046",
+      "bytes": 35684
+    },
+    {
+      "path": "skills/literature-review/scripts/search_databases.py",
+      "git_blob": "d14e3202055844ea47a4d19b8b5ceeb4321dceab",
+      "sha256": "76f47fd18ca28df4985ffc6d30d5ad659e67c8058bb3de8f385c2443752f4eaf",
+      "bytes": 8769
+    },
+    {
+      "path": "skills/literature-review/scripts/verify_citations.py",
+      "git_blob": "39fb278f7896e275784f7ea23ba395b1929863e5",
+      "sha256": "4c8e8377718ddd47e9cd7cef706935b04910af5d13bfd920970dcf41d4ef3706",
+      "bytes": 9960
+    },
+    {
+      "path": "skills/medchem/SKILL.md",
+      "git_blob": "fd722ce76900260947707428339841d8a10fcd08",
+      "sha256": "07e44d0dc965278ab8e4fe9a325e89198bccd7e3ee26c1c454e788e1f4df9c2f",
+      "bytes": 15732
+    },
+    {
+      "path": "skills/medchem/references/api_guide.md",
+      "git_blob": "8cfb07ede8f933219e7f1776b6a44ffccd230787",
+      "sha256": "acba89f01dfba48e3ef18edba2ee25859f8f98cc488d7c39eca9f71d32c23bd2",
+      "bytes": 14042
+    },
+    {
+      "path": "skills/medchem/references/rules_catalog.md",
+      "git_blob": "ac35612870e00fb12b313e024c9d9ef3b4ac2374",
+      "sha256": "0a429dfe34cf877f9a581ffac6c584d2334038a8303c5d85f6be293ca709e9aa",
+      "bytes": 11647
+    },
+    {
+      "path": "skills/medchem/scripts/filter_molecules.py",
+      "git_blob": "d2827f83b71c25597011bfc5cee40dae0d162070",
+      "sha256": "bed43299e25f3f12acb8e30f506e2de57a71a24852b6b19f7c3560b8fe455d67",
+      "bytes": 13637
+    },
+    {
+      "path": "skills/pathway-enrichment/SKILL.md",
+      "git_blob": "c9d3479b6edb958c17ab0c77f981bb6dfb546bc7",
+      "sha256": "82783d8ba63b6b03646492ee75afcdf591903a213decf7e7c9d844eb517acd78",
+      "bytes": 16726
+    },
+    {
+      "path": "skills/pathway-enrichment/references/databases-and-gene-sets.md",
+      "git_blob": "c8feb2207ed409f76073f742fc23f506a8a11c44",
+      "sha256": "bd9dc1b2df10a2eb8794bdbe2ade248b8987ddf200a8e90b19235af8f20fd414",
+      "bytes": 9025
+    },
+    {
+      "path": "skills/pathway-enrichment/references/gseapy.md",
+      "git_blob": "49ee0c09a36d9e752d79f3deb459152c281c35f6",
+      "sha256": "0305a6c545c2aa5e1ac655d8a39f99e437f02a29f5f23f9786e5cf3ab98959fa",
+      "bytes": 9856
+    },
+    {
+      "path": "skills/pathway-enrichment/references/interpretation.md",
+      "git_blob": "fa075ba58e40c38bf5e6d31ff77e68f028b5c2d2",
+      "sha256": "d1356ee0f94c4e64191c7436c641c01592e323be1e55f4c037957b7b833d4f73",
+      "bytes": 7511
+    },
+    {
+      "path": "skills/pathway-enrichment/references/verified-api.md",
+      "git_blob": "fde04d384fd330be86e6eecdce16c45a35a16e6c",
+      "sha256": "911a352451ec52066f044f8eac671ad8aa6a4e8b09d455918bea790b26d882bb",
+      "bytes": 8265
+    },
+    {
+      "path": "skills/pathway-enrichment/scripts/run_enrichment.py",
+      "git_blob": "a17ccf1ecbb6669fbfe2b9b81c1244ca0add61fd",
+      "sha256": "973a06c03e9d1df49423ca0744f7c5be5185ec9decc7de8ccbb72d0f2ac6bc06",
+      "bytes": 13605
+    },
+    {
+      "path": "skills/pkpd-modeling/SKILL.md",
+      "git_blob": "e38127b040b5a67187a876cbd443a3dffeec0687",
+      "sha256": "fc58aed600d0fe9de911176cb0f2a43e8df6bbae8c2260be6f8abade133a2837",
+      "bytes": 17574
+    },
+    {
+      "path": "skills/pkpd-modeling/assets/nca-reporting-checklist.md",
+      "git_blob": "69103b2f90aa49c3a94ef0ee609336d15daf934f",
+      "sha256": "1777b648b3acb5dea8812b5e6e54fa7261ac59d531c45647e83e2022920f5fa2",
+      "bytes": 3572
+    },
+    {
+      "path": "skills/pkpd-modeling/assets/popk-analysis-plan.md",
+      "git_blob": "d4597abe48873f74a89858c346e57b028d24c99a",
+      "sha256": "818b72fb306b9ccd511480be3aa51ec8b74466ae8e17f39912ca001cf3859c88",
+      "bytes": 5140
+    },
+    {
+      "path": "skills/pkpd-modeling/references/antimicrobial-and-tdm.md",
+      "git_blob": "d862a0d453bd28cf481ff72bb0aff333322ed48f",
+      "sha256": "d5d1ed437fe4d6c806b17640777725834bdcf68eb1fb8f5c278df70771aaf411",
+      "bytes": 3177
+    },
+    {
+      "path": "skills/pkpd-modeling/references/bioequivalence.md",
+      "git_blob": "eadaed8f6610943c18791f49558b8b4941f17d5a",
+      "sha256": "8c5f17ea97e3c60ab90f0c832fac4bbf2495c2be9c8fc6f6c63cfa98a6ddb320",
+      "bytes": 3293
+    },
+    {
+      "path": "skills/pkpd-modeling/references/dataset-standards.md",
+      "git_blob": "33d0913cb6a625aa0dc80ce4e547e31ec597336e",
+      "sha256": "186b07e11132cf028e2c132cc8141cabfaab50f95eb40acc0dc867a73acf96bd",
+      "bytes": 3328
+    },
+    {
+      "path": "skills/pkpd-modeling/references/ddi-and-qt.md",
+      "git_blob": "c9e35c35eb21be208d4b3225df73d4ae8039a29d",
+      "sha256": "7ba492eac23455a18eb9e13f017068cbf873245bd0c6cc6db2ee7fca123f782d",
+      "bytes": 3054
+    },
+    {
+      "path": "skills/pkpd-modeling/references/nca-conventions.md",
+      "git_blob": "701a6dcbfc516ddad139cbabcf3956e7017f2fc3",
+      "sha256": "4344d0dc6dc1c86df37195ade9e55013936740581ee2cdd47ba2657a87b2c7cf",
+      "bytes": 3326
+    },
+    {
+      "path": "skills/pkpd-modeling/references/pbpk.md",
+      "git_blob": "a9749515aa181aebd098f74cf0a774f4655f4ef2",
+      "sha256": "b2fbe935e236cbcac03fd42fcc818aed31cb1b7400049be22e020714fc2091ef",
+      "bytes": 3542
+    },
+    {
+      "path": "skills/pkpd-modeling/references/pd-and-exposure-response.md",
+      "git_blob": "00a05a9310f8c439387b01c58b5cf2925359935b",
+      "sha256": "c86dae45a411caecf328017a00c0275f7c5db0f7b534bf4b501213bb66aedcb0",
+      "bytes": 3293
+    },
+    {
+      "path": "skills/pkpd-modeling/references/population-pk.md",
+      "git_blob": "1b20442a50aeb62834388d87ccf6204ac913076d",
+      "sha256": "50bb41419ecace56a2f86c24af7f7b4b093b11fada20298073808d0b39dd239c",
+      "bytes": 3613
+    },
+    {
+      "path": "skills/pkpd-modeling/references/regulatory-guidance.md",
+      "git_blob": "f249f231d2e15b440f62531c81909b1173cdbae5",
+      "sha256": "148897e9be984a95e54e04ec524f1cc5de583cfe44b1ab109db4dbc98c3b6df9",
+      "bytes": 3821
+    },
+    {
+      "path": "skills/pkpd-modeling/references/software-ecosystem.md",
+      "git_blob": "c002b2e099e7e83715809396e5014002b41e75b5",
+      "sha256": "a9274de6fc560d57fc6123e8eff3e3ecf4b008cceaaaa7e77a228b4f557d99ac",
+      "bytes": 3964
+    },
+    {
+      "path": "skills/pkpd-modeling/references/source-ledger.md",
+      "git_blob": "45290be378365056fe2710cfc0c44eb7acaca2fd",
+      "sha256": "e0cfcccf0bbc011ace1c563f6f2f04ad08430baa20f6ee0c1fff3268b48f2db7",
+      "bytes": 4325
+    },
+    {
+      "path": "skills/pkpd-modeling/references/special-populations.md",
+      "git_blob": "dd07b404f3a1265a3d15f876c5e27eb0921e9806",
+      "sha256": "4f13904dd4942b39184d78047d27625b44f20de9466c318f48fa0df2420b720b",
+      "bytes": 3123
+    },
+    {
+      "path": "skills/pkpd-modeling/references/structural-models.md",
+      "git_blob": "fc9c4cb16668d5289fbadd2d6e082836bcd9e4f1",
+      "sha256": "02c58b3e155cdd547cfa472bb3189b68b0b6ccb4c1554308106a8c395247b3ea",
+      "bytes": 4305
+    },
+    {
+      "path": "skills/pkpd-modeling/references/tmdd-and-biologics.md",
+      "git_blob": "05c26fc9b0153065ab10e203ea0aa00bd3657be0",
+      "sha256": "bd4241e64522f54b62ed4a50e4af7c4d69192d0ace4fe3c9af5d8e798127c915",
+      "bytes": 3392
+    },
+    {
+      "path": "skills/pkpd-modeling/scripts/_common.py",
+      "git_blob": "6a88bc486dbfd666298d9aef921327d0d2fd5ecd",
+      "sha256": "4afa7f0b5043d81e5fd6bcdcd8124b526b893b57cc78fada80593aa287ad4081",
+      "bytes": 11971
+    },
+    {
+      "path": "skills/pkpd-modeling/scripts/_models.py",
+      "git_blob": "e962073953d7af864feaf07f062b21d719d0dfe1",
+      "sha256": "4c4239811dc7ca5e20ca0e5cfaca46fa33a5cb6fb8a7853bafd534d573858a66",
+      "bytes": 27973
+    },
+    {
+      "path": "skills/pkpd-modeling/scripts/allometry_and_fih.py",
+      "git_blob": "164932ecdb12358f8bdf80ddedf899987ca455e3",
+      "sha256": "6370bb60c71fd9411d6e8ce220fc0ab2a4e770b838c8e660f6a6ef0b6f59adbd",
+      "bytes": 16823
+    },
+    {
+      "path": "skills/pkpd-modeling/scripts/bioequivalence.py",
+      "git_blob": "4d085a2d0242a05d81a6ee8ca44d74eba7b617ab",
+      "sha256": "d5090621efb01faccd60e5bd20895f90fa6591abefa2309b6e26996a6e97e85d",
+      "bytes": 18062
+    },
+    {
+      "path": "skills/pkpd-modeling/scripts/check_popk_dataset.py",
+      "git_blob": "068c2adc496cd5f45ad5910fecef16a8ca2c9b77",
+      "sha256": "21113e33185cd1ba5dc612eceddb89e704122f5f5a794663ed7dad0b146fa1fd",
+      "bytes": 18138
+    },
+    {
+      "path": "skills/pkpd-modeling/scripts/ddi_static.py",
+      "git_blob": "3872ac5575620952192c6a7ca59d03492ba91c56",
+      "sha256": "015fe3cfc3fcb6a4fa7527b9c922ef30f81b54579aba0bb8d452eb7ea649a3b9",
+      "bytes": 18886
+    },
+    {
+      "path": "skills/pkpd-modeling/scripts/exposure_response.py",
+      "git_blob": "1730b13fe114c7b50164b46ca3425c47a3c5c568",
+      "sha256": "9f1473cfaa8b0e60e519562fb2faec026529869592850f37badde40ee59a48c6",
+      "bytes": 16294
+    },
+    {
+      "path": "skills/pkpd-modeling/scripts/fit_compartmental.py",
+      "git_blob": "c9ed241db03e7f143b00aee7bffcd8f44d8834dc",
+      "sha256": "954e02a29dd03217652b6fb351aba0f6c9d5a9c6cf4d13d52c7094c4ca9ad812",
+      "bytes": 22593
+    },
+    {
+      "path": "skills/pkpd-modeling/scripts/nca.py",
+      "git_blob": "422658938580493d7867f0c474c03fd389fbdbc2",
+      "sha256": "1e28fe000a4e3f9492ef93430c93b0d05a611be9ee810e1cbcfb0ffe4669b4af",
+      "bytes": 24915
+    },
+    {
+      "path": "skills/pkpd-modeling/scripts/simulate_regimen.py",
+      "git_blob": "e3ff24db4621ba3963ccdc5da604f644ca9b4952",
+      "sha256": "145d8eebfea3ad569b2fa18878e13d616ddef88dcd3ebfaeb34f9265e0921fca",
+      "bytes": 17629
+    },
+    {
+      "path": "skills/pkpd-modeling/scripts/tdm_bayes.py",
+      "git_blob": "1112bd808d73e19e61a09cf102e43f48fd08b812",
+      "sha256": "c17cfc052bd3bbec01536290fca580c00ebc8f36d6a0f55ac51c55b5cb7e9716",
+      "bytes": 13300
+    },
+    {
+      "path": "skills/pydeseq2/SKILL.md",
+      "git_blob": "d9499e1f7a2e728dc44cba00b4e3081e917fc97d",
+      "sha256": "f06a9f5ece540c05bd8a8208bb3970d000b13cb1032abc9488cfbfe6106cd843",
+      "bytes": 10507
+    },
+    {
+      "path": "skills/pydeseq2/references/analysis_patterns.md",
+      "git_blob": "6bfb6e21a28bed715f8f40bd414f6385eb0c8ecc",
+      "sha256": "de25b02590029166c9e22d845f6b194ddbc1f66ef8dfd4a99bffa54186e61894",
+      "bytes": 5188
+    },
+    {
+      "path": "skills/pydeseq2/references/api_reference.md",
+      "git_blob": "c0f3b00f4956b1da6f1cd8ed17aa77bf029d3f2c",
+      "sha256": "8f60f7302417b8c094e3e716c1435aea4ebff556c3e90fe389dc0f5bb8509f75",
+      "bytes": 8990
+    },
+    {
+      "path": "skills/pydeseq2/references/core_workflow_steps.md",
+      "git_blob": "f85354fa6c10844d8294722855a440e71e76c248",
+      "sha256": "af01451d1ed181f7d0194e28a0ece6ee16bdc5896f463f9b245eff8b47fd2a78",
+      "bytes": 3493
+    },
+    {
+      "path": "skills/pydeseq2/references/workflow_guide.md",
+      "git_blob": "9ac88bc2bb50ec0129fd21aefcb46d97cb048e83",
+      "sha256": "abcb6571119c4aa1611e959a8d780f76b0036b6da0f90277e2cba66ab7cd83c5",
+      "bytes": 9179
+    },
+    {
+      "path": "skills/pydeseq2/scripts/run_deseq2_analysis.py",
+      "git_blob": "c85e088543284432a5a8851fe99e7a40eda3579e",
+      "sha256": "d99ee5d170fdeea2f80ab3282a9a5fff6e4bf7c3f784af5a4cc4211b1ab2b622",
+      "bytes": 17909
+    },
+    {
+      "path": "skills/pytdc/SKILL.md",
+      "git_blob": "702017b5bcb831349af598fb75c93450aa20bb74",
+      "sha256": "b7df3f50c1c618a47a81e994b2863ddd8adf695e795aa495c3a8fef5e78a0493",
+      "bytes": 14674
+    },
+    {
+      "path": "skills/pytdc/references/datasets.md",
+      "git_blob": "878d243e2b0d924c9efd347a0efaed2e591c2ac8",
+      "sha256": "a056e9e0cd4ce0d29f21f66c01bd76e6dc9f0ffcd0dcfebcea9756d84cdbda9f",
+      "bytes": 10263
+    },
+    {
+      "path": "skills/pytdc/references/oracles.md",
+      "git_blob": "19aca3a7bfc5c65fd4744b41d03648a8eaac4120",
+      "sha256": "bb2dfa8f0a3924d86317873a0b6f4b23560bffb60226d11816d3bf9b611035f5",
+      "bytes": 10103
+    },
+    {
+      "path": "skills/pytdc/references/sources.md",
+      "git_blob": "f91f5693e4dece3219c3a885a7922a1a760e4e83",
+      "sha256": "452714c37a4b65da76f50d3749934f67106093910149572c0aea8fb4b9b0a21f",
+      "bytes": 14244
+    },
+    {
+      "path": "skills/pytdc/references/utilities.md",
+      "git_blob": "19d0d9cd584c0006ceabe3a971f1f9773d0019d4",
+      "sha256": "cc3c0ab067029e7dff37c5480b483092387993555567aa3b0fe1b7df88f6c95f",
+      "bytes": 14239
+    },
+    {
+      "path": "skills/pytdc/scripts/_common.py",
+      "git_blob": "e55eff1aaabdee94de9cca29969ce34388840192",
+      "sha256": "5400062833084d7dfbe6fa603901d2d931689c1d2ad587c9ae67052f50b98791",
+      "bytes": 7346
+    },
+    {
+      "path": "skills/pytdc/scripts/benchmark_evaluation.py",
+      "git_blob": "c4d52f1f863f3f3f4a6119ec6c0b7b31f75046a1",
+      "sha256": "821c3f05b0752ecc93852251c2e72d6e5e066c7d14fb1e9975d0d41cc5ed667c",
+      "bytes": 13327
+    },
+    {
+      "path": "skills/pytdc/scripts/cache_audit.py",
+      "git_blob": "6527db05baa0e1b4e4ae06809274a04712621607",
+      "sha256": "8525adb221fe0a5cdf87475f10db1317bc74015ee5719e34de0a2c2b92523db9",
+      "bytes": 4596
+    },
+    {
+      "path": "skills/pytdc/scripts/discover_metadata.py",
+      "git_blob": "3d9afb38f270eb9dcc908aaa81e6de110c8fc312",
+      "sha256": "e761eb71b2c7c131db661920e252d88ef72402004e3445055487a344dace1e0f",
+      "bytes": 5066
+    },
+    {
+      "path": "skills/pytdc/scripts/load_and_split_data.py",
+      "git_blob": "8774f06f6329d42b7ece8ec0b5a0f3ce1fa2c690",
+      "sha256": "dff84d0a97fa83e809e0033c440c3574452feeeed18daffd6604f0952503873e",
+      "bytes": 13849
+    },
+    {
+      "path": "skills/pytdc/scripts/molecular_generation.py",
+      "git_blob": "91ae176b1ec24760089e3746f5880301e1dc7d00",
+      "sha256": "128701240a4f5d5258cf6ab12d6ac96166353551f6fb914c060da3eee4f2bbd2",
+      "bytes": 14254
+    },
+    {
+      "path": "skills/rdkit/SKILL.md",
+      "git_blob": "c5cd692e59278038cc633b114ca41e5dacdc7d6b",
+      "sha256": "9f32d5d229bc1a5bac3e57de5fb87895cdb85dcc99132c57373905db0e1a941e",
+      "bytes": 8887
+    },
+    {
+      "path": "skills/rdkit/references/api_reference.md",
+      "git_blob": "79a22c021fdd93c689b287537a49fe58457fe0c2",
+      "sha256": "160f14e37cfaff3a93e77d77c772b0a06b5dd413fbefddc9a6bc414f5dd63d70",
+      "bytes": 18885
+    },
+    {
+      "path": "skills/rdkit/references/core_capabilities.md",
+      "git_blob": "30908c3e6a725ea125a875354ee3afe7d41691cb",
+      "sha256": "6ec3d2334012a4b6bbd46a1a055fccad3aa01650c778e6d9c2793d06fa666306",
+      "bytes": 18010
+    },
+    {
+      "path": "skills/rdkit/references/descriptors_reference.md",
+      "git_blob": "a3ad57fe914fc9079f6c156c9c6fbad40c82e246",
+      "sha256": "5213da1e42c99249490e5a619d213911cafc708056c2e3444f8514cd9e9ce4f9",
+      "bytes": 12686
+    },
+    {
+      "path": "skills/rdkit/references/review.md",
+      "git_blob": "bc206ca0e54e95d594b343d5e346095cb3c5bbb7",
+      "sha256": "66c4364a9949942203c32aa40766291da75112833576834c272fa24e80817119",
+      "bytes": 5404
+    },
+    {
+      "path": "skills/rdkit/references/smarts_patterns.md",
+      "git_blob": "88511bff556bf908b85903cf547a1b8e2abfba3a",
+      "sha256": "3746ed0bf7d7ca99b945e5c4ac53077f539e7a20d9091ec59c8c3e0f2a37f190",
+      "bytes": 8027
+    },
+    {
+      "path": "skills/rdkit/references/workflows_and_best_practices.md",
+      "git_blob": "e5553dee8d40a92dcd976d6ab0b9d273f538b28a",
+      "sha256": "13ac8e6ce522b5585a6c964b10b539d06e18e1c3d4c18880a9733b0be5e54a3f",
+      "bytes": 8500
+    },
+    {
+      "path": "skills/rdkit/scripts/_common.py",
+      "git_blob": "12925c471805efae55661e00b4f1df07c9afec17",
+      "sha256": "b9de71f55294e9587b42173a49f688f03808678fdf085604fd0a3b3d1ec4fafc",
+      "bytes": 2614
+    },
+    {
+      "path": "skills/rdkit/scripts/molecular_properties.py",
+      "git_blob": "5b9a8635ac09e0c2f8c5345f0ef0b516b7d4d490",
+      "sha256": "93deadbda64b763d5ff07e88f48de57968e8f2cf1ed210898899bc73f173806a",
+      "bytes": 7261
+    },
+    {
+      "path": "skills/rdkit/scripts/similarity_search.py",
+      "git_blob": "d60739289030b8714edeb05568f3414cdb1034a0",
+      "sha256": "fa935d7cb14f9aa601c15ae2daec539513a397727946b2b62126b77dcf1b52a6",
+      "bytes": 10513
+    },
+    {
+      "path": "skills/rdkit/scripts/substructure_filter.py",
+      "git_blob": "3c04d0a09e7473003dd80956dfb849fd18e79850",
+      "sha256": "3a737d874bab1007409aea7398d001602142cf54f8fc64b080109da91ac6b513",
+      "bytes": 13036
+    },
+    {
+      "path": "skills/relsa-severity-assessment/SKILL.md",
+      "git_blob": "57e864f610026ece40bc6867e841e1beb1c664d2",
+      "sha256": "10ee1a904565f5e9c9d432b3af136db42927d0811f07f646355600fec6633f8a",
+      "bytes": 20981
+    },
+    {
+      "path": "skills/relsa-severity-assessment/assets/example_cohort.csv",
+      "git_blob": "85b3ef12e72f6492fa4e02613f547f63226b70ca",
+      "sha256": "8becb57b62367de1cf03e287ae002f9a3361396b73c6d1385466738b4efff86e",
+      "bytes": 2166
+    },
+    {
+      "path": "skills/relsa-severity-assessment/references/forecasting.md",
+      "git_blob": "1b032fd1442f86832e9e9e40c8b683c620754be0",
+      "sha256": "329605e6087025d4a256e211add766bdf00b2ca6c30d42ce03125fadb16aef4d",
+      "bytes": 6756
+    },
+    {
+      "path": "skills/relsa-severity-assessment/references/relsa-method.md",
+      "git_blob": "c7ec38f2831a586df3ed05862a382193d3daa93b",
+      "sha256": "d1cd8963db2761e2b9555f466111b6752ea48564e4b4cb1976e00ae304c80b74",
+      "bytes": 7532
+    },
+    {
+      "path": "skills/relsa-severity-assessment/references/thresholds-and-zones.md",
+      "git_blob": "fb40fe1dc6f2cb70b309a4c9fce949e9e207ff4e",
+      "sha256": "6dba2a68f3d32835b5a5ffd8ec5b1d4fc6e600c9dc94637eb07322ea4604eaaa",
+      "bytes": 4910
+    },
+    {
+      "path": "skills/relsa-severity-assessment/scripts/_common.py",
+      "git_blob": "13a0643573d3a5d3ed155523f02c7194dfc4cf69",
+      "sha256": "78c14602ff937e16ac9e609f24d76c4bd0edf14295ea4df09cf0c9c7e1b3d513",
+      "bytes": 14245
+    },
+    {
+      "path": "skills/relsa-severity-assessment/scripts/forecast_relsa.py",
+      "git_blob": "2747ea4262341e473f58863e48eef14109fa781f",
+      "sha256": "a1c83e8779078a7abd51cca0dfd839d5fb806cf9a66a12c010b228690cbfe06a",
+      "bytes": 31831
+    },
+    {
+      "path": "skills/relsa-severity-assessment/scripts/kde_thresholds.py",
+      "git_blob": "f729717a018a251b15836351f6014ad0eb281b94",
+      "sha256": "b58db3e1ff0168dbccce659ced2a2eed5cb741881864ac8a5c0cecf5d946d4d5",
+      "bytes": 15546
+    },
+    {
+      "path": "skills/relsa-severity-assessment/scripts/relsa_score.py",
+      "git_blob": "c6356dc96f5daae854718b37062e18e15b4cf7ff",
+      "sha256": "25729f9d53b4efd46f3f9930d33594284cb2c0ccdecf791ce2960fb04679bd1a",
+      "bytes": 22360
+    },
+    {
+      "path": "skills/scanpy/SKILL.md",
+      "git_blob": "8c071306c10ebaf6b23da5d4fbacdaa597e5c8a8",
+      "sha256": "4a59f87933a1e9ed49eac603719af1b0c606dd99050fe59ffa1c1bf807900cb8",
+      "bytes": 20277
+    },
+    {
+      "path": "skills/scanpy/assets/analysis_template.py",
+      "git_blob": "1a456441eb6a7a169e9ab9d3b669376a698e0f64",
+      "sha256": "c66689f25eeb96c688fd4d66dcd8c78dad22e1f964efed36de1f1ab51f16137e",
+      "bytes": 10239
+    },
+    {
+      "path": "skills/scanpy/assets/celltype_mapping.json",
+      "git_blob": "7a564f2d292f09a9494673046ad355c8678940e7",
+      "sha256": "57252f2224f1ff8cf1e43661bc8a2fabec36bd5d65f996945599fd010c8edf7c",
+      "bytes": 184
+    },
+    {
+      "path": "skills/scanpy/assets/gene_signatures.json",
+      "git_blob": "b2778a3c527b6781cfaec293ef2e8ca7c989c4d6",
+      "sha256": "96b2cf9b5f56d3b1a110eba1ea585fa624618b6648378ce55d5d82c621e8d286",
+      "bytes": 355
+    },
+    {
+      "path": "skills/scanpy/assets/pipeline_config.json",
+      "git_blob": "87af2c573f901371db13bf1f7cf057cdbfcbaacd",
+      "sha256": "c4cb974ad55afbb3befac85fedb7b2b4daf8799a9ce37c590d4e43ac8b675ee4",
+      "bytes": 380
+    },
+    {
+      "path": "skills/scanpy/references/analysis_workflow.md",
+      "git_blob": "1d515e4fa327129c50a623b74c1b710e2037465e",
+      "sha256": "4ec79d994dfb121b2b79559b3d1b07696ca4cbbfd40b8d2d8ad926176e82f187",
+      "bytes": 7788
+    },
+    {
+      "path": "skills/scanpy/references/api_reference.md",
+      "git_blob": "62c45b3f27b17ebade094295a281fef404657dfd",
+      "sha256": "62cd2efbf21c47b86e52ca25e5b77fd505956d0982c85eb9693c7f94cdf8b759",
+      "bytes": 9315
+    },
+    {
+      "path": "skills/scanpy/references/plotting_guide.md",
+      "git_blob": "863c7e116897a135404b14dd3c802674e8f1c7b0",
+      "sha256": "6e6de91dce872b00a383ba4a8ba4a87d6f39d53b182857c1defd3a3375c2fd2f",
+      "bytes": 10745
+    },
+    {
+      "path": "skills/scanpy/references/r_interop.md",
+      "git_blob": "842d4f29ac2689b8e59f32591cd9864079a6c8c4",
+      "sha256": "8ec8ed4257e18a66fe258da573fb7be9c4261366536edc9ec1298e8271aa79c1",
+      "bytes": 12080
+    },
+    {
+      "path": "skills/scanpy/references/standard_workflow.md",
+      "git_blob": "02b1a211f22089d56cbc44209af324c244252620",
+      "sha256": "b7164b502c37779e4c16e41bdbabb8c780da11fa11366c752fc5c889b0b4b7f7",
+      "bytes": 7128
+    },
+    {
+      "path": "skills/scanpy/references/upstream-review.md",
+      "git_blob": "fd876511c56997d6ddc8ca3cc9b3e0320b1546ae",
+      "sha256": "d8cf1606bd21f4772f09b3666f1349e265de3e5c0e8fbea881cbaea18e8b9b28",
+      "bytes": 8473
+    },
+    {
+      "path": "skills/scanpy/scripts/_common.py",
+      "git_blob": "8bf596b2c9e3b7911d566b5e489c9faa72317802",
+      "sha256": "048948933c9fa6831520a512bce6e0a221e31352b6a1b2091d838e9460942e9f",
+      "bytes": 10225
+    },
+    {
+      "path": "skills/scanpy/scripts/annotate.py",
+      "git_blob": "96c41e8eba013061b6fd966201891b2c178915f4",
+      "sha256": "c6f438cdf97db25b493abf072f51cbe9679313966fd9110bdfc9442ec2d79181",
+      "bytes": 3740
+    },
+    {
+      "path": "skills/scanpy/scripts/batch_correct.py",
+      "git_blob": "e783965eec58844da213b27f49c709f069e4a9ba",
+      "sha256": "598178094764aa082894b433d2c9196d45432f3b1bb3928a221519fc5f4cbb45",
+      "bytes": 3133
+    },
+    {
+      "path": "skills/scanpy/scripts/cluster.py",
+      "git_blob": "4318b472da93761d78476758836edd392b7688df",
+      "sha256": "4b3e8d97351b22452d9898d14bda28759fc35bb885c85c7a99bca0e88b028c7f",
+      "bytes": 2523
+    },
+    {
+      "path": "skills/scanpy/scripts/convert.py",
+      "git_blob": "c22c6476fe9da8c9d7d2d1e8ad5dc4470f3e5b68",
+      "sha256": "05e4ced7479b99ed2d98154da1b7c35f822f95ddf1ff25a27b4b6c821f2b9647",
+      "bytes": 1514
+    },
+    {
+      "path": "skills/scanpy/scripts/find_markers.py",
+      "git_blob": "d6bbb3df0a3c90c1315076bfc606647183f92e36",
+      "sha256": "892650b8935fad0d664fad6fe5766468687cf08d7bc231d48f7a40f2635ddfd3",
+      "bytes": 4427
+    },
+    {
+      "path": "skills/scanpy/scripts/inspect_data.py",
+      "git_blob": "e9c24ff3e9c3e7b2d997448b0d4e6ba81b470769",
+      "sha256": "587cd7331064126721b814984acf3a15b7cd8e4ed6c4179063b967fbcc965a99",
+      "bytes": 3151
+    },
+    {
+      "path": "skills/scanpy/scripts/plot.py",
+      "git_blob": "f5e9a7ef907ad02d9cdb23c1c376560bcbabd167",
+      "sha256": "afa4163d2eda3e1ae4db2998891d3716e0baf671286260a63dc9d23c0ce38ba8",
+      "bytes": 3667
+    },
+    {
+      "path": "skills/scanpy/scripts/preprocess.py",
+      "git_blob": "59933c7f8bf82bd5b503a2f524a4a7bc047a4958",
+      "sha256": "513dd9009dd3fe8a300c7d1d7d8a25f3769333945131b8dd50f49184b54ed60c",
+      "bytes": 3559
+    },
+    {
+      "path": "skills/scanpy/scripts/pseudobulk.py",
+      "git_blob": "602b9a3e3d86b7d851efaa559676b2e0ac2a7367",
+      "sha256": "2050b357a55a00eb91c9f80970465fdf464e601d2350ddaf774bed5d572b6da6",
+      "bytes": 4751
+    },
+    {
+      "path": "skills/scanpy/scripts/qc_analysis.py",
+      "git_blob": "13f25d773bf15a77f69994be8d2769290aa6e463",
+      "sha256": "a4ba9a873839c39934c6255708bd5d0542087f54fdb5bc3a295a2b4d8197c104",
+      "bytes": 5192
+    },
+    {
+      "path": "skills/scanpy/scripts/reduce_dimensions.py",
+      "git_blob": "67c6e41f60d282fa2db231f4c86a6d6626c2afe0",
+      "sha256": "03d8170077c88f90ba28f86d05002ae7009ee1f61d37e4bb06ce50c4550f907a",
+      "bytes": 2816
+    },
+    {
+      "path": "skills/scanpy/scripts/run_pipeline.py",
+      "git_blob": "d02ddb8b0356ac506466ac515737dadba7c7bc31",
+      "sha256": "380209ebe35bddb3e70eaa1f94dd245494e86013619a736688fb81156cde2733",
+      "bytes": 9676
+    },
+    {
+      "path": "skills/scanpy/scripts/score_genes.py",
+      "git_blob": "92542ddf53a1029d62dcf518667c9e3742ced3e3",
+      "sha256": "c18c02410b3797450da4e2d001bf21a216ab0fdef70eeadc6dfb2e8460302b29",
+      "bytes": 3995
+    },
+    {
+      "path": "skills/scanpy/scripts/subset.py",
+      "git_blob": "a348d24e6a773ce2b01a45bada98e6eaaea1d185",
+      "sha256": "e245e03f887efc0b662fc7ac623d4cb0929d873eb2e471cc29c09bfe5955e79e",
+      "bytes": 2629
+    },
+    {
+      "path": "skills/scientific-critical-thinking/SKILL.md",
+      "git_blob": "2a2fc151b5b13e4e11ece7410f21a14d5b25e30d",
+      "sha256": "563af70571b7dcd6a96bf2e303bedfdcba623b4e9f082d58f04aacbc961fdae4",
+      "bytes": 13146
+    },
+    {
+      "path": "skills/scientific-critical-thinking/references/common_biases.md",
+      "git_blob": "0acba93293aaf6df629cc00212c9e86a184efdb0",
+      "sha256": "641e8e8e6dfadac1643ea8691b7d3e4e58cf013f134cd42c71301878096a5a39",
+      "bytes": 12368
+    },
+    {
+      "path": "skills/scientific-critical-thinking/references/core_capabilities.md",
+      "git_blob": "ca7fec36594abd20921d2aa2ae15e9363d3d58b1",
+      "sha256": "0f337b96aa2d7453433a17824368fbd0638b9469d4f90a5fd23f4167c9dee180",
+      "bytes": 16975
+    },
+    {
+      "path": "skills/scientific-critical-thinking/references/evidence_hierarchy.md",
+      "git_blob": "e4b4946886cee0b1e35b24309e162e0f9ca6f14b",
+      "sha256": "534fbe991ecfb2d162f755004dc528118ce74a78862917c2911595a522d76e6c",
+      "bytes": 17435
+    },
+    {
+      "path": "skills/scientific-critical-thinking/references/experimental_design.md",
+      "git_blob": "4be76ae49eb6339e6a72c8d3ee69338c4ea3e347",
+      "sha256": "eca7e42025393984c07676f3d4bc354d217e5604dc2209c76215d31953a7c74c",
+      "bytes": 18227
+    },
+    {
+      "path": "skills/scientific-critical-thinking/references/logical_fallacies.md",
+      "git_blob": "336a0407f4397f8ad9b218fc4156ef3473d19f70",
+      "sha256": "becfc5bfac7b831dca67cc442cd0fcb42d8eea527a6fc2921c1b704e592ff593",
+      "bytes": 18659
+    },
+    {
+      "path": "skills/scientific-critical-thinking/references/review_sources.md",
+      "git_blob": "0241f4aa470f86473cd8be196edeff07a274b261",
+      "sha256": "71e75106f36f3e69b28959ad1fec503ccdb21b7f5361ab230173e4812accbf62",
+      "bytes": 7557
+    },
+    {
+      "path": "skills/scientific-critical-thinking/references/scientific_method.md",
+      "git_blob": "4dee3644c01de3bec9250d19efa58a0a13cbee59",
+      "sha256": "5aa925b97c7a916f819dafc8b42a9c24e4bd3eb2836594e724f1e7f9ae75ea0f",
+      "bytes": 7641
+    },
+    {
+      "path": "skills/scientific-critical-thinking/references/statistical_pitfalls.md",
+      "git_blob": "1e78cb2d3c6873e7d8289009cc7c9fb772def542",
+      "sha256": "0c43204a0a81110cfeb7c982fa4caa89f274bdcebf096e09e5adfccf31241cb9",
+      "bytes": 21151
+    },
+    {
+      "path": "skills/scientific-visualization/SKILL.md",
+      "git_blob": "44ea38c24fb5015535254bfd9b5ae9a856195408",
+      "sha256": "8cbde7cdc10d959cf72cfd08335cc8ce996247eee6ebdb900eb64a4cb0ff34a3",
+      "bytes": 15478
+    },
+    {
+      "path": "skills/scientific-visualization/assets/color_palettes.py",
+      "git_blob": "2a23b6854c4f1ec3c4a3c2f19c749cb4009d2a7d",
+      "sha256": "98ee4aa4b9bbb010996d55144ea6bf45a0ab294009b9bb0ef6d9c5ec9fed5154",
+      "bytes": 6756
+    },
+    {
+      "path": "skills/scientific-visualization/assets/nature.mplstyle",
+      "git_blob": "7b3ff8795e4b4e0704bcb99c6cad0efd5290c047",
+      "sha256": "f37a361cdda8846da0794fd879cc8173402094f110239d57e0227fdd8299a4f6",
+      "bytes": 1624
+    },
+    {
+      "path": "skills/scientific-visualization/assets/presentation.mplstyle",
+      "git_blob": "ea20c3151e2f339728d9a0a3f926953f993cda18",
+      "sha256": "d0e5a768e5965aa3893b12c0f7decd4c3b09502044391a840ebdee37dfea44da",
+      "bytes": 1465
+    },
+    {
+      "path": "skills/scientific-visualization/assets/publication.mplstyle",
+      "git_blob": "d59fbf564e377a6021af28c284b463f72cad7237",
+      "sha256": "eba3001f346649a9e41d9ac1d56101abbae10aefecdad3be9530f4c9cd9269b3",
+      "bytes": 1822
+    },
+    {
+      "path": "skills/scientific-visualization/assets/publisher_profiles.json",
+      "git_blob": "dd4ac2c025c805bcf4ab5e610a23f64dfbf162c8",
+      "sha256": "1e1b1b5a4e0e3dfc57877f2abf1e96888fe6b65617234b078f193b8f76e0ebe9",
+      "bytes": 10870
+    },
+    {
+      "path": "skills/scientific-visualization/references/color_palettes.md",
+      "git_blob": "e76e90618da3957695b0e0e7737619660e5ce23e",
+      "sha256": "c9b6a596dd1dd1e08050fdcbb304a0268ee515bce2120a9bbd3fba31cd7fa119",
+      "bytes": 9094
+    },
+    {
+      "path": "skills/scientific-visualization/references/journal_requirements.md",
+      "git_blob": "a178c097fdfd91fa01a49ea525286bd096435f06",
+      "sha256": "f7c4b6660eb70f7c5778d13908409e1dc690f00e3dfc8314f430feb89781740c",
+      "bytes": 11200
+    },
+    {
+      "path": "skills/scientific-visualization/references/matplotlib_examples.md",
+      "git_blob": "aa21fb278521a2fdca653ef8e6afeb94a9b23504",
+      "sha256": "74fd5977ce57b09b476285309559bbcbe3b1748943b719844b28a6b61378c041",
+      "bytes": 12165
+    },
+    {
+      "path": "skills/scientific-visualization/references/publication_guidelines.md",
+      "git_blob": "06c0f1806b583f8d9026419576f881c80875d896",
+      "sha256": "5f70c6b22dbb5e0fae18b0f1197b8794896bf7afc059874bcf7afbd5aa86bbe5",
+      "bytes": 12853
+    },
+    {
+      "path": "skills/scientific-visualization/references/sources.md",
+      "git_blob": "0bc86e21968124b52f88863f68a647357d582db1",
+      "sha256": "3ff34759c0fed3baf33286a8005fd81f0c3466a554c8b0d45f43ad30b1e5b505",
+      "bytes": 10697
+    },
+    {
+      "path": "skills/scientific-visualization/scripts/_common.py",
+      "git_blob": "62202d7a8f12154ce9d57c0fee51d0961eb98628",
+      "sha256": "e4eea2c2e5f5d8cfa544c6bed152cdb88a3d7c7952df99bcd74b45077fd6f707",
+      "bytes": 4618
+    },
+    {
+      "path": "skills/scientific-visualization/scripts/export_plan.py",
+      "git_blob": "19a1e5617afeef04165b15c91e4680a55f11c544",
+      "sha256": "c20962bf4c624b9939c80bd16815fc0a18fe2be285f0654a6a53704c663add0e",
+      "bytes": 19682
+    },
+    {
+      "path": "skills/scientific-visualization/scripts/figure_export.py",
+      "git_blob": "4923ecfc4736c477449fa377a3b1ccbb93e50132",
+      "sha256": "fe9c77878da61297ce55224b67282d128631deb628d930aa1929c9eb7330bf79",
+      "bytes": 23652
+    },
+    {
+      "path": "skills/scientific-visualization/scripts/image_metadata.py",
+      "git_blob": "1e818a12beb2dfccd1b39c602baa27ee7a6cf694",
+      "sha256": "45f79cefd99b8e5dabcbfd1a29b7346363f383411cc43540bf9f73e67fed634e",
+      "bytes": 26596
+    },
+    {
+      "path": "skills/scientific-visualization/scripts/palette_audit.py",
+      "git_blob": "e12e158db2098b3e3c7c976bf6889de81069bf52",
+      "sha256": "3a90b3c9a4a39dde6a341dc3de7b99cd2bca4773c66564fc90cdc2706a5a8165",
+      "bytes": 11654
+    },
+    {
+      "path": "skills/scientific-visualization/scripts/style_presets.py",
+      "git_blob": "2c9aec0dbb599e8773fdd11e8261064ae455ea0a",
+      "sha256": "8413cfae7f2cbc4a5dd9d4301d74b051fd8eb0c7a4b3375ae59e1da91db3a985",
+      "bytes": 16173
+    },
+    {
+      "path": "skills/scientific-visualization/scripts/style_preview.py",
+      "git_blob": "686d6684398dc68c0ac48a7e21358cea55fd00a6",
+      "sha256": "ca14e714dc2fb32541ff80292db97b3acbac074a65c4f2fb290f38354f880ba7",
+      "bytes": 7762
+    },
+    {
+      "path": "skills/scientific-writing/SKILL.md",
+      "git_blob": "446993fcd4716ae54ab74bc2a91e3bc5af5235c7",
+      "sha256": "511a2096bebecd8cf0f8212b9d262d37154ae1ba566eb385d93ac968682edbd1",
+      "bytes": 14897
+    },
+    {
+      "path": "skills/scientific-writing/assets/REPORT_FORMATTING_GUIDE.md",
+      "git_blob": "c8e67f3539929acd5c95e9926e9b730090322ef9",
+      "sha256": "2bb69499426ed6727c1701bae752c2e902151cbf69963f8bcf25b9e54cc20724",
+      "bytes": 2713
+    },
+    {
+      "path": "skills/scientific-writing/assets/authorship_template.json",
+      "git_blob": "5dd0cd83269684612a82af798bc99f922b140c98",
+      "sha256": "04a590ac47ed61dcc7cd88a26d51243cf178fe6ada99d4000ca225e1b5f6f20a",
+      "bytes": 1239
+    },
+    {
+      "path": "skills/scientific-writing/assets/claim_evidence_template.csv",
+      "git_blob": "1745c057b4487456d07c3f20d00181050d972c39",
+      "sha256": "cfb7a9f44cd1e5ef47ccdb3e32ac0a25b72d30e51343faace9bf07c00e3a0659",
+      "bytes": 218
+    },
+    {
+      "path": "skills/scientific-writing/assets/consistency_manifest_template.json",
+      "git_blob": "97d8c9a8c1815269c14f01ef9d3426bc6e1c8209",
+      "sha256": "2ea6f468ab6fab45c4db3616fbaddcc2ae706b3a26d6745b4cf74ddb53266872",
+      "bytes": 891
+    },
+    {
+      "path": "skills/scientific-writing/assets/manuscript_manifest_template.json",
+      "git_blob": "7e68378e36fa8120eca16bfac3d69f1d8007c1d7",
+      "sha256": "914052ff25b44072a07dce2ae8171524b717894ad7d2103054356115b9dd6c22",
+      "bytes": 1012
+    },
+    {
+      "path": "skills/scientific-writing/assets/manuscript_scaffold.md",
+      "git_blob": "96cdd508ad5caed48bd97a504d3be98287b2250f",
+      "sha256": "55305ba311ff4e2459a31a99b3f1b9da44d79499332399a9216b5f92cb412ab2",
+      "bytes": 1979
+    },
+    {
+      "path": "skills/scientific-writing/assets/reporting_coverage_template.json",
+      "git_blob": "7ef65f95f4e09d45d76b6a068c5eff74ca3a98f6",
+      "sha256": "886ca599622c1dfaedde7649ec47e973b4fbe6081cac6a6afaf24ace899d46a9",
+      "bytes": 189
+    },
+    {
+      "path": "skills/scientific-writing/assets/reporting_guidelines.json",
+      "git_blob": "97daa2730c606a9b8060db7f952560d7ee12bfa3",
+      "sha256": "215f8c55bd40bda0569f2e81556030ff575319e25276b1e1ae70e2cc7475ddcd",
+      "bytes": 16009
+    },
+    {
+      "path": "skills/scientific-writing/assets/source_manifest_template.json",
+      "git_blob": "666c084b4dc530e1260442e24790e35b7e1c14ec",
+      "sha256": "fc6f65a8571b717691ac717f325825a608190f271e8b79650b711cc95f5b0a36",
+      "bytes": 599
+    },
+    {
+      "path": "skills/scientific-writing/references/authorship_ai_confidentiality.md",
+      "git_blob": "dcddcb4ecde28f93a1a5c23b9fac182d0716bc54",
+      "sha256": "0200e3ad8eafaedec26bce2b9895cda81c6c9325790507509134373a0ca41fe2",
+      "bytes": 4919
+    },
+    {
+      "path": "skills/scientific-writing/references/citation_styles.md",
+      "git_blob": "7f82a625fa96c5abef58659a64c65070b4807c67",
+      "sha256": "338c08d8fba6fbf7437aad4dd99db5bccf3f597fa6650c562fae0c7ca422e572",
+      "bytes": 3945
+    },
+    {
+      "path": "skills/scientific-writing/references/cli_reference.md",
+      "git_blob": "05c1d113720af67cad6458e8bddadcdbcc49ebdd",
+      "sha256": "05b15a587277e37dbc6161532dce58c8ccf647e22f21861ebcbac22954453e75",
+      "bytes": 4101
+    },
+    {
+      "path": "skills/scientific-writing/references/evidence_workflow.md",
+      "git_blob": "6a54eb95d87be854d38046851c87f2a08a487390",
+      "sha256": "346c867d71e8cf1db6e3684a64714925a3966fcaeb1db853d7ddb07c6a6f607b",
+      "bytes": 5033
+    },
+    {
+      "path": "skills/scientific-writing/references/figures_tables.md",
+      "git_blob": "7022338d438e439aa475b4ecacf6ba7314b26aed",
+      "sha256": "212d10f3e7a01325d2518c4aab54a4fc04a67e4aa94e959cead199c425a0f4d6",
+      "bytes": 3915
+    },
+    {
+      "path": "skills/scientific-writing/references/imrad_structure.md",
+      "git_blob": "c53506c127ee6f5feb9f6a262398dc85243e73bb",
+      "sha256": "8a1201f8e58a045736a5bc65a47f239c894be6946716e969c0b77aa90a7e8e39",
+      "bytes": 4512
+    },
+    {
+      "path": "skills/scientific-writing/references/journal_policies.md",
+      "git_blob": "6750fd916fcddc53077a1de5fbf50ca9015835b2",
+      "sha256": "aefbd73c5a8a23be076b210a910f026ece748a73b4593cb99e885879bd61d2c2",
+      "bytes": 3010
+    },
+    {
+      "path": "skills/scientific-writing/references/professional_report_formatting.md",
+      "git_blob": "6238874aa69129b4f206d5b552325463a9b33653",
+      "sha256": "c269fd256bda6a9389bfd5ffefa8eff8876b96d92f8391e8a01fa80910bb35d3",
+      "bytes": 3230
+    },
+    {
+      "path": "skills/scientific-writing/references/reporting_guidelines.md",
+      "git_blob": "fe55f07c153bd1e939f612247fc53ff836d34e35",
+      "sha256": "4a74d4613742bb26fe3d74596998b9e75ea8a2694a012222b6d9636e121a1f0d",
+      "bytes": 4785
+    },
+    {
+      "path": "skills/scientific-writing/references/research_integrity_open_science.md",
+      "git_blob": "63eb73027c03d25170649a2d10a67c1eef365585",
+      "sha256": "f8f91010537acf4b78616d7410d23b85030f94d66e9d36db03d6e632ffb56100",
+      "bytes": 4149
+    },
+    {
+      "path": "skills/scientific-writing/references/source_ledger.md",
+      "git_blob": "f5cf28854c089fb9c7fd2afe30cd29312ee426ea",
+      "sha256": "1692a3bea432dfde6eb1e7ca7054d0dd8652b1bef6b97322ea3c30f0ff68d5b3",
+      "bytes": 11473
+    },
+    {
+      "path": "skills/scientific-writing/references/writing_principles.md",
+      "git_blob": "5fcd5012957fe6670e1e31e103c51d8cfbefa048",
+      "sha256": "58d4b32f63446c0b082f163314fdcf0d41a50568ad392d34ba992e24fadae764",
+      "bytes": 3904
+    },
+    {
+      "path": "skills/scientific-writing/scripts/_common.py",
+      "git_blob": "fd4a863823f76529f26531142d26a87bfca47ffa",
+      "sha256": "8cc192d82d219d1ec9720f8a8ab0c440fb35f2562fdeaeb7432a38d18e5e7b42",
+      "bytes": 7977
+    },
+    {
+      "path": "skills/scientific-writing/scripts/audit_claims.py",
+      "git_blob": "299f73fe51111471b697f0c7ce1f251e611d5945",
+      "sha256": "6074f51663e6863cf28168824a3f440b5acce9734c3c3f72590ba89c88a23c06",
+      "bytes": 10039
+    },
+    {
+      "path": "skills/scientific-writing/scripts/check_consistency.py",
+      "git_blob": "415be5ce6dae79965f00a3c7cada62a9f012e547",
+      "sha256": "5bd1f0dcbcccdac31e422b5a7b220d1ab1272a7eed906a62c0a5f2518e495d87",
+      "bytes": 14209
+    },
+    {
+      "path": "skills/scientific-writing/scripts/check_references.py",
+      "git_blob": "dbc3830643883f785ddc41a9b7a18bef1f4a7c5a",
+      "sha256": "a262d6e935e69ec1c1f25a36b8a12b6905b3f3dee0a11d94557d3f69857c5f07",
+      "bytes": 7075
+    },
+    {
+      "path": "skills/scientific-writing/scripts/lint_manuscript.py",
+      "git_blob": "81472e6e476a31c582a193761a03fb66e9d0fdfe",
+      "sha256": "08ff45315c4dadd1c91104e3639b6bec7a6086c000830dc9d0b2b965895b3398",
+      "bytes": 5881
+    },
+    {
+      "path": "skills/scientific-writing/scripts/scaffold_manuscript.py",
+      "git_blob": "f60dd74b9b4f2c65faf1f4703e193cb7e8f1fe80",
+      "sha256": "69e9a82c7d0608646872c0f4ad08b538f0c67175b48601d9d52ea527334ce4ae",
+      "bytes": 4328
+    },
+    {
+      "path": "skills/scientific-writing/scripts/select_reporting_guidelines.py",
+      "git_blob": "7d23b877cef342ba21074fcfaec7dd47c00a7607",
+      "sha256": "d130036ab1df6486cb54431a168207af03a52c626459ba7471041b0ee5aab567",
+      "bytes": 7580
+    },
+    {
+      "path": "skills/scientific-writing/scripts/validate_authorship.py",
+      "git_blob": "5b62a08b2433a54544b3a578a12735cc6cc91885",
+      "sha256": "31572a61ff61fe58f0b3f4c5b0e0e44bd9de5b865772f563dd5413876c186788",
+      "bytes": 11518
+    },
+    {
+      "path": "skills/scientific-writing/scripts/validate_manifest.py",
+      "git_blob": "8ad84a317a904b6f7b137691ca7d1cb27d1bb30f",
+      "sha256": "6f87919db5aa5fb5ba929b6566c892a0d6881a9e46d8a9646186c6cac01e13d2",
+      "bytes": 14393
+    },
+    {
+      "path": "skills/statistical-analysis/SKILL.md",
+      "git_blob": "4ea7453a12e63f0dbc31d7a47ed41fe3ff4c4c1a",
+      "sha256": "e112848726b3713267cac65e4e2c15491a0a26ee1ed628db01195f7e43f97997",
+      "bytes": 23585
+    },
+    {
+      "path": "skills/statistical-analysis/references/assumptions_and_diagnostics.md",
+      "git_blob": "08fa85f9709297dcad84bfbb138b94df7692685c",
+      "sha256": "6e1ebc110c092845b93e5c6d28f38c8a990780105ba1865f0bd47c007620b073",
+      "bytes": 14654
+    },
+    {
+      "path": "skills/statistical-analysis/references/bayesian_statistics.md",
+      "git_blob": "e78e65e190fd3a68034f0e1b1706383eb0888022",
+      "sha256": "34d62e1b20dd82a11497be40e07c93e4fdb555d56e4944e200f881c1b7629cbf",
+      "bytes": 14557
+    },
+    {
+      "path": "skills/statistical-analysis/references/effect_sizes_and_power.md",
+      "git_blob": "44d0c74e9d9d416485b2d7a8f56010494d907bcc",
+      "sha256": "5e1321c9058b2931a1bd2a753c7a8f4295f58274412d62e99a34eabd478e42b2",
+      "bytes": 20907
+    },
+    {
+      "path": "skills/statistical-analysis/references/reporting_standards.md",
+      "git_blob": "38e0ccd4b1d835504f70a1cea3a6526667fe890a",
+      "sha256": "0a30a1bec63231c94c9c285977acaa4218c50a34c8385857d18f62c61ac817b7",
+      "bytes": 21469
+    },
+    {
+      "path": "skills/statistical-analysis/references/test_selection_guide.md",
+      "git_blob": "c518d9e57aee5f8713d153cdc6fe154a9293a9e7",
+      "sha256": "e72e00b6ebe9450e5e84849503db223c4908a8d9a68c3b87cf0ab8ec3254fe83",
+      "bytes": 6950
+    },
+    {
+      "path": "skills/statistical-analysis/scripts/assumption_checks.py",
+      "git_blob": "a55993050ec75027fc7e9b465b4c0b718548b198",
+      "sha256": "3e37a4e04407b5f040f103962ed0e73935d114d3892ee45b5a06a1da42c10341",
+      "bytes": 18387
+    },
+    {
+      "path": "skills/statistical-power/SKILL.md",
+      "git_blob": "012cc67f7794ac280ad39383add39afda7ac719a",
+      "sha256": "a969660eafdc3504ac36e49bd7ded00e18b00fe5cef5699940d5d8281e24dd3d",
+      "bytes": 17834
+    },
+    {
+      "path": "skills/statistical-power/references/closed_form_recipes.md",
+      "git_blob": "da665e2850ced4cfa1084672b5471d6a0bafb0d2",
+      "sha256": "c303aa5b5103077304254f48309169609a3b0537748c68e0df4abd33cb9d4384",
+      "bytes": 11159
+    },
+    {
+      "path": "skills/statistical-power/references/effect_sizes.md",
+      "git_blob": "38594287c2c10f933ee7344201f1b438ebb54a8c",
+      "sha256": "b2e3c9578dce59222797ea55e9bc2c3883764adfdfdc0eed3793fb4d71fbf0a7",
+      "bytes": 6110
+    },
+    {
+      "path": "skills/statistical-power/references/simulation_based_power.md",
+      "git_blob": "857373f4173035068f4eb39d80900af7329718cd",
+      "sha256": "963fd56791e6db1bffb94efda7c9bef9c3195e3dec3e2a9918d17f3536ec150f",
+      "bytes": 10163
+    },
+    {
+      "path": "skills/statistical-power/scripts/power.py",
+      "git_blob": "2703c9c3a23f5b0098db553d92151860b3869b1e",
+      "sha256": "9124b7c657ccbfe8b41c777bd9e17ae076641939e4ae93b4ba17f2de18284b7d",
+      "bytes": 19966
+    },
+    {
+      "path": "skills/statistical-power/scripts/simulate_power.py",
+      "git_blob": "f043dfb94e7e1306d30361c5977a856f5bf00846",
+      "sha256": "bfbe75908ca071528b7b02aa1ed53949a7291f928f30634abe29b3ce23c564f4",
+      "bytes": 13193
+    },
+    {
+      "path": "skills/statsmodels/SKILL.md",
+      "git_blob": "0af65089389b2602e857d503c7874154c6c9de4c",
+      "sha256": "9e6c034bb4acbf0972fda18892d2feea907885ac5ad7194d220182d8810295a3",
+      "bytes": 12681
+    },
+    {
+      "path": "skills/statsmodels/references/discrete_choice.md",
+      "git_blob": "d8454071067bdc0f439a212879559b95888b1697",
+      "sha256": "30422e14c2e05bfc4a3da924086c8f067b6e4eb9c1c828ec7f25ab79ed16d54e",
+      "bytes": 18733
+    },
+    {
+      "path": "skills/statsmodels/references/glm.md",
+      "git_blob": "16bdb164548bd984b03b28352ad6fea329f2ee39",
+      "sha256": "dca241c58df3b08c05aa4f0a96e4efd8ebb24ce37c57dd23402c236f86db57e4",
+      "bytes": 18448
+    },
+    {
+      "path": "skills/statsmodels/references/linear_models.md",
+      "git_blob": "c5125e3eca596e8ae9e2c09218307496597b89f4",
+      "sha256": "a14ce5ba795442bc8805f6d59e9a397efe9e6587b09b19dcaba40e88d3c4654c",
+      "bytes": 14048
+    },
+    {
+      "path": "skills/statsmodels/references/model_selection.md",
+      "git_blob": "b0a415e46393d90ab9f88ceeb273b0679dfecbe3",
+      "sha256": "5666665df87dccdb82ddae0d2ffcf13c7e681fee6b410ea279a8edf4688ad75a",
+      "bytes": 3500
+    },
+    {
+      "path": "skills/statsmodels/references/modeling_capabilities.md",
+      "git_blob": "c7282c64e2b301bdba4c055befa9abbd49704546",
+      "sha256": "7794c4a3d7c82e647f4705caa47614796f34cc07db9d11bc057dec2310e9787c",
+      "bytes": 6244
+    },
+    {
+      "path": "skills/statsmodels/references/quick_start_guide.md",
+      "git_blob": "b5397f3edd47ec2c6237d6408303155cbff8c2f4",
+      "sha256": "202c61810e3bb59a72f1736c6624899c8ad0c2eabffbf11eff98a987f13eaa2d",
+      "bytes": 4850
+    },
+    {
+      "path": "skills/statsmodels/references/review.md",
+      "git_blob": "da2e2c1a2299b03a55f6536f9c321d1456afd79b",
+      "sha256": "38d49c7d705d250376c013be489bc5dad2b94b9373e1c7aaa0afe51980af29da",
+      "bytes": 7035
+    },
+    {
+      "path": "skills/statsmodels/references/stats_diagnostics.md",
+      "git_blob": "90c7625968542d648708be44316e9bcaa4130859",
+      "sha256": "23fd23d9b415b9060151409220f03f203cc1775d517b51d978d5ffe8edad009e",
+      "bytes": 24066
+    },
+    {
+      "path": "skills/statsmodels/references/time_series.md",
+      "git_blob": "9fec06d4abb9677282bd2494a4d27e6488ae12b6",
+      "sha256": "29b97f1de7fedd5be582cd6e4168403978a5094f54211ccfc53b896f3bece04e",
+      "bytes": 21839
+    },
+    {
+      "path": "skills/uncertainty-and-units/SKILL.md",
+      "git_blob": "28bcc333961e29f41681a7b7afdd01f402d54646",
+      "sha256": "caaafa079a4eaac6012717bcf705dec0417b5434f5dbd1af934a3a36ad375722",
+      "bytes": 21731
+    },
+    {
+      "path": "skills/uncertainty-and-units/references/domain-conversions.md",
+      "git_blob": "1d3919849003ffda63a2f71b64e6a36f3b82811d",
+      "sha256": "7ab73bbd69acbd23fac74ae9f3ad570a6f1501c1a5fd22998cfcd01c725441ca",
+      "bytes": 10142
+    },
+    {
+      "path": "skills/uncertainty-and-units/references/gum-methodology.md",
+      "git_blob": "2a6370ccc714cb9dd70976c81b2e2c46661a9721",
+      "sha256": "def9b0ac9ff3d2912922d121062559b22ff3ec36aed94e183eef3338b4e0430f",
+      "bytes": 11916
+    },
+    {
+      "path": "skills/uncertainty-and-units/references/pint-recipes.md",
+      "git_blob": "5f41969393d7c3e31f68ce5f42fd0d8d8497fddd",
+      "sha256": "9fbc1bc7b12267777a0359bf252e52415e6e1683cd8c4c3a6582ddca6cd51baa",
+      "bytes": 9129
+    },
+    {
+      "path": "skills/uncertainty-and-units/references/plausibility-scales.md",
+      "git_blob": "5ff02e59bdad42bd4e5910d05f28c6f1650b354b",
+      "sha256": "b9ef8acbc0ff6948ec7dca027cd31b7d73d2157b18bcf0c8e92d60c0029e8131",
+      "bytes": 11834
+    },
+    {
+      "path": "skills/uncertainty-and-units/references/reporting-rules.md",
+      "git_blob": "07c7c41eb0d9cc5eac59a7f736ca4e4fceb5d077",
+      "sha256": "8d302b26e0792b866d3249955250e9132c09337639abb8cf36ac3f5cdaf4648e",
+      "bytes": 7152
+    },
+    {
+      "path": "skills/uncertainty-and-units/references/review.md",
+      "git_blob": "a57ed46f26a5ef7a8d6130fea191aaf339c73b18",
+      "sha256": "59c605f037739927495f0323246168abf9cd2bae5511b1566bb13e775bf00868",
+      "bytes": 6939
+    },
+    {
+      "path": "skills/uncertainty-and-units/references/uncertainties-recipes.md",
+      "git_blob": "2a76d889e48bf4fac00501381b01330fd7756432",
+      "sha256": "2125796d070c4b13ed007e6d8f498c69698a1ce4917ece4cdda32a887dd7c214",
+      "bytes": 8098
+    },
+    {
+      "path": "skills/uncertainty-and-units/scripts/_common.py",
+      "git_blob": "745d7050f3f3ce82c0c95fc55720673ecddc23d9",
+      "sha256": "9d6b9ecabf92759a5d9f017ae3174673f827328b76cde238d07089f2d99c9323",
+      "bytes": 23029
+    },
+    {
+      "path": "skills/uncertainty-and-units/scripts/audit_units.py",
+      "git_blob": "11a6fa2c688df0071bb452a000b03701a4d99aeb",
+      "sha256": "2b891065c8b801f4a16b8dca2b73a6348c3ecf3fc88569936ded5e7f86a1e429",
+      "bytes": 21229
+    },
+    {
+      "path": "skills/uncertainty-and-units/scripts/check_plausibility.py",
+      "git_blob": "099a94e60e82cc23a58fc602e062bbdaea0aa7b5",
+      "sha256": "f4c1bff54a483d08f794f205454ed03fa263008b26cee772bd04d417cc86384f",
+      "bytes": 36733
+    },
+    {
+      "path": "skills/uncertainty-and-units/scripts/convert_units.py",
+      "git_blob": "52643e9fc256c28a3b7cb849594fbbc89579190a",
+      "sha256": "89a9a0aa40a8158d2a739270115778fc1415f1a3cb207a6f17be14278872473a",
+      "bytes": 11963
+    },
+    {
+      "path": "skills/uncertainty-and-units/scripts/format_result.py",
+      "git_blob": "6c4057017bad85eb33d8b61d172019ce947970fd",
+      "sha256": "a839041c3f31a67cffda00e895bfed612cbc5748e83c41da83c17ff8f7b17302",
+      "bytes": 12001
+    },
+    {
+      "path": "skills/uncertainty-and-units/scripts/propagate_uncertainty.py",
+      "git_blob": "0c31b26b7e753b98e3cbd33600bff8d188c34b16",
+      "sha256": "6c555f3fc7095ac340d11e8dd69f29f483f309b91af4b3489cd4c5ea468ceb86",
+      "bytes": 28632
+    },
+    {
+      "path": "skills/uncertainty-and-units/scripts/uncertainty_budget.py",
+      "git_blob": "175e9e81240b8848d5b9ab17096aa54e5f55744d",
+      "sha256": "162699fd5336fca43489757a1c63e81c89deb46aefb51ceb99a24682fde14b44",
+      "bytes": 14044
+    }
+  ],
+  "additional_license_texts": [
+    {
+      "skill": "rdkit",
+      "path": "licenses/rdkit.txt",
+      "source_url": "https://raw.githubusercontent.com/rdkit/rdkit/fece8caa860bdf6c9c82bdb9253f22a0cf87150c/license.txt",
+      "revision": "fece8caa860bdf6c9c82bdb9253f22a0cf87150c",
+      "sha256": "daeb8d194502cbcf34c05c39541a0d02be65bc9bada5b891c1974cd24e9fca30"
+    },
+    {
+      "skill": "scanpy",
+      "path": "licenses/scanpy.txt",
+      "source_url": "https://raw.githubusercontent.com/scverse/scanpy/55f77edf57283704eb86f1ee7436ec1e0050789b/LICENSE",
+      "revision": "55f77edf57283704eb86f1ee7436ec1e0050789b",
+      "sha256": "fb02749e4f251401f2c4023b7a30e71f40a21e138b87025036f74c980cfa63b2"
+    },
+    {
+      "skill": "statsmodels",
+      "path": "licenses/statsmodels.txt",
+      "source_url": "https://raw.githubusercontent.com/statsmodels/statsmodels/9bf43a292c6e906754744fef3b1a77c5e549410f/LICENSE.txt",
+      "revision": "9bf43a292c6e906754744fef3b1a77c5e549410f",
+      "sha256": "1ca78e1dec9dcebc55f3b96a862317f23e76422c5fc943568d955aad1f6b5fad"
+    },
+    {
+      "skill": "medchem",
+      "path": "licenses/medchem.txt",
+      "source_url": "https://raw.githubusercontent.com/datamol-io/medchem/ea1fadaf359a492cf72dd723c5a04f2b9beae221/LICENSE.md",
+      "revision": "ea1fadaf359a492cf72dd723c5a04f2b9beae221",
+      "sha256": "676a1292ac687e0a28c381218a2db4ffd34dabd47a07885d5a37aa1b4038c3ef"
+    },
+    {
+      "skill": "biopython",
+      "path": "licenses/biopython.txt",
+      "source_url": "https://raw.githubusercontent.com/biopython/biopython/bb295f15adb75d0296361a063e645eba35160ab0/LICENSE.rst",
+      "revision": "bb295f15adb75d0296361a063e645eba35160ab0",
+      "sha256": "11d1ebcaad2eb9f0f09a3df1deb4aca99a4da366ae9ae70f828c7447a24de453"
+    },
+    {
+      "skill": "depmap",
+      "path": "licenses/CC-BY-4.0.txt",
+      "source_url": "https://creativecommons.org/licenses/by/4.0/legalcode.txt",
+      "sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411"
+    }
+  ],
+  "scope": "Selected full skill directories plus original LICENSE/CITATION. No upstream application, data, weights or all-package installation."
+}

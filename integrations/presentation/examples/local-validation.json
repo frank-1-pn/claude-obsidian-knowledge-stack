@@ -1,0 +1,26 @@
+{
+  "status": "local-generation-complete",
+  "workbuddy_runtime_verified": false,
+  "generator": "pinned hugohe3/ppt-master svg_to_pptx.py",
+  "upstream_revision": "b4efe3ddf237a97a42880164759162f8e2412f2f",
+  "analysis_sha256": "8c609800667fabfe46464c7e308ba61cc4d1222a5ffe1f093bea09f0124ac5bf",
+  "pptx_sha256": "ce0874d590ed9ccc367354cf1e52b692a4f0f65628a76e01df73751737085a47",
+  "slides": 5,
+  "native_tables": 2,
+  "native_charts": 1,
+  "renderer": "Microsoft PowerPoint COM",
+  "render_dimensions_px": [
+    1280,
+    720
+  ],
+  "rendered_slides": 5,
+  "visual_review": "All five PowerPoint-rendered slides inspected; numeric labels, units, notes/disclosures and fit verified",
+  "quality_gate": "passed with 5 nonblocking style advisories",
+  "render_sha256": {
+    "slide-01.png": "2bf221a70ea8e79430c830d54268c6b8ce04f5d3aa25d926f69982826e747e08",
+    "slide-02.png": "df57fdcd946d071973caa55191695d255cf1ab628736a78185e1dc9437634597",
+    "slide-03.png": "1086320b85a6d1a14397b6f9782532acf5f4450b19314709b0116ed029f6c9b0",
+    "slide-04.png": "5da23311016e0ba31767300c14057a1c2e476265bedf20402bfd82e5d038c05c",
+    "slide-05.png": "f89c2a13119f97829c8e8ffda616e3c0802adec620694a380310b6b4ba60ac5f"
+  }
+}

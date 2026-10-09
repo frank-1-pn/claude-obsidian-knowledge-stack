@@ -18,7 +18,7 @@ def main():
     count = 0
     for path in ROOT.rglob('*'):
         rel = path.relative_to(ROOT).as_posix()
-        if not path.is_file() or '.git' in path.parts or '__pycache__' in path.parts:
+        if not path.is_file() or any(part in path.parts for part in ('.git', '.local', '.venv', 'node_modules', '__pycache__')):
             continue
         if path.suffix not in {'.md', '.html', '.py', '.ps1', '.json', '.txt'} and path.name != '.gitignore':
             continue
