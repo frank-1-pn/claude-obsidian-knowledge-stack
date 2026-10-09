@@ -1,0 +1,73 @@
+{
+  "schema": "mail-connection-information-v1",
+  "status": "design-only",
+  "notice": "中立待填资料，不是 WorkBuddy、ImapFlow 或后台可执行配置；不填真实密码或令牌。",
+  "source_plan_version": "v1.0",
+  "real_data_enabled": false,
+  "automatic_notifications_enabled": false,
+  "mailbox": {
+    "provider": null,
+    "product_version": null,
+    "deployment_type": null,
+    "account_identity_reference": null,
+    "imap_approved": false,
+    "host": null,
+    "port": null,
+    "tls_mode": null,
+    "verify_certificate": true,
+    "authentication_method": null,
+    "credential_secret_reference": null,
+    "authorized_folder_paths": [],
+    "sent_folder_approved": false,
+    "sent_folder_path": null,
+    "approved_backfill_days": null,
+    "approved_network_route": null
+  },
+  "model_processing": {
+    "approved": false,
+    "endpoint": null,
+    "model_id": null,
+    "data_region": null,
+    "body_disclosure_approved": false,
+    "credential_secret_reference": null
+  },
+  "notification_channel": {
+    "approved": false,
+    "provider": null,
+    "owner_mapping_reference": null,
+    "credential_secret_reference": null,
+    "disclosure_policy": null,
+    "delivery_validation_record": null
+  },
+  "workbuddy_readonly_mcp": {
+    "approved": false,
+    "client_version": null,
+    "transport": null,
+    "endpoint": null,
+    "authentication_method": null,
+    "service_token_secret_reference": null,
+    "owner_scope_reference": null,
+    "expiry_and_revocation_policy": null,
+    "runtime_tool_isolation_validated": false
+  },
+  "business_preferences": {
+    "confirmed": false,
+    "timezone": null,
+    "daily_brief_time": null,
+    "weekend_policy": null,
+    "quiet_hours": null,
+    "p0_night_interrupt_approved": false,
+    "important_projects_reference": null,
+    "important_contacts_reference": null,
+    "mandatory_alert_rules_reference": null,
+    "escalation_to_other_people_approved": false
+  },
+  "governance": {
+    "retention_policy_approved": false,
+    "retention_and_deletion_policy_reference": null,
+    "incident_responsibility_reference": null,
+    "policy_version": "mail-policy-v1",
+    "production_scheduler": "backend-only-planned",
+    "public_daily_news_data_sharing": false
+  }
+}

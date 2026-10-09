@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "edition_date": "2026-10-07",
+  "example_only": true,
+  "source_page": "AI-daily-classic-2026-10-07.html",
+  "source_page_sha256": "31838d448c8acb1d92f720b4416bc6610456d8308b1eb2b15501eceb3b4a183d",
+  "notice": "摘自用户 2026-10-07 的历史每日资讯页面，仅展示栏目与阅读方式；本次未重新核验新闻，不代表今日资讯。",
+  "items": [
+    {
+      "id": "item-transformers-5190-release-parallel-migration",
+      "title": "Transformers 5.19 正式发布：加入多模态嵌入模型，专家并行与连续批处理接口有变化",
+      "url": "https://github.com/huggingface/transformers/releases/tag/v5.19.0",
+      "summary": [
+        "10月6日发布的5.19.0加入EmbeddingGemma 2，并把专家并行的token分发路径接入Trainer：token按路由发送给持有相应专家的GPU，EP规模可与TP规模分别配置。正式版同时调整MoE路由logits返回、OWL-V2图像查询选择，并弃用SDPA／Flash Attention的“paged|”前缀。",
+        "分析：模型适配之外，这次更新扩大了多GPU MoE训练与推理的部署选择；旧代码依赖输出结构、注意力实现名称或连续批处理缓存内部接口时，需要显式迁移。",
+        "升级前重点回归MoE输出读取、专家并行训练的批次／梯度计算、连续批处理和图像查询。SDPA和Flash Attention改用普通实现名称；eager路径仍保留paged前缀。昨日已报道的量化缓存修复此次进入正式版，不再另列重复条目。"
+      ],
+      "source_info": "Release v5.19.0 · 2026-10-06"
+    },
+    {
+      "id": "item-embeddinggemma2-local-engine-integrations",
+      "title": "EmbeddingGemma 2 同日接入 llama.cpp、Ollama MLX 与 vLLM",
+      "url": "https://github.com/ggml-org/llama.cpp/pull/30054",
+      "summary": [
+        "三套引擎在10月6日合入独立适配：llama.cpp覆盖文字、视觉和音频；Ollama的MLX运行器增加多模态嵌入架构，/api/embed可按输入项附带媒体；vLLM加入文字、图片、音频、视频及混合输入的pooling路径，并可在启动时不加载闲置模态编码器。llama.cpp已发布包含这些提交的b11457构建包。",
+        "分析：跨模态搜索更容易放进现有本地推理栈，减少为了一个嵌入模型另起完全不同服务的成本。按需要加载编码器，也避免纯文字检索承担全模态权重的内存开销。",
+        "vLLM适配说明给出的纯文字部分是271M参数、约517MiB权重规模；完整服务还需工作内存。它在A100上用16类输入与HF／SentenceTransformers对照，报告余弦相似度至少0.999。各引擎应分别验证实际需要的模态与接口，不要默认视频输入在三者中完全等价。"
+      ],
+      "source_info": "model: support embeddinggemma2 (text+vision+audio) · 2026-10-06"
+    },
+    {
+      "id": "item-sglang-qwen-image21-community-gguf",
+      "title": "SGLang 接通社区 Qwen-Image 2.1 GGUF，5090测试峰值显存降至8.25GB",
+      "url": "https://github.com/sgl-project/sglang/pull/42556",
+      "summary": [
+        "10月6日合入的修复让SGLang能加载ComfyUI-GGUF格式的Qwen-Image 2.1变换器。此前块外线性层也被量化时会加载失败；新路径在载入时将这些层还原为BF16，并避开量化投影不具备的普通weight字段。RTX5090、1024×1024、40步测试中，官方BF16、Q8_0、Q4_K_M峰值显存分别为17.0、11.1、8.25GB。",
+        "分析：主要收益是容量，让同一图像模型留下更多显存余量；量化层每一步仍先反量化再执行原生矩阵计算，速度并没有随文件变小而成比例提高。",
+        "测试中BF16去噪为每步0.43–0.48秒，两种GGUF约0.47秒。已有社区GGUF文件的用户可用新主线验证加载；比较质量时，要把纯Q8量化与包含额外训练改动的Q4检查点分开。"
+      ],
+      "source_info": "[diffusion] fix: load community ComfyUI-GGUF Qwen-Image-2.1 transformers · 2026-10-06"
+    }
+  ]
+}

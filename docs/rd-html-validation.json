@@ -43,11 +43,15 @@
     "copy and selected-text fallback",
     "rule accordions",
     "print includes filtered skills and all case panels",
-    "print expands rules and restores state"
+    "print expands rules and restores state",
+    "daily-news and email extension verified in daily-briefing-validation.json",
+    "3 original real WorkBuddy regional screenshots and a separately labelled PPT preview embedded without editing",
+    "identity-specific role labels removed",
+    "image preview and original PNG download verified"
   ],
   "errors": [],
   "remoteRequests": [],
   "passed": true,
-  "artifact_sha256": "c9e3fc622174af0954ed2dbd7aa0f5e2b12b4889dd48e1e4168052e4db7aea64",
-  "scope": "offline-headless-browser; separate from WorkBuddy acceptance"
+  "artifact_sha256": "43a10639cd87736006ca7d8ef851551847343bc110a24a622a64df8b60341990",
+  "scope": "offline-headless-browser; current neutral HTML with daily news, email details and real UI screenshots; separate from live service acceptance"
 }

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "capture_date": "2026-10-09",
+  "timezone": "Asia/Shanghai",
+  "application": "WorkBuddy AI",
+  "visible_version": "5.7.6",
+  "capture_method": "System.Drawing.Graphics.CopyFromScreen directly from a confirmed foreground WorkBuddy window",
+  "image_editing_applied": false,
+  "historical_images_reused_or_cropped": false,
+  "scope": "New regional screenshots while viewing previously accepted synthetic-data tasks; they show visible UI content, not a new execution or standalone proof of the complete workflow.",
+  "privacy_review": "Each regional image was visually checked for account names, email addresses, identity-specific titles, personal full paths and unrelated conversations. No such content was visible. Full-window QA captures remain private.",
+  "images": [
+    {
+      "filename": "pipeline-verification.png",
+      "captured_at": "2026-10-09T10:40:29.2684233+08:00",
+      "width": 1305,
+      "height": 1030,
+      "sha256": "7d5d65f15a7f65f5bc99a00fdec99fde82108c1400714cb64aa535461d5af9a0",
+      "caption": "回看独立管线验证任务的结果说明与产物列表。"
+    },
+    {
+      "filename": "science-presentation-and-ingest.png",
+      "captured_at": "2026-10-09T10:41:04.2832039+08:00",
+      "width": 1305,
+      "height": 1030,
+      "sha256": "4211fa70dbb7cb1f8972c3ac26bbf75ea29388814f3ac425f06e308a710eb425",
+      "caption": "回看合成科学分析、PPT 与入库任务的边界说明及产物列表；该阶段尚未运行下一任务的查询。"
+    },
+    {
+      "filename": "vault-query.png",
+      "captured_at": "2026-10-09T10:41:28.1226392+08:00",
+      "width": 1305,
+      "height": 1030,
+      "sha256": "cf0d67cb036a83470f2a86a99cbe7a8639d70789a304eff924e85b547b4d64e2",
+      "caption": "回看后续只读查询任务：检索顺序如实修正、原始笔记为答案来源，写入前后校验说明可见。"
+    }
+  ]
+}

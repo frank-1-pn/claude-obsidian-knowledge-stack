@@ -89,7 +89,7 @@ def build_payload(package=PACKAGE):
     for script in BASE_SCRIPTS:
         payload['scripts/' + script] = (package / 'scripts' / script).read_bytes()
     add_tree(payload, package / 'config/rd-project', 'config/rd-project')
-    for family in ('scientific', 'workflow', 'presentation', 'email', 'patsnap'):
+    for family in ('scientific', 'workflow', 'presentation', 'email', 'patsnap', 'daily-briefing'):
         add_tree(payload, package / 'integrations' / family, 'integrations/' + family)
     add_tree(payload, package / 'examples/pipeline', 'examples/pipeline')
     add_tree(payload, package / 'docs/email', 'docs/email')

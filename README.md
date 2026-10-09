@@ -6,9 +6,13 @@
 
 组合包含 Superpowers 的澄清/计划/执行/验证工作方法、精选 24 个生物医药与通用科学技能、PPT-master 的实际演示文稿生成，以及下方 Obsidian 10 skills。智慧芽管线 MCP 与私人邮件后台仅提供现场接入设计，通讯复用 WorkBuddy 自带连接器。
 
-先看可离线打开的 [研发总监助手 HTML 介绍](docs/rd-director-assistant.html)，复刻步骤见 [WorkBuddy 研发助手上手](setup/10-rd-director-workbuddy.md)，证据与实测范围见 [验收记录](docs/rd-assistant-validation.md)。2026-10-09 已在真实 WorkBuddy 完成角色/初始化、澄清与正式管线处理、科学分析、PPT 生成/渲染、笔记入库与新任务查回；管线与查询并行，并另开任务独立运行 8 项 CLI 验收。
+先看可离线打开的 [WorkBuddy 研究与知识助手 HTML 介绍](docs/rd-director-assistant.html)，复刻步骤见 [WorkBuddy 研发助手上手](setup/10-rd-director-workbuddy.md)，证据与实测范围见 [验收记录](docs/rd-assistant-validation.md)。2026-10-09 已在真实 WorkBuddy 完成角色/初始化、澄清与正式管线处理、科学分析、PPT 生成/渲染、笔记入库与新任务查回；管线与查询并行，并另开任务独立运行 8 项 CLI 验收。
 
 已验收的合成 [管线处理器与数据](examples/pipeline/README.md) 和 [实际 PPT/渲染](integrations/presentation/examples/workbuddy-run/README.md) 一起分享。24 个科学技能文件已安装并固定来源；离线样例实测统计/PK，不把安装当作全部专业软件或商业 API 都已执行。智慧芽与邮箱只提供现场设计，尚未连接。
+
+新增 [每日资讯](integrations/daily-briefing/README.md)：先定制用户每天关注的主题、关键词、来源、时间与渠道，再配置每日自动汇总推送。用户可直接看 AI 总结与分析，也可点击原文链接阅读源新闻。两份 HTML 都展示了用户现有 2026-10-07 资讯页的部分历史内容；偏好配置、任务提示与简报模板会一起复制到新研发工作区。目前没有开启朋友的定时任务或实际推送，原有 WorkBuddy 验收不覆盖这一新增调度。
+
+[邮件管理与连接](integrations/email/README.md) 按用户提供的原方案补充：只读 IMAP、MailParser、持久后台、七个只读 MCP 查询工具及本人通知渠道的分工与[现场连接步骤](integrations/email/setup-checklist.md)。三个对应技能为 [邮件研判](integrations/email/skills/mail-triage/SKILL.md)、[每日邮件简报](integrations/email/skills/daily-email-brief/SKILL.md)、[紧急提醒解释](integrations/email/skills/urgent-email-alert/SKILL.md)。正文可追溯到原邮件证据，管理事项不等于修改源邮箱；公开资讯与私人邮件的来源、数据和调度各自配置。
 
 ---
 

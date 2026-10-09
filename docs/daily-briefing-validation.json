@@ -1,0 +1,149 @@
+{
+  "date": "2026-10-09",
+  "scope": "daily-news-and-email-share-extension",
+  "historical_sample": {
+    "edition_date": "2026-10-07",
+    "items": 3,
+    "all_titles_summaries_urls_match_user_page": true,
+    "news_reverified_this_round": false
+  },
+  "email_source": {
+    "file": "workbuddy_email_assistant_implementation_plan.md",
+    "sha256": "c5400bb788d83745e70f7f57820334641ec04198bccce2e43aed78be1ef5957e",
+    "byte_identical": true
+  },
+  "bootstrap": {
+    "files_created": 1668,
+    "daily_files": 5,
+    "skill_count": 39,
+    "repeat_created": 0,
+    "conflicts": 0,
+    "all_payload_bytes_match": true,
+    "checker_assets_and_links": "passed",
+    "dependencies": "not_reinstalled; existing pins unchanged"
+  },
+  "defaults": {
+    "daily_schedule_enabled": false,
+    "email_connections_enabled": false
+  },
+  "live_acceptance": {
+    "new_workbuddy_task": false,
+    "scheduled_trigger": false,
+    "email_connected": false,
+    "message_delivery": false
+  },
+  "passed": true,
+  "browser": {
+    "date": "2026-10-09",
+    "scope": "offline-headless-browser-HTML-extension",
+    "artifacts": [
+      {
+        "artifact": "docs/rd-director-assistant.html",
+        "sha256": "43a10639cd87736006ca7d8ef851551847343bc110a24a622a64df8b60341990",
+        "viewports": [
+          {
+            "viewport": 320,
+            "body": 320,
+            "html": 320,
+            "no_page_overflow": true
+          },
+          {
+            "viewport": 390,
+            "body": 390,
+            "html": 390,
+            "no_page_overflow": true
+          },
+          {
+            "viewport": 768,
+            "body": 768,
+            "html": 768,
+            "no_page_overflow": true
+          },
+          {
+            "viewport": 1440,
+            "body": 1440,
+            "html": 1440,
+            "no_page_overflow": true
+          }
+        ],
+        "historical_source_links": 3,
+        "email_readonly_tools": 7,
+        "workbuddy_screenshots": 3,
+        "screenshots_match_original_bytes": true,
+        "images_embedded": true,
+        "original_image_downloads": 4,
+        "screenshot_scope": "previously accepted synthetic tasks, current regional capture; not new execution",
+        "identity_terms_removed": true,
+        "local_links_resolve": true,
+        "print_images_visible": true
+      },
+      {
+        "artifact": "docs/obsidian-knowledge-system.html",
+        "sha256": "f01af3cf145805458ce13512bae7e74efa174338a408ece7813bb37d0793e283",
+        "viewports": [
+          {
+            "viewport": 320,
+            "body": 320,
+            "html": 320,
+            "no_page_overflow": true
+          },
+          {
+            "viewport": 390,
+            "body": 390,
+            "html": 390,
+            "no_page_overflow": true
+          },
+          {
+            "viewport": 768,
+            "body": 768,
+            "html": 768,
+            "no_page_overflow": true
+          },
+          {
+            "viewport": 1440,
+            "body": 1440,
+            "html": 1440,
+            "no_page_overflow": true
+          }
+        ],
+        "historical_source_links": 3,
+        "email_readonly_tools": 7,
+        "workbuddy_screenshots": 3,
+        "screenshots_match_original_bytes": true,
+        "images_embedded": true,
+        "original_image_downloads": 4,
+        "screenshot_scope": "previously accepted synthetic tasks, current regional capture; not new execution",
+        "identity_terms_removed": true,
+        "local_links_resolve": true,
+        "print_images_visible": true
+      }
+    ],
+    "errors": [],
+    "remote_requests": [],
+    "passed": true
+  },
+  "skill_validation": {
+    "names": [
+      "mail-triage",
+      "daily-email-brief",
+      "urgent-email-alert"
+    ],
+    "validator": "skill-creator/quick_validate.py",
+    "passed": true,
+    "references": "workspace-root integrations/email/references/mail-policy.md copied and readable"
+  },
+  "screenshots": {
+    "count": 3,
+    "real_workbuddy_window": true,
+    "new_capture_of_existing_synthetic_tasks": true,
+    "image_editing_applied": false,
+    "privacy_review": "worker and integrator visual review passed",
+    "original_bytes_embedded_and_downloaded": true
+  },
+  "interaction_validation": {
+    "source": "independent page review with offline headless browser",
+    "image_preview_open_close_escape": true,
+    "original_png_downloads_byte_matched": 8,
+    "original_filters_tabs_copy": true
+  }
+}

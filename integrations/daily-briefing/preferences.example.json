@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "example_only": true,
+  "profile_name": "待用户定制的每日资讯",
+  "interests": {
+    "topics": [],
+    "keywords": [],
+    "companies": [],
+    "targets": [],
+    "domains": [],
+    "exclude_keywords": [],
+    "suggested_topics_not_selected": ["药物研发", "临床试验", "监管动态", "AI 与科研工具"]
+  },
+  "sources": {
+    "preferred_urls_or_publishers": [],
+    "excluded_urls_or_publishers": [],
+    "allow_only_preferred": false,
+    "reading_languages": [],
+    "output_language": "zh-CN"
+  },
+  "coverage": {
+    "lookback_hours": null,
+    "first_run_lookback_hours": null,
+    "max_items": null,
+    "include_material_updates": true,
+    "no_new_items_action": "ask_user_to_choose_skip_or_brief_status"
+  },
+  "schedule": {
+    "enabled": false,
+    "timezone": null,
+    "send_time_local": null,
+    "frequency": null,
+    "missed_run_policy": "ask_user_to_choose_skip_or_one_catchup",
+    "scheduler": "not_configured"
+  },
+  "delivery": {
+    "channel": null,
+    "recipient_config_ref": "private-runtime-config-only",
+    "format": "short_message_and_html_report",
+    "full_report_access": "not_configured",
+    "readback_supported": null
+  },
+  "major_alerts": {
+    "enabled": false,
+    "criteria": [],
+    "quiet_hours_local": null,
+    "max_alerts_per_day": null
+  },
+  "approval": {
+    "sample_reviewed": false,
+    "automatic_push_explicitly_enabled": false,
+    "enabled_at": null
+  }
+}
