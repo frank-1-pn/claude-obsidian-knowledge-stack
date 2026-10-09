@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-09",
+  "status": "code-sync-verified",
+  "repository": "https://github.com/frank-1-pn/claude-obsidian-knowledge-stack",
+  "branch": "main",
+  "previous_revision": "3beecd343fab1ff4bd44765eb1816fff82afd412",
+  "verified_code_revision": "bf10e4fa6549a24ad2bc429810d4ea6f820f67d9",
+  "evidence": [
+    "path-scoped commit and successful fast-forward push",
+    "fetch from origin and origin/main equals code revision",
+    "remote blob readback for role, pipeline processor/input, analysis JSON, PPTX and original email implementation plan"
+  ],
+  "pipeline_processor_sha256": "cd6269b5e76a0c6ba775f3033016f8dc54c03728b52de50ab9be2e9151936106",
+  "analysis_sha256": "c5fc6732386bd79be3febebecc2afa290bc3e69db62e64d092f728e25f857035",
+  "pptx_sha256": "d03ca7ad21e8cfad3e278125ba91f3ba46d752c19457f913897d73cd2439a993",
+  "scope": "core code and synthetic evidence; this receipt and final HTML byte-preservation metadata are recorded in a following documentation commit",
+  "connections": {"patsnap": "design-only", "email": "design-only"},
+  "private_vault_and_runtime_excluded": true
+}

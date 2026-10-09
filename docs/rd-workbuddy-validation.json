@@ -101,7 +101,7 @@
     "email": "design/templates only, not connected; no monitoring or sending"
   },
   "parallel_host_tasks": true,
-  "publication": "pending path-scoped Git sync; remote receipt is separate",
+  "publication": "Core code synced and read back at bf10e4fa6549a24ad2bc429810d4ea6f820f67d9; final receipt stored separately.",
   "review_notes": [
     "First pipeline rehearsal violated plan order and had stage bug; preserved, not accepted as formal proof.",
     "Independent reviewer narrative mistakenly listed R006 as future at 10/09; actual JSON only R007. Integrator used actual JSON, no unperformed rerun claim.",

@@ -1,5 +1,13 @@
 # 变更记录
 
+## 2026-10-09 — 目标仓库同步与远端读回
+
+- 目标：frank-1-pn/claude-obsidian-knowledge-stack 的 main。
+- 核心源码提交：bf10e4fa6549a24ad2bc429810d4ea6f820f67d9，1240 个本次明确路径；fast-forward push 后 fetch 的 origin/main 与该 ref 一致。
+- 远端读回：角色、管线处理器与输入、实际分析 JSON/PPT、用户邮件方案。处理器 cd6269b5…、JSON c5fc6732…、PPT d03ca7ad… 与已验收 bytes 相同；邮件原件 c5400bb7… 保持不变。
+- 后续文档记录关闭实施计划的同步项，新增发布回执；HTML 也保持原始渲染验收字节，避免换行转换造成回执 hash 差异。
+- 本次没有提交私人 vault、raw、原始聊天、账号截图、凭据、本机绑定、.local 或隔离环境。
+
 ## 2026-10-09 — 核心 WorkBuddy 合成链验收与复刻收敛
 
 - 触发：用户要求真实 WorkBuddy 跑通后同步，并追加允许多任务并行、包括宿主测试。
